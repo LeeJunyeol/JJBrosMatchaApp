@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.matcha.jjbros.matchaapp.OwnerMainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"></RelativeLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/main_button_height"
+        android:text="@string/timeMngButton_name"
+        android:id="@+id/timeMngButton"
+        android:layout_marginTop="@dimen/main_button_margin"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/main_button_height"
+        android:text="@string/menuMngButton_name"
+        android:id="@+id/menuMngButton"
+        android:layout_marginTop="@dimen/main_button_margin"
+        android:layout_below="@+id/timeMngButton"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/main_button_height"
+        android:text="@string/foodMapButton_name"
+        android:id="@+id/foodMapButton"
+        android:layout_marginTop="@dimen/main_button_margin"
+        android:layout_below="@+id/menuMngButton"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/main_button_height"
+        android:text="@string/festInfoButton_name"
+        android:id="@+id/festInfoButton"
+        android:layout_marginTop="@dimen/main_button_margin"
+        android:layout_below="@+id/foodMapButton"
+        android:layout_alignParentStart="true" />
+</RelativeLayout>
