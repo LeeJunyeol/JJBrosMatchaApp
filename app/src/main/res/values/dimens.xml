@@ -4,4 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="main_button_height">76dp</dimen>
     <dimen name="main_button_margin">32dp</dimen>
+    <dimen name="narrow5">5dp</dimen>
+    <dimen name="narrow6">6dp</dimen>
 </resources>

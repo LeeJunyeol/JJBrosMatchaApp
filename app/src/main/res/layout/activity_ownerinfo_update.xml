@@ -40,7 +40,7 @@
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="42dp"
-                        android:id="@+id/imageView2"
+                        android:id="@+id/ic_ownerinfo_email"
                         android:padding="6dp"
                         android:src="@drawable/ic_email"/>
 
@@ -48,7 +48,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="42dp"
                         android:ems="10"
-                        android:id="@+id/editText2"
+                        android:id="@+id/text_ownerinfo_email"
                         android:layout_gravity="center_horizontal"
                         android:linksClickable="false"
                         android:singleLine="false"
@@ -66,7 +66,7 @@
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="42dp"
-                        android:id="@+id/imageView2"
+                        android:id="@+id/ic_ownerinfo_pwd"
                         android:padding="6dp"
                         android:src="@drawable/ic_action_pwd"/>
 
@@ -75,7 +75,7 @@
                         android:layout_height="42dp"
                         android:inputType="textPassword"
                         android:ems="10"
-                        android:id="@+id/editText2"
+                        android:id="@+id/text_ownerinfo_pwd"
                         android:layout_gravity="center_horizontal"
                         android:linksClickable="false"
                         android:singleLine="false"
@@ -114,7 +114,7 @@
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="42dp"
-                        android:id="@+id/imageView2"
+                        android:id="@+id/ic_ownerinfo_address"
                         android:padding="6dp"
                         android:src="@drawable/ic_action_pwd"/>
 
@@ -123,7 +123,7 @@
                         android:layout_height="42dp"
                         android:inputType="textPassword"
                         android:ems="10"
-                        android:id="@+id/editText2"
+                        android:id="@+id/text_ownerinfo_address"
                         android:layout_gravity="center_horizontal"
                         android:linksClickable="false"
                         android:singleLine="false"
@@ -139,7 +139,7 @@
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="42dp"
-                        android:id="@+id/imageView2"
+                        android:id="@+id/ic_ownerinfo_truckname"
                         android:padding="6dp"
                         android:src="@drawable/ic_action_address"/>
 
@@ -148,7 +148,7 @@
                         android:layout_height="42dp"
                         android:inputType="textPassword"
                         android:ems="10"
-                        android:id="@+id/editText2"
+                        android:id="@+id/text_ownerinfo_truckname"
                         android:layout_gravity="center_horizontal"
                         android:linksClickable="false"
                         android:singleLine="false"
@@ -165,7 +165,7 @@
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="42dp"
-                        android:id="@+id/imageView2"
+                        android:id="@+id/ic_ownerinfo_tel"
                         android:padding="6dp"
                         android:src="@drawable/ic_action_tel"/>
 
@@ -174,7 +174,7 @@
                         android:layout_height="42dp"
                         android:inputType="textPassword"
                         android:ems="10"
-                        android:id="@+id/editText2"
+                        android:id="@+id/text_ownerinfo_tel"
                         android:layout_gravity="center_horizontal"
                         android:linksClickable="false"
                         android:singleLine="false"
@@ -189,7 +189,7 @@
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="42dp"
-                        android:id="@+id/imageView2"
+                        android:id="@+id/ic_ownerinfo_code"
                         android:padding="6dp"
                         android:src="@drawable/ic_action_code"/>
 
@@ -198,7 +198,7 @@
                         android:layout_height="42dp"
                         android:inputType="textPassword"
                         android:ems="10"
-                        android:id="@+id/editText2"
+                        android:id="@+id/text_ownerinfo_code"
                         android:layout_gravity="center_horizontal"
                         android:linksClickable="false"
                         android:singleLine="false"
