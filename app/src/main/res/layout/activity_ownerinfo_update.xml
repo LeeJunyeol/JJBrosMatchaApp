@@ -38,15 +38,15 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="42dp"
+                        android:layout_width="@dimen/ownerinfo_ic_width"
+                        android:layout_height="@dimen/ownerinfo_row_height"
                         android:id="@+id/ic_ownerinfo_email"
                         android:padding="6dp"
                         android:src="@drawable/ic_email"/>
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="42dp"
+                        android:layout_height="@dimen/ownerinfo_row_height"
                         android:ems="10"
                         android:id="@+id/text_ownerinfo_email"
                         android:layout_gravity="center_horizontal"
@@ -64,15 +64,15 @@
                     android:background="@drawable/border_rectangle">
 
                     <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="42dp"
+                        android:layout_width="@dimen/ownerinfo_ic_width"
+                        android:layout_height="@dimen/ownerinfo_row_height"
                         android:id="@+id/ic_ownerinfo_pwd"
                         android:padding="6dp"
                         android:src="@drawable/ic_action_pwd"/>
 
                     <EditText
                         android:layout_width="wrap_content"
-                        android:layout_height="42dp"
+                        android:layout_height="@dimen/ownerinfo_row_height"
                         android:inputType="textPassword"
                         android:ems="10"
                         android:id="@+id/text_ownerinfo_pwd"
@@ -89,14 +89,14 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="42dp"
+                        android:layout_height="@dimen/ownerinfo_row_height"
                         android:text="남자"
                         android:gravity="center"
                         android:layout_weight="1"/>
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="42dp"
+                        android:layout_height="@dimen/ownerinfo_row_height"
                         android:layout_marginRight="1dp"
                         android:text="여자"
                         android:gravity="center"
@@ -112,15 +112,15 @@
                     android:background="@drawable/border_rectangle">
 
                     <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="42dp"
+                        android:layout_width="@dimen/ownerinfo_ic_width"
+                        android:layout_height="@dimen/ownerinfo_row_height"
                         android:id="@+id/ic_ownerinfo_address"
                         android:padding="6dp"
                         android:src="@drawable/ic_action_address"/>
 
                     <EditText
                         android:layout_width="wrap_content"
-                        android:layout_height="42dp"
+                        android:layout_height="@dimen/ownerinfo_row_height"
                         android:inputType="textPassword"
                         android:ems="10"
                         android:id="@+id/text_ownerinfo_address"
@@ -137,15 +137,15 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="42dp"
+                        android:layout_width="@dimen/ownerinfo_ic_width"
+                        android:layout_height="@dimen/ownerinfo_row_height"
                         android:id="@+id/ic_ownerinfo_truckname"
                         android:padding="6dp"
                         android:src="@drawable/ic_action_name"/>
 
                     <EditText
                         android:layout_width="wrap_content"
-                        android:layout_height="42dp"
+                        android:layout_height="@dimen/ownerinfo_row_height"
                         android:inputType="textPassword"
                         android:ems="10"
                         android:id="@+id/text_ownerinfo_truckname"
@@ -163,15 +163,15 @@
                     android:background="@drawable/border_rectangle">
 
                     <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="42dp"
+                        android:layout_width="@dimen/ownerinfo_ic_width"
+                        android:layout_height="@dimen/ownerinfo_row_height"
                         android:id="@+id/ic_ownerinfo_tel"
                         android:padding="6dp"
                         android:src="@drawable/ic_action_tel"/>
 
                     <EditText
                         android:layout_width="wrap_content"
-                        android:layout_height="42dp"
+                        android:layout_height="@dimen/ownerinfo_row_height"
                         android:inputType="textPassword"
                         android:ems="10"
                         android:id="@+id/text_ownerinfo_tel"
@@ -189,15 +189,15 @@
                     android:background="@drawable/border_rectangle">
 
                     <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="42dp"
+                        android:layout_width="@dimen/ownerinfo_ic_width"
+                        android:layout_height="@dimen/ownerinfo_row_height"
                         android:id="@+id/ic_ownerinfo_code"
                         android:padding="6dp"
                         android:src="@drawable/ic_action_code"/>
 
                     <EditText
                         android:layout_width="wrap_content"
-                        android:layout_height="42dp"
+                        android:layout_height="@dimen/ownerinfo_row_height"
                         android:inputType="textPassword"
                         android:ems="10"
                         android:id="@+id/text_ownerinfo_code"
@@ -214,15 +214,15 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="42dp"
+                        android:layout_width="@dimen/ownerinfo_ic_width"
+                        android:layout_height="@dimen/ownerinfo_row_height"
                         android:id="@+id/ic_ownerinfo_foodlist"
                         android:padding="6dp"
                         android:src="@drawable/ic_action_foodlist"/>
 
                     <EditText
                         android:layout_width="wrap_content"
-                        android:layout_height="42dp"
+                        android:layout_height="@dimen/ownerinfo_row_height"
                         android:inputType="textPassword"
                         android:ems="10"
                         android:id="@+id/text_ownerinfo_foodlist"
