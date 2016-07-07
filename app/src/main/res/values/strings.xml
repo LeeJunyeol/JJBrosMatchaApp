@@ -1,7 +1,11 @@
 <resources>
     <string name="app_name">MatchaApp</string>
-    <string name="timeMngButton_name">시간표 관리</string>
+    <string name="timeMngButton_name">일정 관리</string>
     <string name="menuMngButton_name">판매 메뉴 관리</string>
     <string name="foodMapButton_name">푸드트럭 지도</string>
     <string name="festInfoButton_name">행사 정보</string>
+    <string name="title_activity_food_truck_map">푸드트럭 지도</string>
+    <string name="title_activity_owner_tite_table">일정</string>
+    <string name="title_activity_food_menu_mng">FoodMenuMngActivity</string>
+
 </resources>

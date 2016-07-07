@@ -10,4 +10,5 @@
     <dimen name="ownerinfo_ic_width">42dp</dimen>
     <dimen name="narrow5">5dp</dimen>
     <dimen name="narrow6">6dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>
