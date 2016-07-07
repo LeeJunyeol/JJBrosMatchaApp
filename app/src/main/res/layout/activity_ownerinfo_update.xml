@@ -116,7 +116,7 @@
                         android:layout_height="42dp"
                         android:id="@+id/ic_ownerinfo_address"
                         android:padding="6dp"
-                        android:src="@drawable/ic_action_pwd"/>
+                        android:src="@drawable/ic_action_address"/>
 
                     <EditText
                         android:layout_width="wrap_content"
@@ -141,7 +141,7 @@
                         android:layout_height="42dp"
                         android:id="@+id/ic_ownerinfo_truckname"
                         android:padding="6dp"
-                        android:src="@drawable/ic_action_address"/>
+                        android:src="@drawable/ic_action_name"/>
 
                     <EditText
                         android:layout_width="wrap_content"
@@ -180,11 +180,13 @@
                         android:singleLine="false"
                         android:layout_weight="1" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:orientation="horizontal"
                     android:paddingRight="5dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border_rectangle">
 
                     <ImageView
                         android:layout_width="50dp"
@@ -199,6 +201,31 @@
                         android:inputType="textPassword"
                         android:ems="10"
                         android:id="@+id/text_ownerinfo_code"
+                        android:layout_gravity="center_horizontal"
+                        android:linksClickable="false"
+                        android:singleLine="false"
+                        android:layout_weight="1" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:paddingRight="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="42dp"
+                        android:id="@+id/ic_ownerinfo_foodlist"
+                        android:padding="6dp"
+                        android:src="@drawable/ic_action_foodlist"/>
+
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="42dp"
+                        android:inputType="textPassword"
+                        android:ems="10"
+                        android:id="@+id/text_ownerinfo_foodlist"
                         android:layout_gravity="center_horizontal"
                         android:linksClickable="false"
                         android:singleLine="false"
