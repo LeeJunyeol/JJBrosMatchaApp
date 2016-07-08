@@ -1,4 +1,4 @@
-package com.matcha.jjbros.matchaapp;
+package com.matcha.jjbros.matchaapp.owner;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.matcha.jjbros.matchaapp.R;
+
 public class OwnerMainActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE_OWNERINFO = 1001;
     public static final int REQUEST_CODE_FOODTRUCKMAP = 1002;
     public static final int REQUEST_CODE_FOODMENUMNG = 1003;
+    public static final int REQUEST_CODE_FESTINFO = 1004;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +25,7 @@ public class OwnerMainActivity extends AppCompatActivity {
         timeMngBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), OwnerInfoActivity.class);
+                Intent intent = new Intent(getBaseContext(), OwnerTimeTableActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_OWNERINFO);
             }
         });
@@ -48,5 +51,14 @@ public class OwnerMainActivity extends AppCompatActivity {
             }
         });
 
+        // 행사 정보 버튼
+        Button festInfoBtn = (Button) findViewById(R.id.festInfoButton);
+        festInfoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), FestInfoActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_FESTINFO);
+            }
+        });
     }
 }

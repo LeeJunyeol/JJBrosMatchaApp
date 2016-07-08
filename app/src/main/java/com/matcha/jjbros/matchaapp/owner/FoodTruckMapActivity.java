@@ -1,4 +1,4 @@
-package com.matcha.jjbros.matchaapp;
+package com.matcha.jjbros.matchaapp.owner;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.matcha.jjbros.matchaapp.R;
 
 public class FoodTruckMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -17,7 +18,7 @@ public class FoodTruckMapActivity extends FragmentActivity implements OnMapReady
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_food_truck_map);
+        setContentView(R.layout.activity_food_truck_map);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);

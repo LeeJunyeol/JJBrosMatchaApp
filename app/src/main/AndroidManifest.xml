@@ -15,14 +15,14 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".OwnerMainActivity">
+        <activity android:name=".owner.OwnerMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+cat ec
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -34,17 +34,19 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-        <activity android:name=".OwnerJoinActivity"/>
-
+        <activity android:name=".owner.OwnerJoinActivity"/>
 
         <activity
-            android:name=".FoodTruckMapActivity"
+            android:name=".owner.FoodTruckMapActivity"
             android:label="@string/title_activity_food_truck_map" />
         <activity
-            android:name=".OwnerTimeTableActivity"
+            android:name=".owner.OwnerTimeTableActivity"
             android:label="@string/title_activity_owner_tite_table" />
         <activity
-            android:name=".FoodMenuMngActivity"
+            android:name=".owner.FestInfoActivity"
+            android:label="@string/title_activity_fest_info" />
+        <activity
+            android:name=".owner.FoodMenuMngActivity"
             android:label="@string/title_activity_food_menu_mng"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

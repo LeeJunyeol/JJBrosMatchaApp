@@ -6,6 +6,7 @@
     <string name="festInfoButton_name">행사 정보</string>
     <string name="title_activity_food_truck_map">푸드트럭 지도</string>
     <string name="title_activity_owner_tite_table">일정</string>
-    <string name="title_activity_food_menu_mng">FoodMenuMngActivity</string>
+    <string name="title_activity_fest_info">행사 정보</string>
+    <string name="title_activity_food_menu_mng">판매 메뉴 관리</string>
 
 </resources>
