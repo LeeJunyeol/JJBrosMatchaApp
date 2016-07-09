@@ -10,14 +10,21 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.matcha.jjbros.matchaapp.R;
+import com.matcha.jjbros.matchaapp.db.DBConnection;
+
+import java.sql.Connection;
 
 public class FoodTruckMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private Connection conn = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        conn = new DBConnection().connectToDatabaseOrDie();
+
         setContentView(R.layout.activity_food_truck_map);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
