@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".owner.OwnerMainActivity">
+        <activity android:name=".main.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,7 +48,7 @@
             android:label="@string/title_activity_fest_info" />
         <activity
             android:name=".owner.FoodMenuMngActivity"
-            android:label="@string/title_activity_food_menu_mng"
+            android:label=""
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
