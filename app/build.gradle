@@ -10,6 +10,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -33,4 +34,6 @@ dependencies {
     compile 'com.wrapp.floatlabelededittext:library:0.0.6'
     compile 'com.google.android.gms:play-services:9.0.2'
     compile 'com.android.support:design:23.+'
+    compile files('libs/postgresql-9.4.1208.jar')
+    compile 'com.android.support:multidex:1.0.0'
 }
