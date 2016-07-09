@@ -7,6 +7,20 @@
     <string name="title_activity_food_truck_map">푸드트럭 지도</string>
     <string name="title_activity_owner_tite_table">일정</string>
     <string name="title_activity_fest_info">행사 정보</string>
-    <string name="title_activity_food_menu_mng">판매 메뉴 관리</string>
+    <string name="btn_foodtruck_view_time_location">영업시간/위치</string>
+    <string name="btn_foodtruck_view_menu">메뉴</string>
+    <string name="btn_foodtruck_view_review">후기 보기/ 남기기</string>
+    <string name="btn_user_myinfo_update">수정</string>
+    <string name="btn_user_myinfo_logout">로그아웃</string>
+    <string name="btn_user_myinfo_bookmark">찜한 트럭</string>
+    <string name="btn_user_myinfo_coupon">쿠폰</string>
+    <string name="btn_user_myinfo_review">리뷰 관리</string>
+    <string name="btn_user_myinfo_event_notice">이벤트 및 공지사항</string>
+    <string name="btn_user_myinfo_setting">환경설정</string>
+    <string name="radio_user_myinfo_update_male">남</string>
+    <string name="radio_user_myinfo_update_female">여</string>
+    <string name="btn_user_myinfo_update_delete">회원 탈퇴</string>
+
+
 
 </resources>
