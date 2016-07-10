@@ -23,7 +23,9 @@ public class FoodTruckMapActivity extends FragmentActivity implements OnMapReady
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+/*
         conn = new DBConnection().connectToDatabaseOrDie();
+*/
 
         setContentView(R.layout.activity_food_truck_map);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
