@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "561937051390",
+    "project_id": "vaulted-harbor-136508"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:561937051390:android:d48b485c82730587",
+        "android_client_info": {
+          "package_name": "com.matcha.jjbros.matchaapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "561937051390-c3ss3aj9ddtmbifqvpvb7kkhm7lqnf7j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.matcha.jjbros.matchaapp",
+            "certificate_hash": "CFC6FA50D0CFAEBE23099CEA058E26DD1CB6511B"
+          }
+        },
+        {
+          "client_id": "561937051390-j4l3np9v1n52mjssft0r6tddu71oem6v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDELxOBg8fAdIrT2UhZ26GBPeUNItDGKlU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
