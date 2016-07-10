@@ -10,6 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.matcha.jjbros.matchaapp.R;
+import com.matcha.jjbros.matchaapp.owner.OwnerMainActivity;
+import com.matcha.jjbros.matchaapp.user.UserMainActivity;
 
 public class LoginActivity extends AppCompatActivity{
 
@@ -28,11 +30,18 @@ public class LoginActivity extends AppCompatActivity{
 
                 EditText et_email = (EditText) findViewById(R.id.et_email);
                 EditText et_password = (EditText) findViewById(R.id.et_password);
-                String email= (String) et_email.getText().toString();
-                String password = (String)et_password.getText().toString();
+                String email= et_email.getText().toString();
+                String password = et_password.getText().toString();
 
-                if(email.equals("mashiboa")) {
-                    Toast.makeText(LoginActivity.this, "yes", Toast.LENGTH_SHORT).show();
+                if(email.equals("mashiboa@naver.com")&&password.equals("1111")) {
+                    Intent intent = new Intent(getApplicationContext(), UserMainActivity.class);
+                    startActivity(intent);
+
+                }
+
+                if(email.equals("jun@naver.com")&&password.equals("2222")) {
+                    Intent intent = new Intent(getApplicationContext(), OwnerMainActivity.class);
+                    startActivity(intent);
 
                 }
 

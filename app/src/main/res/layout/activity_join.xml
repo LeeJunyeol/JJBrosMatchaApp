@@ -77,7 +77,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_login"
+        android:id="@+id/btn_join_next"
         android:text="다음"
         />
 

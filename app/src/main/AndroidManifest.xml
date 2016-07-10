@@ -8,6 +8,8 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name="android.support.multidex.MultiDexApplication"
@@ -16,13 +18,22 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+
         <activity android:name=".main.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".main.JoinActivity"/>
+        <activity android:name=".main.ForgotActivity"/>
+        <activity android:name=".owner.OwnerJoinActivity"/>
+        <activity android:name=".owner.OwnerMainActivity"/>
+        <activity android:name=".user.UserMainActivity"/>
+
+
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -35,7 +46,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-        <activity android:name=".owner.OwnerJoinActivity"/>
+
 
         <activity
             android:name=".owner.FoodTruckMapActivity"

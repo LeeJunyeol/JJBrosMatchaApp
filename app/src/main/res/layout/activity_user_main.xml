@@ -3,31 +3,6 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--android:orientation="horizontal" android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content">-->
-
-        <!--<ImageView-->
-            <!--android:layout_width="50dp"-->
-            <!--android:layout_height="50dp"-->
-            <!--android:src="@drawable/menu"-->
-            <!--android:id="@+id/iv_menu"-->
-            <!--android:padding="10dp"/>-->
-
-        <!--<EditText-->
-            <!--android:layout_width="250dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/et_search"-->
-            <!--android:hint="텍스트 검색"/>-->
-
-        <!--<Button-->
-            <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/btn_search"-->
-        <!--android:hint="텍스트 검색"-->
-        <!--android:text="검색"/>-->
-        <!---->
-    <!--</LinearLayout>-->
     
     <ScrollView
         android:layout_width="match_parent"
@@ -40,10 +15,12 @@
 
             <TableRow>
                 <Button
+                    android:id="@+id/btn_my_near_foodtruck"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:background="@color/white_gray"
-                    android:layout_margin="15dp"/>
+                    android:layout_margin="15dp"
+                    android:text="내 주변 푸드트럭"/>
 
                 <Button
                     android:layout_width="match_parent"
