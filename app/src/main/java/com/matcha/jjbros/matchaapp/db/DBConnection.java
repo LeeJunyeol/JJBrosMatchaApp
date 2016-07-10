@@ -18,7 +18,7 @@ public class DBConnection {
         try
         {
             Class.forName("org.postgresql.Driver");
-            String url = "jdbc:postgresql://115.161.211.226/postgres";
+            String url = "jdbc:postgresql://localhost/matcha";
             Properties props = new Properties();
             props.setProperty("user","postgres");
             props.setProperty("password","postgres");
