@@ -43,6 +43,5 @@ dependencies {
     compile 'com.android.support:design:23.+'
     compile files('libs/postgresql-9.4.1208.jar')
     compile 'com.android.support:multidex:1.0.0'
-    compile 'com.android.support:appcompat-v7:24.0.0'
 }
 apply plugin: 'com.google.gms.google-services'

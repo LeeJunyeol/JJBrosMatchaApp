@@ -62,9 +62,9 @@
     </RadioGroup>
 
     <TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="생년월일"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="생년월일"/>
 
     <DatePicker
         android:layout_width="match_parent"
@@ -80,7 +80,4 @@
         android:id="@+id/btn_join_next"
         android:text="다음"
         />
-
-
-
 </LinearLayout>
