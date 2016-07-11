@@ -8,7 +8,6 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -31,6 +30,8 @@
         <activity android:name=".owner.OwnerJoinActivity"/>
         <activity android:name=".owner.OwnerMainActivity"/>
         <activity android:name=".user.UserMainActivity"/>
+        <activity android:name=".user.UserNearFoodtruckActivity"/>
+        <activity android:name=".user.UserBestFoodtruckListActivity"/>
 
 
 

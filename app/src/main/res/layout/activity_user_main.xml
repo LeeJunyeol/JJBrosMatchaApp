@@ -26,7 +26,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:background="@color/white_gray"
-                    android:layout_margin="15dp"/>
+                    android:layout_margin="15dp"
+                    android:id="@+id/btn_best_foodtruck"
+                    android:text="인기 푸드트럭"/>
 
             </TableRow>
 
