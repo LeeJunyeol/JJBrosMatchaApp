@@ -14,9 +14,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.matcha.jjbros.matchaapp.R;
+import com.matcha.jjbros.matchaapp.db.DBConnection;
+import com.matcha.jjbros.matchaapp.db.UserDao;
 import com.matcha.jjbros.matchaapp.entity.User;
 import com.matcha.jjbros.matchaapp.owner.OwnerJoinActivity;
 
+import java.sql.Connection;
 import java.sql.Date;
 
 /**
@@ -114,6 +117,9 @@ public class JoinActivity extends AppCompatActivity {
                     User user = new User(email, pw, sex, birth);
                     // 사업자일 경우 추가 정보입력을 받기 위해 OwnerJoinActivity로 이동
                     if(rb_join_owner.isChecked()==true){
+                        text = "추가 정보 입력페이지로 이동합니디.";
+                        toast = Toast.makeText(context, text, duration);
+                        toast.show();
                         Intent intent = new Intent(getApplicationContext(), OwnerJoinActivity.class);
                         // User 값 전달
                         intent.putExtra("user", user);
@@ -122,12 +128,24 @@ public class JoinActivity extends AppCompatActivity {
                     }
                     // 일반 사용자일 경우 LoginActivity로 이동
                     else{
-                        text = "회원가입이 완료 되었습니다.";
-                        toast = Toast.makeText(context, text, duration);
-                        toast.show();
-                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(intent);
-                        finish();
+                        Connection conn = DBConnection.getConnection();
+
+                        String sql = null;
+                        if(new UserDao(conn).insertUser(user)){
+                            text = "회원가입이 완료 되었습니다.";
+                            toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            text = "회원가입에 실패 하였습니다.";
+                            toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
                 }
 
