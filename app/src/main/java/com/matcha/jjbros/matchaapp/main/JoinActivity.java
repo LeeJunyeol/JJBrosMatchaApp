@@ -11,14 +11,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.matcha.jjbros.matchaapp.R;
-import com.matcha.jjbros.matchaapp.db.DBConnection;
-import com.matcha.jjbros.matchaapp.db.InsertUser;
-import com.matcha.jjbros.matchaapp.db.UserDao;
 import com.matcha.jjbros.matchaapp.entity.User;
 import com.matcha.jjbros.matchaapp.owner.OwnerJoinActivity;
 
@@ -26,6 +21,9 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 /**
@@ -132,10 +130,8 @@ public class JoinActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     }
-                    // 일반 사용자일 경우 LoginActivity로 이동
+                    // 일반 사용자일 경우 회원가입을 요청
                     else {
-                        String sql = null;
-
                         new InsertUser().execute(user);
                     }
                 }
@@ -149,6 +145,7 @@ public class JoinActivity extends AppCompatActivity {
 
         @Override
         protected Integer doInBackground(User... users) {
+            Connection conn = null;
             try {
                 Class.forName("org.postgresql.Driver").newInstance();
                 String url = "jdbc:postgresql://192.168.0.79:5432/matcha";
@@ -157,15 +154,21 @@ public class JoinActivity extends AppCompatActivity {
                 props.setProperty("password", "admin123");
 
                 Log.d("url", url);
-                Connection conn = DriverManager.getConnection(url, props);
+                conn = DriverManager.getConnection(url, props);
                 if (conn == null) // couldn't connect to server
                 {
                     Log.d("connection : ", "null");
                     return -1;
                 }
-                String sql = "insert into " + '"' + "MATCHA_USER" + '"' + " values (MATCHA_USER_ID_seq.nextval,?,?,?,?)";
-                PreparedStatement pstm = null;
-                int res = 0;
+            } catch (Exception e){
+                Log.d("PPJY", e.getLocalizedMessage());
+                return -1;
+            }
+
+            int res = 0;
+            PreparedStatement pstm = null;
+            String sql = "insert into \"MATCHA_USER\"(\"ID\", \"EMAIL\", \"PW\", \"SEX\", \"BIRTH\") values (DEFAULT,?,?,?,?)";
+            try {
                 pstm = conn.prepareStatement(sql);
                 pstm.setString(1, users[0].getEmail());
                 pstm.setString(2, users[0].getPw());
@@ -175,15 +178,18 @@ public class JoinActivity extends AppCompatActivity {
                 res = pstm.executeUpdate();
                 if (res > 0) {
                     Log.d("res", Integer.toString(res));
+                    Commit(conn);
                     return 1;
                 } else {
                     Log.d("res", Integer.toString(res));
                     return -1;
                 }
-
             } catch (Exception e) {
                 Log.d("PPJY", e.getLocalizedMessage());
                 return -1;
+            } finally {
+                Close(pstm);
+                Close(conn);
             }
         }
 
@@ -211,5 +217,63 @@ public class JoinActivity extends AppCompatActivity {
             }
         }
 
+        public void Close(Connection con){
+            if(con != null){
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        public void Close(Statement stmt){
+            if(stmt != null){
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        public void Close(ResultSet rs){
+            if(rs != null){
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        public boolean isConnected(Connection con){
+            boolean validConnection = true;
+            try {
+                if(con==null||con.isClosed())
+                    validConnection = false;
+            } catch (SQLException e) {
+                validConnection = false;
+                e.printStackTrace();
+            }
+            return validConnection;
+        }
+        public void Commit(Connection con){
+            try {
+                if(isConnected(con)){
+                    con.commit();
+                    Log.d("JdbcTemplate.Commit", "DB Successfully Committed!");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        public void Rollback(Connection con){
+            try {
+                if(isConnected(con)){
+                    con.rollback();
+                    Log.d("JdbcTemplate.rollback", "DB Successfully Rollbacked!");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
