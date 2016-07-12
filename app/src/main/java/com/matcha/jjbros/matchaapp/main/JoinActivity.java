@@ -151,11 +151,10 @@ public class JoinActivity extends AppCompatActivity {
         protected Integer doInBackground(User... users) {
             try {
                 Class.forName("org.postgresql.Driver").newInstance();
-                String url = "jdbc:postgresql://10.0.2.2:5432/matcha";
+                String url = "jdbc:postgresql://192.168.0.79:5432/matcha";
                 Properties props = new Properties();
                 props.setProperty("user", "postgres");
                 props.setProperty("password", "admin123");
-                props.setProperty("ssl", "true");
 
                 Log.d("url", url);
                 Connection conn = DriverManager.getConnection(url, props);
@@ -164,7 +163,7 @@ public class JoinActivity extends AppCompatActivity {
                     Log.d("connection : ", "null");
                     return -1;
                 }
-                String sql = "insert into USER values (MATCHA_USER_ID_seq.nextval,?,?,?,?)";
+                String sql = "insert into " + '"' + "MATCHA_USER" + '"' + " values (MATCHA_USER_ID_seq.nextval,?,?,?,?)";
                 PreparedStatement pstm = null;
                 int res = 0;
                 pstm = conn.prepareStatement(sql);
