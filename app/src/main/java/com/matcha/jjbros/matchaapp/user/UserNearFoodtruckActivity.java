@@ -50,6 +50,7 @@ public class UserNearFoodtruckActivity extends FragmentActivity {
 
     private void init() {
 
+/*
         GooglePlayServicesUtil.isGooglePlayServicesAvailable(UserNearFoodtruckActivity.this);
         mGoogleMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_user_near_foodtruck)).getMap();
 
@@ -69,6 +70,7 @@ public class UserNearFoodtruckActivity extends FragmentActivity {
         myCurrentPosition.icon(BitmapDescriptorFactory.fromResource(R.drawable.iamhere));
         mMarker = mGoogleMap.addMarker(myCurrentPosition);
         mMarker.showInfoWindow();
+*/
 
     }
 
