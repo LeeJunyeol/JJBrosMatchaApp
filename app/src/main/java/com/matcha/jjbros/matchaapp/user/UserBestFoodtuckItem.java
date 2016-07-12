@@ -8,19 +8,17 @@ import android.graphics.drawable.Drawable;
 public class UserBestFoodtuckItem {
 
         private String rank;
-        private Drawable img;
+        private int img;
         private double star;
         private String name;
         private String category;
-        private String city;
-        private String phone;
 
-    public UserBestFoodtuckItem(String rank, Drawable img, double star, String phone, String city, String category, String name) {
+
+    public UserBestFoodtuckItem(String rank, int img, double star,  String category, String name) {
         this.rank = rank;
         this.img = img;
         this.star = star;
-        this.phone = phone;
-        this.city = city;
+
         this.category = category;
         this.name = name;
     }
@@ -29,7 +27,7 @@ public class UserBestFoodtuckItem {
         return rank;
     }
 
-    public Drawable getImg() {
+    public int getImg() {
         return img;
     }
 
@@ -45,12 +43,6 @@ public class UserBestFoodtuckItem {
         return category;
     }
 
-    public String getCity() {
-        return city;
-    }
 
-    public String getPhone() {
-        return phone;
-    }
 }
 

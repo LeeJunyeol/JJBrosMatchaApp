@@ -5,22 +5,24 @@
 
     <TextView
         android:id="@+id/tv_user_best_foodtruck_rank"
-        android:layout_width="60dp"
-        android:layout_height="match_parent"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"/>
     <ImageView
         android:id="@+id/iv_user_best_foodtruck_img"
         android:layout_width="70dp"
-        android:layout_height="match_parent"/>
+        android:layout_height="70dp"/>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <RatingBar
+        <TextView
             android:id="@+id/RatingBar_user_best_foodtruck_star"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:numStars="5"
+            android:gravity="center"
+
             />
 
         <TextView
@@ -35,18 +37,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             />
-        <TextView
-            android:id="@+id/tv_user_best_foodtruck_city"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            />
-        <TextView
-            android:id="@+id/tv_user_best_foodtruck_phone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-           />
+
 
     </LinearLayout>
 

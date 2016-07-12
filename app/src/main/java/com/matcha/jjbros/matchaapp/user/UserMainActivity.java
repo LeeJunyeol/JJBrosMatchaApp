@@ -20,6 +20,7 @@ public class UserMainActivity extends AppCompatActivity {
     boolean isGPSEnabled;
     Button btn_my_near_foodtruck;
     Button btn_best_foodtruck;
+    Button btn_category_drink_dessert;
 
     public void showSettingsAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(UserMainActivity.this);
@@ -54,7 +55,7 @@ public class UserMainActivity extends AppCompatActivity {
 
         btn_my_near_foodtruck = (Button) findViewById(R.id.btn_my_near_foodtruck);
         btn_best_foodtruck = (Button) findViewById(R.id.btn_best_foodtruck);
-
+         btn_category_drink_dessert = (Button)findViewById(R.id.btn_category_drink_dessert);
 
 
         btn_my_near_foodtruck.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +88,17 @@ public class UserMainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(getApplicationContext(), UserBestFoodtruckListActivity.class);
+                startActivity(intent);
+
+
+            }
+        });
+
+        btn_category_drink_dessert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getApplicationContext(), UserCategoryDrinkDessertActivity.class);
                 startActivity(intent);
 
 
