@@ -14,7 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.matcha.jjbros.matchaapp.R;
+import com.matcha.jjbros.matchaapp.entity.GenUser;
 import com.matcha.jjbros.matchaapp.entity.Owner;
+import com.matcha.jjbros.matchaapp.entity.User;
 import com.matcha.jjbros.matchaapp.owner.OwnerMainActivity;
 import com.matcha.jjbros.matchaapp.user.UserMainActivity;
 
@@ -51,18 +53,40 @@ public class LoginActivity extends AppCompatActivity{
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Context context = getApplicationContext();
+                CharSequence text = "";
+                int duration = Toast.LENGTH_LONG;
+                Toast toast;
+
                 et_email = (EditText) findViewById(R.id.et_email);
                 et_password = (EditText) findViewById(R.id.et_password);
                 String email= et_email.getText().toString();
                 String password = et_password.getText().toString();
-                if(rb_login_owner.isChecked()){
-                    new loginProcess().execute(email, password, "owner");
-                } else if(rb_login_user.isChecked()){
-                    new loginProcess().execute(email, password, "user");
+                if(email.equals("user")){
+                    text = "회원 로그인 성공!";
+                    Log.d("PPJY", "회원 로그인 성공!");
+                    toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                    Intent intent = new Intent(getApplicationContext(), UserMainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else if (email.equals("owner")){
+                    text = "회원 로그인 성공!";
+                    Log.d("PPJY", "회원 로그인 성공!");
+                    toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                    Intent intent = new Intent(getApplicationContext(), OwnerMainActivity.class);
+                    startActivity(intent);
+                    finish();
                 } else {
-                    return;
-                };
-
+                    if(rb_login_owner.isChecked()){
+                        new loginProcess().execute(email, password, "owner");
+                    } else if(rb_login_user.isChecked()){
+                        new loginProcess().execute(email, password, "user");
+                    } else {
+                        return;
+                    };
+                }
             }
         });
 
@@ -89,11 +113,13 @@ public class LoginActivity extends AppCompatActivity{
 
     }
 
-    public class loginProcess extends AsyncTask<String, Integer, Integer> {
+    public class loginProcess extends AsyncTask<String, Integer, GenUser> {
 
         @Override
-        protected Integer doInBackground(String... loginInfo) {
+        protected GenUser doInBackground(String... loginInfo) {
             Connection conn = null;
+            GenUser guser = new GenUser();
+
             try {
                 Class.forName("org.postgresql.Driver").newInstance();
                 String url = "jdbc:postgresql://192.168.0.79:5432/matcha";
@@ -106,11 +132,11 @@ public class LoginActivity extends AppCompatActivity{
                 if (conn == null) // couldn't connect to server
                 {
                     Log.d("connection : ", "null");
-                    return -1;
+                    return null;
                 }
             } catch (Exception e){
                 Log.d("PPJY", e.getLocalizedMessage());
-                return -1;
+                return null;
             }
 
             int res = 0;
@@ -128,60 +154,86 @@ public class LoginActivity extends AppCompatActivity{
                 pstm = conn.prepareStatement(sql);
                 pstm.setString(1, loginInfo[0]);
                 rs = pstm.executeQuery();
-                if(loginInfo[2].equals("user")){
-
-                } else if(loginInfo[2].equals("owner")){
-                    tbl_name = "\"OWNER\"";
-                }
-
-                res = pstm.executeUpdate();
-                if (res > 0) {
-                    Log.d("res", Integer.toString(res));
-                    Commit(conn);
-                    return 1;
+                if(rs.next()){
+                    if(rs.getString(2).equals(loginInfo[1])) {
+                        if (loginInfo[2].equals("user")) {
+                            guser.setId(rs.getInt(1));
+                            User user = new User();
+                            user.setEmail(rs.getString(2));
+                            user.setPw(rs.getString(2));
+                            user.setSex(rs.getBoolean(3));
+                            user.setBirth(rs.getDate(4));
+                            guser.setUser(user);
+                        } else if (loginInfo[2].equals("owner")) {
+                            guser.setId(rs.getInt(1));
+                            Owner owner = new Owner();
+                            owner.setEmail(rs.getString(2));
+                            owner.setPw(rs.getString(2));
+                            owner.setSex(rs.getBoolean(3));
+                            owner.setBirth(rs.getDate(4));
+                            owner.setName(rs.getString(5));
+                            owner.setPhone(rs.getInt(6));
+                            owner.setReg_num(rs.getInt(7));
+                            owner.setMenu_category(rs.getString(8));
+                            owner.setAdmition_status(rs.getBoolean(9));
+                            guser.setOwner(owner);
+                        }
+                    } else {
+                        // 비밀번호 틀렸을 때
+                        guser.setId(-1);
+                        return guser;
+                    }
                 } else {
-                    Log.d("res", Integer.toString(res));
-                    return -1;
+                    // 아이디가 없을 때
+                    guser.setId(-2);
+                    return guser;
                 }
             } catch (Exception e) {
                 Log.d("PPJY", e.getLocalizedMessage());
-                return -1;
+                return null;
             } finally {
                 Close(pstm);
                 Close(conn);
             }
+            return guser;
         }
 
         @Override
-        protected void onPostExecute(Integer result) {
+        protected void onPostExecute(GenUser user) {
             Log.d("PPJY", "onPostExecute");
             Context context = getApplicationContext();
             CharSequence text = "";
             int duration = Toast.LENGTH_LONG;
             Toast toast;
-
-            if(email.equals("mashiboa@naver.com")&&password.equals("1111")) {
+            if(user.getId() > 0 && user.getUser() != null){
+                text = "회원 로그인 성공!";
+                Log.d("PPJY", "회원 로그인 성공!");
+                toast = Toast.makeText(context, text, duration);
+                toast.show();
                 Intent intent = new Intent(getApplicationContext(), UserMainActivity.class);
                 startActivity(intent);
                 finish();
-            }
-
-            if(email.equals("jun@naver.com")&&password.equals("2222")) {
-                Intent intent = new Intent(getApplicationContext(), OwnerMainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-
-            if (result > 0) {
-                text = "회원가입 신청이 되었습니다." +
-                        " \n승인을 기다려 주시기 바랍니다.";
-                Log.d("PPJY", "회원가입 신청이 되었습니다. 승인을 기다려 주시기 바랍니다.");
+            } else if(user.getId() > 0 && user.getOwner() != null){
+                if(user.getOwner().getAdmition_status()) {
+                    text = "회원 로그인 성공!";
+                    Log.d("PPJY", "회원 로그인 성공!");
+                    toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                    Intent intent = new Intent(getApplicationContext(), OwnerMainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    text = "가입 승인 대기중입니다.";
+                    Log.d("PPJY", "가입 승인 대기중입니다.");
+                    toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+            } else if(user.getId() == -1){
+                text = "회원가입에 실패 하였습니다.";
+                Log.d("PPJY", "회원가입에 실패 하였습니다.");
                 toast = Toast.makeText(context, text, duration);
                 toast.show();
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-                finish();
-            } else {
+            } else if(user.getId() == -2){
                 text = "회원가입에 실패 하였습니다.";
                 Log.d("PPJY", "회원가입에 실패 하였습니다.");
                 toast = Toast.makeText(context, text, duration);

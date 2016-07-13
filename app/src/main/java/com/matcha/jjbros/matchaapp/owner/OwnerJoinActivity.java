@@ -122,7 +122,7 @@ public class OwnerJoinActivity extends AppCompatActivity {
 
             int res = 0;
             PreparedStatement pstm = null;
-            String sql = "insert into \"OWNER\"(\"ID\", \"EMAIL\", \"PW\", \"SEX\", \"BIRTH\", \"NAME\", \"PHONE\", \"REG_NUM\", \"MENU_CATECORY\", \"ADMITOION_STATUS\") values (DEFAULT,?,?,?,?,?,?,?,?,?)";
+            String sql = "insert into \"OWNER\"(\"ID\", \"EMAIL\", \"PW\", \"SEX\", \"BIRTH\", \"NAME\", \"PHONE\", \"REG_NUM\", \"MENU_CATEGORY\", \"ADMITION_STATUS\") values (DEFAULT,?,?,?,?,?,?,?,?,?)";
             try {
                 pstm = conn.prepareStatement(sql);
                 pstm.setString(1, owners[0].getEmail());

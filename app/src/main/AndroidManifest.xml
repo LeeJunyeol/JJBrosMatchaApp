@@ -52,14 +52,15 @@
             android:label="@string/title_activity_food_truck_map" />
         <activity
             android:name=".owner.OwnerTimeTableActivity"
-            android:label="@string/title_activity_owner_tite_table" />
+            android:label="@string/title_activity_owner_tite_table"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".owner.FestInfoActivity"
             android:label="@string/title_activity_fest_info" />
         <activity
             android:name=".owner.FoodMenuMngActivity"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
