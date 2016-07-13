@@ -61,6 +61,10 @@
             android:name=".owner.FoodMenuMngActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".owner.AddPlanActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
