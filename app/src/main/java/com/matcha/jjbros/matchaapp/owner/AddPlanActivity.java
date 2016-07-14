@@ -14,7 +14,7 @@ public class AddPlanActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_owner_timetable);
+        setContentView(R.layout.activity_owner_add_plan);
 
         Toolbar tb_owner_tmtbl = (Toolbar) findViewById(R.id.tb_owner_tmtbl);
         setSupportActionBar(tb_owner_tmtbl);
