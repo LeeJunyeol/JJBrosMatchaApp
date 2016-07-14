@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="menu_category">
+        <item >카페/음료/디저트</item>
+        <item >세계 음식</item>
+        <item >한식/분식</item>
+        <item >패스트푸드</item>
+        <item >치킨/닭강정</item>
+        <item >옛날 과자</item>
+        <item >기타</item>
+    </string-array>
+</resources>

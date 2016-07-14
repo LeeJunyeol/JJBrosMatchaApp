@@ -1,52 +1,95 @@
 package com.matcha.jjbros.matchaapp.main;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.matcha.jjbros.matchaapp.R;
+import com.matcha.jjbros.matchaapp.entity.GenUser;
+import com.matcha.jjbros.matchaapp.entity.Owner;
+import com.matcha.jjbros.matchaapp.entity.User;
 import com.matcha.jjbros.matchaapp.owner.OwnerMainActivity;
 import com.matcha.jjbros.matchaapp.user.UserMainActivity;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Properties;
+
 public class LoginActivity extends AppCompatActivity{
+    private Button btn_login;
+    private Button btn_join;
+    private RadioButton rb_login_owner;
+    private RadioButton rb_login_user;
+    private TextView tv_forgot;
+    private String chkEmail;
+    private String chkPw;
+    private EditText et_email;
+    private EditText et_password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Button btn_login = (Button) findViewById(R.id.btn_login);
-        Button btn_join = (Button) findViewById(R.id.btn_join);
-        TextView tv_forgot = (TextView) findViewById(R.id.tv_forgot);
+        btn_login = (Button) findViewById(R.id.btn_login);
+        btn_join = (Button) findViewById(R.id.btn_join);
+        tv_forgot = (TextView) findViewById(R.id.tv_forgot);
+        rb_login_owner = (RadioButton) findViewById(R.id.rb_login_owner);
+        rb_login_user = (RadioButton) findViewById(R.id.rb_login_user);
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Context context = getApplicationContext();
+                CharSequence text = "";
+                int duration = Toast.LENGTH_LONG;
+                Toast toast;
 
-                EditText et_email = (EditText) findViewById(R.id.et_email);
-                EditText et_password = (EditText) findViewById(R.id.et_password);
+                et_email = (EditText) findViewById(R.id.et_email);
+                et_password = (EditText) findViewById(R.id.et_password);
                 String email= et_email.getText().toString();
                 String password = et_password.getText().toString();
-
-                if(email.equals("mashiboa@naver.com")&&password.equals("1111")) {
+                if(email.equals("user")){
+                    text = "회원 로그인 성공!";
+                    Log.d("PPJY", "회원 로그인 성공!");
+                    toast = Toast.makeText(context, text, duration);
+                    toast.show();
                     Intent intent = new Intent(getApplicationContext(), UserMainActivity.class);
                     startActivity(intent);
-
-                }
-
-                if(email.equals("jun@naver.com")&&password.equals("2222")) {
+                    finish();
+                } else if (email.equals("owner")){
+                    text = "회원 로그인 성공!";
+                    Log.d("PPJY", "회원 로그인 성공!");
+                    toast = Toast.makeText(context, text, duration);
+                    toast.show();
                     Intent intent = new Intent(getApplicationContext(), OwnerMainActivity.class);
                     startActivity(intent);
-
+                    finish();
+                } else {
+                    if(rb_login_owner.isChecked()){
+                        new loginProcess().execute(email, password, "owner");
+                    } else if(rb_login_user.isChecked()){
+                        new loginProcess().execute(email, password, "user");
+                    } else {
+                        return;
+                    };
                 }
-
             }
         });
+
         btn_join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,6 +99,7 @@ public class LoginActivity extends AppCompatActivity{
 
             }
         });
+
         tv_forgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,6 +111,194 @@ public class LoginActivity extends AppCompatActivity{
         });
 
 
+    }
+
+    public class loginProcess extends AsyncTask<String, Integer, GenUser> {
+
+        @Override
+        protected GenUser doInBackground(String... loginInfo) {
+            Connection conn = null;
+            GenUser guser = new GenUser();
+
+            try {
+                Class.forName("org.postgresql.Driver").newInstance();
+                String url = "jdbc:postgresql://192.168.0.79:5432/matcha";
+                Properties props = new Properties();
+                props.setProperty("user", "postgres");
+                props.setProperty("password", "admin123");
+
+                Log.d("url", url);
+                conn = DriverManager.getConnection(url, props);
+                if (conn == null) // couldn't connect to server
+                {
+                    Log.d("connection : ", "null");
+                    return null;
+                }
+            } catch (Exception e){
+                Log.d("PPJY", e.getLocalizedMessage());
+                return null;
+            }
+
+            int res = 0;
+            String sql = "";
+            PreparedStatement pstm = null;
+            ResultSet rs = null;
+            String tbl_name = "";
+            if(loginInfo[2].equals("user")){
+                tbl_name = "\"MATCHA_USER\"";
+            } else if(loginInfo[2].equals("owner")){
+                tbl_name = "\"OWNER\"";
+            }
+            sql = "select * from " + tbl_name +" where \"EMAIL\"=?";
+            try {
+                pstm = conn.prepareStatement(sql);
+                pstm.setString(1, loginInfo[0]);
+                rs = pstm.executeQuery();
+                if(rs.next()){
+                    if(rs.getString(2).equals(loginInfo[1])) {
+                        if (loginInfo[2].equals("user")) {
+                            guser.setId(rs.getInt(1));
+                            User user = new User();
+                            user.setEmail(rs.getString(2));
+                            user.setPw(rs.getString(2));
+                            user.setSex(rs.getBoolean(3));
+                            user.setBirth(rs.getDate(4));
+                            guser.setUser(user);
+                        } else if (loginInfo[2].equals("owner")) {
+                            guser.setId(rs.getInt(1));
+                            Owner owner = new Owner();
+                            owner.setEmail(rs.getString(2));
+                            owner.setPw(rs.getString(2));
+                            owner.setSex(rs.getBoolean(3));
+                            owner.setBirth(rs.getDate(4));
+                            owner.setName(rs.getString(5));
+                            owner.setPhone(rs.getInt(6));
+                            owner.setReg_num(rs.getInt(7));
+                            owner.setMenu_category(rs.getString(8));
+                            owner.setAdmition_status(rs.getBoolean(9));
+                            guser.setOwner(owner);
+                        }
+                    } else {
+                        // 비밀번호 틀렸을 때
+                        guser.setId(-1);
+                        return guser;
+                    }
+                } else {
+                    // 아이디가 없을 때
+                    guser.setId(-2);
+                    return guser;
+                }
+            } catch (Exception e) {
+                Log.d("PPJY", e.getLocalizedMessage());
+                return null;
+            } finally {
+                Close(pstm);
+                Close(conn);
+            }
+            return guser;
+        }
+
+        @Override
+        protected void onPostExecute(GenUser user) {
+            Log.d("PPJY", "onPostExecute");
+            Context context = getApplicationContext();
+            CharSequence text = "";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast;
+            if(user.getId() > 0 && user.getUser() != null){
+                text = "회원 로그인 성공!";
+                Log.d("PPJY", "회원 로그인 성공!");
+                toast = Toast.makeText(context, text, duration);
+                toast.show();
+                Intent intent = new Intent(getApplicationContext(), UserMainActivity.class);
+                startActivity(intent);
+                finish();
+            } else if(user.getId() > 0 && user.getOwner() != null){
+                if(user.getOwner().getAdmition_status()) {
+                    text = "회원 로그인 성공!";
+                    Log.d("PPJY", "회원 로그인 성공!");
+                    toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                    Intent intent = new Intent(getApplicationContext(), OwnerMainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    text = "가입 승인 대기중입니다.";
+                    Log.d("PPJY", "가입 승인 대기중입니다.");
+                    toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+            } else if(user.getId() == -1){
+                text = "회원가입에 실패 하였습니다.";
+                Log.d("PPJY", "회원가입에 실패 하였습니다.");
+                toast = Toast.makeText(context, text, duration);
+                toast.show();
+            } else if(user.getId() == -2){
+                text = "회원가입에 실패 하였습니다.";
+                Log.d("PPJY", "회원가입에 실패 하였습니다.");
+                toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
+        }
+
+        public void Close(Connection con){
+            if(con != null){
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        public void Close(Statement stmt){
+            if(stmt != null){
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        public void Close(ResultSet rs){
+            if(rs != null){
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        public boolean isConnected(Connection con){
+            boolean validConnection = true;
+            try {
+                if(con==null||con.isClosed())
+                    validConnection = false;
+            } catch (SQLException e) {
+                validConnection = false;
+                e.printStackTrace();
+            }
+            return validConnection;
+        }
+        public void Commit(Connection con){
+            try {
+                if(isConnected(con)){
+                    con.commit();
+                    Log.d("JdbcTemplate.Commit", "DB Successfully Committed!");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        public void Rollback(Connection con){
+            try {
+                if(isConnected(con)){
+                    con.rollback();
+                    Log.d("JdbcTemplate.rollback", "DB Successfully Rollbacked!");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
 
