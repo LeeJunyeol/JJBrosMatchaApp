@@ -20,18 +20,10 @@ public class UserBookmarkTruckItem {
         return category;
     }
 
-    public String getCity() {
-        return city;
-    }
 
-    public String getPhone() {
-        return phone;
-    }
 
-    public UserBookmarkTruckItem(int photo, String phone, String city, String category, String name) {
+    public UserBookmarkTruckItem(int photo, String category, String name) {
         this.photo = photo;
-        this.phone = phone;
-        this.city = city;
         this.category = category;
         this.name = name;
     }

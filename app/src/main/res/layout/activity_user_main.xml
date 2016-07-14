@@ -39,7 +39,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:background="@color/white_gray"
-                    android:layout_margin="15dp"/>
+                    android:layout_margin="15dp"
+                    android:id="@+id/btn_category_drink_dessert"
+                    android:text="카페/음료/디저트"/>
 
                 <Button
                     android:layout_width="match_parent"
