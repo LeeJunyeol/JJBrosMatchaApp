@@ -13,12 +13,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.matcha.jjbros.matchaapp.R;
-import com.matcha.jjbros.matchaapp.db.DBConnection;
-import com.matcha.jjbros.matchaapp.db.OwnerDao;
 import com.matcha.jjbros.matchaapp.entity.Owner;
 import com.matcha.jjbros.matchaapp.entity.User;
 import com.matcha.jjbros.matchaapp.main.LoginActivity;
