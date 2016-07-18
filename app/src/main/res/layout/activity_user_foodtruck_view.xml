@@ -52,7 +52,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:text=""
+                android:text="많은 이용 부탁드릴게요! 후기 많이 남겨주세요!"
                 android:textSize="15sp"
                 android:layout_margin="10dp"
                 />
