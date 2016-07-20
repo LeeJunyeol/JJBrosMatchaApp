@@ -1,13 +1,5 @@
 package com.matcha.jjbros.matchaapp.entity;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import org.postgresql.geometric.PGpoint;
-
-import java.sql.Date;
-import java.sql.Time;
-
 /**
  * Created by hadoop on 16. 7. 20.
  */

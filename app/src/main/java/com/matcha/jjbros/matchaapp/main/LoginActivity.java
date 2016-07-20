@@ -71,11 +71,16 @@ public class LoginActivity extends AppCompatActivity{
                     startActivity(intent);
                     finish();
                 } else if (email.equals("owner")){
+                    Owner owner = new Owner();
+                    GenUser gen_user = new GenUser();
+                    gen_user.setId(1004);
+                    gen_user.setOwner(owner);
                     text = "회원 로그인 성공!";
                     Log.d("PPJY", "회원 로그인 성공!");
                     toast = Toast.makeText(context, text, duration);
                     toast.show();
                     Intent intent = new Intent(getApplicationContext(), OwnerMainActivity.class);
+                    intent.putExtra("gen_user",gen_user);
                     startActivity(intent);
                     finish();
                 } else {
