@@ -16,162 +16,173 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
     </android.support.design.widget.AppBarLayout>
-    <fragment
-        android:id="@+id/plan_map"
-        class="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <FrameLayout
         android:layout_below="@+id/layout_appbar"
-        android:layout_above="@+id/container_input_plan"/>
-    <LinearLayout android:id="@+id/container_input_plan"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="3dp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/border_radius_rectangle">
-        <LinearLayout
+        android:layout_height="match_parent">
+        <fragment
+            android:id="@+id/plan_map"
+            class="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <CheckBox android:id="@+id/cbx_input_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:text="입력 모드"
+            android:layout_marginTop="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_gravity="top|right"/>
+        <LinearLayout android:id="@+id/container_input_plan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="15dp"
+            android:layout_gravity="bottom|center"
+            android:orientation="vertical"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:background="@drawable/border_radius_rectangle">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="15dp"
+                    android:layout_height="36dp"
+                    android:layout_margin="3dp"
+                    android:gravity="center"
+                    android:text="시작일"
+                    android:background="@drawable/border_radius_rectangle"
+                    android:layout_weight="1"/>
+                <EditText android:id="@+id/et_start_date"
+                    android:layout_width="15dp"
+                    android:layout_height="36dp"
+                    android:gravity="center"
+                    android:hint="YYYY-MM-DD"
+                    android:textSize="14sp"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/border_radius_rectangle"
+                    android:layout_weight="2"/>
+                <TextView
+                    android:layout_width="15dp"
+                    android:layout_height="36dp"
+                    android:gravity="center"
+                    android:background="@drawable/border_radius_rectangle"
+                    android:text="종료일"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"/>
+                <EditText android:id="@+id/et_end_date"
+                    android:layout_width="15dp"
+                    android:layout_height="36dp"
+                    android:gravity="center"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/border_radius_rectangle"
+                    android:textSize="14sp"
+                    android:hint="YYYY-MM-DD"
+                    android:layout_weight="2"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="15dp"
+                    android:layout_height="36dp"
+                    android:layout_margin="3dp"
+                    android:gravity="center"
+                    android:text="시작시간"
+                    android:background="@drawable/border_radius_rectangle"
+                    android:layout_weight="1"/>
+                <EditText android:id="@+id/et_start_time"
+                    android:layout_width="15dp"
+                    android:layout_height="36dp"
+                    android:gravity="center"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/border_radius_rectangle"
+                    android:textSize="14sp"
+                    android:hint="MM:DD"
+                    android:layout_weight="2"/>
+                <TextView
+                    android:layout_width="15dp"
+                    android:layout_height="36dp"
+                    android:gravity="center"
+                    android:background="@drawable/border_radius_rectangle"
+                    android:text="종료시간"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"/>
+                <EditText android:id="@+id/et_end_time"
+                    android:layout_width="15dp"
+                    android:layout_height="36dp"
+                    android:gravity="center"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/border_radius_rectangle"
+                    android:textSize="14sp"
+                    android:hint="MM:DD"
+                    android:layout_weight="2"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:background="@drawable/border_radius_rectangle"
+                android:orientation="horizontal">
+                <CheckBox android:id="@+id/cbx_mon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="월"
+                    android:layout_weight="1"/>
+                <CheckBox android:id="@+id/cbx_tue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="화"
+                    android:layout_weight="1"/>
+                <CheckBox android:id="@+id/cbx_wed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="수"
+                    android:layout_weight="1"/>
+                <CheckBox android:id="@+id/cbx_thur"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="목"
+                    android:layout_weight="1"/>
+                <CheckBox android:id="@+id/cbx_fri"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="금"
+                    android:layout_weight="1"/>
+                <CheckBox android:id="@+id/cbx_sat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="토"
+                    android:layout_weight="1"/>
+                <CheckBox android:id="@+id/cbx_sun"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="일"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+            <CheckBox android:id="@+id/cbx_repeat_stat"
+                android:layout_width="match_parent"
                 android:layout_height="36dp"
                 android:layout_margin="3dp"
-                android:gravity="center"
-                android:text="시작일"
                 android:background="@drawable/border_radius_rectangle"
-                android:layout_weight="1"/>
-            <EditText android:id="@+id/et_start_date"
-                android:layout_width="15dp"
-                android:layout_height="36dp"
-                android:gravity="center"
-                android:hint="YYYY-MM-DD"
-                android:textSize="14sp"
-                android:layout_margin="3dp"
-                android:background="@drawable/border_radius_rectangle"
-                android:layout_weight="2"/>
-            <TextView
-                android:layout_width="15dp"
-                android:layout_height="36dp"
-                android:gravity="center"
-                android:background="@drawable/border_radius_rectangle"
-                android:text="종료일"
-                android:layout_margin="3dp"
-                android:layout_weight="1"/>
-            <EditText android:id="@+id/et_end_date"
-                android:layout_width="15dp"
-                android:layout_height="36dp"
-                android:gravity="center"
-                android:layout_margin="3dp"
-                android:background="@drawable/border_radius_rectangle"
-                android:textSize="14sp"
-                android:hint="YYYY-MM-DD"
-                android:layout_weight="2"/>
+                android:text="매주 반복" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button android:id="@+id/btn_reset_plan"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="초기화" />
+                <Button android:id="@+id/btn_add_plan"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="입력" />
+            </LinearLayout>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="15dp"
-                android:layout_height="36dp"
-                android:layout_margin="3dp"
-                android:gravity="center"
-                android:text="시작시간"
-                android:background="@drawable/border_radius_rectangle"
-                android:layout_weight="1"/>
-            <EditText android:id="@+id/et_start_time"
-                android:layout_width="15dp"
-                android:layout_height="36dp"
-                android:gravity="center"
-                android:layout_margin="3dp"
-                android:background="@drawable/border_radius_rectangle"
-                android:textSize="14sp"
-                android:hint="MM:DD"
-                android:layout_weight="2"/>
-            <TextView
-                android:layout_width="15dp"
-                android:layout_height="36dp"
-                android:gravity="center"
-                android:background="@drawable/border_radius_rectangle"
-                android:text="종료시간"
-                android:layout_margin="3dp"
-                android:layout_weight="1"/>
-            <EditText android:id="@+id/et_end_time"
-                android:layout_width="15dp"
-                android:layout_height="36dp"
-                android:gravity="center"
-                android:layout_margin="3dp"
-                android:background="@drawable/border_radius_rectangle"
-                android:textSize="14sp"
-                android:hint="MM:DD"
-                android:layout_weight="2"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="3dp"
-            android:background="@drawable/border_radius_rectangle"
-            android:orientation="horizontal">
-            <CheckBox android:id="@+id/cbx_mon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="월"
-                android:layout_weight="1"/>
-            <CheckBox android:id="@+id/cbx_tue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="화"
-                android:layout_weight="1"/>
-            <CheckBox android:id="@+id/cbx_wed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="수"
-                android:layout_weight="1"/>
-            <CheckBox android:id="@+id/cbx_thur"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="목"
-                android:layout_weight="1"/>
-            <CheckBox android:id="@+id/cbx_fri"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="금"
-                android:layout_weight="1"/>
-            <CheckBox android:id="@+id/cbx_sat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="토"
-                android:layout_weight="1"/>
-            <CheckBox android:id="@+id/cbx_sun"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="일"
-                android:layout_weight="1"/>
-        </LinearLayout>
-        <CheckBox android:id="@+id/cbx_repeat_stat"
-            android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:layout_margin="3dp"
-            android:background="@drawable/border_radius_rectangle"
-            android:text="매주 반복" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <Button android:id="@+id/btn_reset_plan"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="초기화" />
-            <Button android:id="@+id/btn_add_plan"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="입력" />
-        </LinearLayout>
-    </LinearLayout>
+    </FrameLayout>
 
 
 </RelativeLayout>
