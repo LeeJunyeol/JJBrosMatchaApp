@@ -15,14 +15,14 @@ public class OwnerMainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_FOODTRUCKMAP = 1002;
     public static final int REQUEST_CODE_FOODMENUMNG = 1003;
     public static final int REQUEST_CODE_FESTINFO = 1004;
-    private GenUser gen_user;
+    private GenUser owner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owner_main);
 
-        gen_user = (GenUser)getIntent().getParcelableExtra("gen_user");
+        owner = (GenUser)getIntent().getParcelableExtra("owner");
 
         // 시간표 관리 버튼
         Button timeMngBtn = (Button) findViewById(R.id.timeMngButton);
@@ -30,7 +30,7 @@ public class OwnerMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), OwnerTimeTableActivity.class);
-                intent.putExtra("owner", gen_user);
+                intent.putExtra("owner", owner);
                 startActivityForResult(intent, REQUEST_CODE_OWNERINFO);
             }
         });
@@ -41,6 +41,7 @@ public class OwnerMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), FoodMenuMngActivity.class);
+                intent.putExtra("owner", owner);
                 startActivityForResult(intent, REQUEST_CODE_FOODMENUMNG);
             }
         });
@@ -52,6 +53,7 @@ public class OwnerMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), FoodTruckMapActivity.class);
+                intent.putExtra("owner", owner);
                 startActivityForResult(intent, REQUEST_CODE_FOODTRUCKMAP);
             }
         });
@@ -62,6 +64,7 @@ public class OwnerMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), FestInfoActivity.class);
+                intent.putExtra("owner", owner);
                 startActivityForResult(intent, REQUEST_CODE_FESTINFO);
             }
         });

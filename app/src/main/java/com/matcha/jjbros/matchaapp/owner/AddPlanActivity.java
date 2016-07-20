@@ -1,9 +1,11 @@
 package com.matcha.jjbros.matchaapp.owner;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,9 +24,20 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.matcha.jjbros.matchaapp.R;
+import com.matcha.jjbros.matchaapp.entity.GenUser;
 import com.matcha.jjbros.matchaapp.entity.Schedule;
+import com.matcha.jjbros.matchaapp.entity.ScheduleVO;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Created by hadoop on 16. 7. 13.
@@ -36,6 +49,9 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
     private GoogleMap mMap;
     private double lat = 0.0;
     private double lng = 0.0;
+
+    private GenUser owner;
+    private int owner_id = 0;
     // 처음 만들어진 것은 1, 수정된 것은 2, 삭제된 것은 3, 변하지 않은 것은 0
     private int stat = 0;
     private Button btn_add_plan;
@@ -45,10 +61,15 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
     private EditText et_end_time;
     private Schedule[] schedules;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owner_add_plan);
+
+        owner = (GenUser)getIntent().getParcelableExtra("owner");
+        owner_id = owner.getId();
+        new loadSchedules().execute(owner_id);
 
         Toolbar tb_add_plan = (Toolbar) findViewById(R.id.tb_add_plan);
         setSupportActionBar(tb_add_plan);
@@ -66,6 +87,63 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
             }
         });
     }
+
+    public class loadSchedules extends AsyncTask<Integer, Integer, HashMap<Integer, List<Schedule>>>{
+        @Override
+        protected HashMap<Integer, List<Schedule>> doInBackground(Integer... owner_id) {
+            Connection conn = null;
+            try {
+                Class.forName("org.postgresql.Driver").newInstance();
+                String url = "jdbc:postgresql://192.168.0.79:5432/matcha";
+                Properties props = new Properties();
+                props.setProperty("user", "postgres");
+                props.setProperty("password", "admin123");
+
+                Log.d("url", url);
+                conn = DriverManager.getConnection(url, props);
+                if (conn == null) // couldn't connect to server
+                {
+                    Log.d("connection : ", "null");
+                    return null;
+                }
+            } catch (Exception e){
+                Log.d("PPJY", e.getLocalizedMessage());
+                return null;
+            }
+
+            Schedule schedule = null;
+            ScheduleVO scheduleVO = null;
+            List<Schedule> scheduleList = new ArrayList<>();
+            HashMap<Integer, List<Schedule>> listHashMap;
+            PreparedStatement pstm = null;
+            ResultSet rs = null;
+            String sql = "select * from \"SCHEDULE\" where \"OWNER_ID\"=?";
+            try {
+                pstm = conn.prepareStatement(sql);
+                pstm.setInt(1, owner_id[0]);
+                rs = pstm.executeQuery();
+                while(rs.next()){
+                    schedule = new Schedule();
+                }
+
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } finally {
+                Close(rs);
+                Close(stmt);
+                Close(con);
+            }
+            return memlist;
+        }
+
+        @Override
+        protected void onPostExecute(HashMap<Integer, List<Schedule>> integerListHashMap) {
+            super.onPostExecute(integerListHashMap);
+        }
+    }
+
+
 
     @Override
     public void onMapReady(GoogleMap map) {
