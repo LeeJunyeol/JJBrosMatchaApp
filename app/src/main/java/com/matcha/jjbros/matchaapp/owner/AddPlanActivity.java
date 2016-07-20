@@ -6,7 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -19,6 +22,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.matcha.jjbros.matchaapp.R;
+import com.matcha.jjbros.matchaapp.entity.Schedule;
+
+import java.util.HashMap;
 
 /**
  * Created by hadoop on 16. 7. 13.
@@ -30,6 +36,14 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
     private GoogleMap mMap;
     private double lat = 0.0;
     private double lng = 0.0;
+    // 처음 만들어진 것은 1, 수정된 것은 2, 삭제된 것은 3, 변하지 않은 것은 0
+    private int stat = 0;
+    private Button btn_add_plan;
+    private EditText et_start_date;
+    private EditText et_end_date;
+    private EditText et_start_time;
+    private EditText et_end_time;
+    private Schedule[] schedules;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,9 +52,19 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
 
         Toolbar tb_add_plan = (Toolbar) findViewById(R.id.tb_add_plan);
         setSupportActionBar(tb_add_plan);
+        btn_add_plan = (Button) findViewById(R.id.btn_add_plan);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.plan_map);
         mapFragment.getMapAsync(this);
+
+        btn_add_plan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findViewById(R.id.et_start_date);
+                HashMap<String, String> cbx_day = new HashMap<String, String>();
+
+            }
+        });
     }
 
     @Override
@@ -106,5 +130,27 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
                 mMap.clear();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onCheckboxClicked(View view) {
+        // Is the view now checked?
+        boolean checked = ((CheckBox) view).isChecked();
+
+        // Check which checkbox was clicked
+        switch(view.getId()) {
+            case R.id.cbx_mon:
+                if (checked)
+                // Put some meat on the sandwich
+                else
+                // Remove the meat
+                break;
+            case R.id.cbx_tue:
+                if (checked)
+                // Cheese me
+                else
+                // I'm lactose intolerant
+                break;
+            // TODO: Veggie sandwich
+        }
     }
 }
