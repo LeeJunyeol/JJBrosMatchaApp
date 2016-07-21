@@ -28,6 +28,8 @@ import com.matcha.jjbros.matchaapp.entity.GenUser;
 import com.matcha.jjbros.matchaapp.entity.Schedule;
 import com.matcha.jjbros.matchaapp.entity.ScheduleVO;
 
+import org.postgresql.geometric.PGpoint;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -88,9 +90,9 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
         });
     }
 
-    public class loadSchedules extends AsyncTask<Integer, Integer, HashMap<Integer, List<Schedule>>>{
+    public class loadSchedules extends AsyncTask<Integer, Integer, List<Schedule>>{
         @Override
-        protected HashMap<Integer, List<Schedule>> doInBackground(Integer... owner_id) {
+        protected List<Schedule> doInBackground(Integer... owner_id) {
             Connection conn = null;
             try {
                 Class.forName("org.postgresql.Driver").newInstance();
@@ -114,7 +116,6 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
             Schedule schedule = null;
             ScheduleVO scheduleVO = null;
             List<Schedule> scheduleList = new ArrayList<>();
-            HashMap<Integer, List<Schedule>> listHashMap;
             PreparedStatement pstm = null;
             ResultSet rs = null;
             String sql = "select * from \"SCHEDULE\" where \"OWNER_ID\"=?";
@@ -123,7 +124,23 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
                 pstm.setInt(1, owner_id[0]);
                 rs = pstm.executeQuery();
                 while(rs.next()){
+                    scheduleVO = new ScheduleVO();
+                    PGpoint pGpoint = (PGpoint)rs.getObject(2);
+                    scheduleVO.setLat(pGpoint.x);
+                    scheduleVO.setLng(pGpoint.y);
+                    scheduleVO.setStart_date(rs.getDate(3));
+                    scheduleVO.setEnd_date(rs.getDate(4));
+                    scheduleVO.setStart_time(rs.getTime(5));
+                    scheduleVO.setEnd_time(rs.getTime(6));
+                    scheduleVO.setDay(rs.getString(7));
+                    scheduleVO.setRepeat(rs.getBoolean(8));
+                    scheduleVO.setOwner_id(rs.getInt(9));
+
                     schedule = new Schedule();
+                    schedule.setId(rs.getInt(1));
+                    schedule.setStat(0);
+                    schedule.setScheduleVO(scheduleVO);
+                    scheduleList.add(schedule);
                 }
 
             } catch (SQLException e) {
@@ -131,15 +148,21 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
                 e.printStackTrace();
             } finally {
                 Close(rs);
-                Close(stmt);
-                Close(con);
+                Close(pstm);
+                Close(conn);
             }
-            return memlist;
+            return scheduleList;
         }
 
         @Override
-        protected void onPostExecute(HashMap<Integer, List<Schedule>> integerListHashMap) {
-            super.onPostExecute(integerListHashMap);
+        protected void onPostExecute(List<Schedule> schedules) {
+            super.onPostExecute(schedules);
+            for ( int i = 0; i < schedules.size(); i++ ){
+                mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(0, 0))
+                        .title("Marker"))
+                        .setDraggable(true);
+            }
         }
     }
 
