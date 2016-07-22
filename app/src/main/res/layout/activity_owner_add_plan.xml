@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".owner.AddPlanActivity3">
+    tools:context=".owner.AddPlanActivity">
     <android.support.design.widget.AppBarLayout android:id="@+id/layout_appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -170,16 +170,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <Button android:id="@+id/btn_reset_plan"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="초기화" />
                 <Button android:id="@+id/btn_add_plan"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0.5"
                     android:layout_height="wrap_content"
                     android:text="입력" />
+                <Button android:id="@+id/btn_delete_plan"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content"
+                    android:text="삭제" />
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>

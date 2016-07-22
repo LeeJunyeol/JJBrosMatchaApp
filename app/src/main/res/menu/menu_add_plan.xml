@@ -7,4 +7,10 @@
         app:showAsAction="ifRoom|withText"
         android:title="ResetMap">
     </item>
+    <item
+        android:id="@+id/mi_save_plan_map"
+        android:icon="@drawable/ic_save_plan_map"
+        app:showAsAction="ifRoom|withText"
+        android:title="SaveSchedule">
+    </item>
 </menu>
