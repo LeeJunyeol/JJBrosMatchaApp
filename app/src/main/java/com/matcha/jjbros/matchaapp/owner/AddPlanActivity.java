@@ -57,7 +57,6 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
     private int owner_id = 0;
     // 처음 만들어진 것은 1, 수정된 것은 2, 삭제된 것은 3, 변하지 않은 것은 0
     private int stat = 0;
-    private Button btn_add_plan;
     private EditText et_start_date;
     private EditText et_end_date;
     private EditText et_start_time;
@@ -70,8 +69,12 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
     private CheckBox cbx_fri;
     private CheckBox cbx_sat;
     private CheckBox cbx_sun;
+    private CheckBox cbx_repeat_stat;
+    private Button btn_add_plan;
+    private Button btn_delete_plan;
     private Schedule[] schedules;
     private LatLng clicked_latlng;
+    private int clicked_markerno;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,10 +107,28 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
                     str_day.concat("월,");
                 } else if(cbx_tue.isChecked()){
                     str_day.concat("화,");
+                } else if(cbx_wed.isChecked()){
+                    str_day.concat("수,");
+                } else if(cbx_tue.isChecked()){
+                    str_day.concat("목,");
+                } else if(cbx_tue.isChecked()){
+                    str_day.concat("금,");
+                } else if(cbx_tue.isChecked()){
+                    str_day.concat("토,");
+                } else if(cbx_tue.isChecked()){
+                    str_day.concat("일,");
                 }
+                Log.d("str_day : ", str_day);
+                if(str_day.endsWith(",")){
+                    StringBuffer sb = new StringBuffer(str_day);
+                    sb.delete(sb.lastIndexOf(",")-1, sb.lastIndexOf(","));
+                    str_day = sb.toString();
+                }
+                Log.d("After str_day : ", str_day);
 
-                str_day.trim();
-                HashMap<String, String> cbx_day = new HashMap<String, String>();
+                cbx_repeat_stat.isChecked();
+
+
 
 
                 addMarkersToMap(clicked_latlng);
@@ -186,10 +207,10 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
             super.onPostExecute(schedules);
             for ( int i = 0; i < schedules.size(); i++ ){
                 ScheduleVO tmpScheduleVO = schedules.get(i).getScheduleVO();
+                int markerNo = i + 1;
                 mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(tmpScheduleVO.getLat(), tmpScheduleVO.getLng()))
-                        .title("일정")
-                        .snippet("내용"));
+                        .title(String.valueOf(markerNo)));
             }
         }
     }
@@ -325,7 +346,7 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-
+        clicked_markerno = Integer.parseInt(this.getTitle().toString());
 
         return false;
     }
