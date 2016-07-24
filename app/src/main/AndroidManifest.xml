@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".user.UserMainActivity">
+        <activity android:name=".main.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -26,6 +26,7 @@
         </activity>
 
         <activity android:name=".main.JoinActivity"/>
+        <activity android:name=".user.UserMainActivity"/>
         <activity android:name=".main.ForgotActivity"/>
         <activity android:name=".owner.OwnerJoinActivity"/>
         <activity android:name=".owner.OwnerMainActivity"/>

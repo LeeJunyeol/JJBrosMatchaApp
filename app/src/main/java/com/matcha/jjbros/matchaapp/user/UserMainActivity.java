@@ -98,8 +98,10 @@ public class UserMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+/*
                 Intent intent = new Intent(getApplicationContext(), UserCategoryDrinkDessertActivity.class);
                 startActivity(intent);
+*/
 
 
             }

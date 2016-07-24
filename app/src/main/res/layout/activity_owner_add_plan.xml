@@ -65,6 +65,7 @@
                     android:layout_height="36dp"
                     android:gravity="center"
                     android:hint="YYYY-MM-DD"
+                    android:inputType="date"
                     android:textSize="14sp"
                     android:layout_margin="3dp"
                     android:background="@drawable/border_radius_rectangle"
@@ -84,6 +85,7 @@
                     android:layout_margin="3dp"
                     android:background="@drawable/border_radius_rectangle"
                     android:textSize="14sp"
+                    android:inputType="date"
                     android:hint="YYYY-MM-DD"
                     android:layout_weight="2"/>
             </LinearLayout>
@@ -106,7 +108,8 @@
                     android:layout_margin="3dp"
                     android:background="@drawable/border_radius_rectangle"
                     android:textSize="14sp"
-                    android:hint="MM:DD"
+                    android:hint="hh:mm"
+                    android:inputType="time"
                     android:layout_weight="2"/>
                 <TextView
                     android:layout_width="15dp"
@@ -122,8 +125,9 @@
                     android:gravity="center"
                     android:layout_margin="3dp"
                     android:background="@drawable/border_radius_rectangle"
+                    android:inputType="time"
                     android:textSize="14sp"
-                    android:hint="MM:DD"
+                    android:hint="hh:mm"
                     android:layout_weight="2"/>
             </LinearLayout>
             <LinearLayout
