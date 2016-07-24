@@ -40,6 +40,14 @@
             android:layout_marginLeft="3dp"
             android:layout_marginRight="3dp"
             android:background="@drawable/border_radius_rectangle">
+            <TextView android:id="@+id/tv_lat_plan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
+            <TextView android:id="@+id/tv_lng_plan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -172,12 +180,20 @@
                 android:orientation="horizontal">
                 <Button android:id="@+id/btn_add_plan"
                     android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    android:text="입력" />
+                <Button android:id="@+id/btn_update_plan"
+                    android:layout_width="0dp"
                     android:layout_weight="0.5"
                     android:layout_height="wrap_content"
-                    android:text="입력" />
+                    android:visibility="gone"
+                    android:text="수정" />
                 <Button android:id="@+id/btn_delete_plan"
                     android:layout_width="0dp"
                     android:layout_weight="0.5"
+                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:text="삭제" />
             </LinearLayout>
