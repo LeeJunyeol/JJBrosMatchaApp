@@ -71,11 +71,16 @@ public class LoginActivity extends AppCompatActivity{
                     startActivity(intent);
                     finish();
                 } else if (email.equals("owner")){
+                    Owner owner = new Owner();
+                    GenUser gen_user = new GenUser();
+                    gen_user.setId(1004);
+                    gen_user.setOwner(owner);
                     text = "회원 로그인 성공!";
                     Log.d("PPJY", "회원 로그인 성공!");
                     toast = Toast.makeText(context, text, duration);
                     toast.show();
                     Intent intent = new Intent(getApplicationContext(), OwnerMainActivity.class);
+                    intent.putExtra("owner",gen_user);
                     startActivity(intent);
                     finish();
                 } else {
@@ -205,21 +210,23 @@ public class LoginActivity extends AppCompatActivity{
             CharSequence text = "";
             int duration = Toast.LENGTH_LONG;
             Toast toast;
-            if(user.getId() > 0 && user.getUser() != null){
+            if(user.getId() > 0 && user.getUser() != null){ // genUser가 UserClass 갖고 있을 경우
                 text = "회원 로그인 성공!";
                 Log.d("PPJY", "회원 로그인 성공!");
                 toast = Toast.makeText(context, text, duration);
                 toast.show();
                 Intent intent = new Intent(getApplicationContext(), UserMainActivity.class);
+                intent.putExtra("user", user);
                 startActivity(intent);
                 finish();
-            } else if(user.getId() > 0 && user.getOwner() != null){
+            } else if(user.getId() > 0 && user.getOwner() != null){ // genUser가 OwnerClass 갖고 있을 경우
                 if(user.getOwner().getAdmition_status()) {
                     text = "회원 로그인 성공!";
                     Log.d("PPJY", "회원 로그인 성공!");
                     toast = Toast.makeText(context, text, duration);
                     toast.show();
                     Intent intent = new Intent(getApplicationContext(), OwnerMainActivity.class);
+                    intent.putExtra("owner", user);
                     startActivity(intent);
                     finish();
                 } else {

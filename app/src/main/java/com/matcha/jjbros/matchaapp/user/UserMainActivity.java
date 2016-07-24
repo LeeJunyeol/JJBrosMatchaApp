@@ -26,7 +26,7 @@ public class UserMainActivity extends AppCompatActivity {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(UserMainActivity.this);
 
         alertDialog.setTitle("알림");
-        alertDialog.setMessage("찜한 푸드트럭이 5km이내에 접근하였습니다.\n 해당 푸드트럭 페이지로 이동하시겠습니까?");
+        alertDialog.setMessage("GPS 셋팅이 필요합니다.\n 설정창으로 가시겠습니까?");
         // OK 를 누르게 되면 설정창으로 이동합니다.
         alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
@@ -98,7 +98,8 @@ public class UserMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
+                Intent intent = new Intent(getApplicationContext(), UserCategoryDrinkDessertActivity.class);
+                startActivity(intent);
 
 
             }
