@@ -7,6 +7,7 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality. 
     -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -18,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".user.UserMainActivity">
+        <activity android:name=".main.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -29,7 +30,7 @@
         <activity android:name=".main.ForgotActivity"/>
         <activity android:name=".owner.OwnerJoinActivity"/>
         <activity android:name=".owner.OwnerMainActivity"/>
-        <!--<activity android:name=".user.UserMainActivity"/>-->
+        <activity android:name=".user.UserMainActivity"/>
         <activity android:name=".user.UserNearFoodtruckActivity"/>
         <activity android:name=".user.UserBestFoodtruckListActivity"/>
 

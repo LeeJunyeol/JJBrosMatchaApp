@@ -392,14 +392,16 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
         // Check which checkbox was clicked
         switch(view.getId()) {
             case R.id.cbx_mon:
-                if (checked)
-                // Put some meat on the sandwich
+                if (checked) {
+                    // Put some meat on the sandwich
+                }
                 else
                 // Remove the meat
                 break;
             case R.id.cbx_tue:
-                if (checked)
-                // Cheese me
+                if (checked) {
+                    // Cheese me
+                }
                 else
                 // I'm lactose intolerant
                 break;
