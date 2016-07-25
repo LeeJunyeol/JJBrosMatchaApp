@@ -14,6 +14,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.matcha.jjbros.matchaapp.R;
+import com.matcha.jjbros.matchaapp.common.DBControl;
 import com.matcha.jjbros.matchaapp.entity.User;
 import com.matcha.jjbros.matchaapp.owner.OwnerJoinActivity;
 
@@ -148,7 +149,7 @@ public class JoinActivity extends AppCompatActivity {
             Connection conn = null;
             try {
                 Class.forName("org.postgresql.Driver").newInstance();
-                String url = "jdbc:postgresql://192.168.0.79:5432/matcha";
+                String url = new DBControl().url;
                 Properties props = new Properties();
                 props.setProperty("user", "postgres");
                 props.setProperty("password", "admin123");

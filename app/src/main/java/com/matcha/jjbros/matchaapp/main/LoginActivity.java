@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.matcha.jjbros.matchaapp.R;
+import com.matcha.jjbros.matchaapp.common.DBControl;
 import com.matcha.jjbros.matchaapp.entity.GenUser;
 import com.matcha.jjbros.matchaapp.entity.Owner;
 import com.matcha.jjbros.matchaapp.entity.User;
@@ -21,6 +22,7 @@ import com.matcha.jjbros.matchaapp.owner.OwnerMainActivity;
 import com.matcha.jjbros.matchaapp.user.UserMainActivity;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -72,6 +74,15 @@ public class LoginActivity extends AppCompatActivity{
                     finish();
                 } else if (email.equals("owner")){
                     Owner owner = new Owner();
+                    owner.setEmail("email@email.com");
+                    owner.setPw("111");
+                    owner.setAdmition_status(true);
+                    owner.setBirth(Date.valueOf("1989-12-11"));
+                    owner.setMenu_category("짬뽕");
+                    owner.setName("준열");
+                    owner.setPhone(01065744);
+                    owner.setReg_num(123456);
+                    owner.setSex(true);
                     GenUser gen_user = new GenUser();
                     gen_user.setId(1004);
                     gen_user.setOwner(owner);
@@ -127,7 +138,7 @@ public class LoginActivity extends AppCompatActivity{
 
             try {
                 Class.forName("org.postgresql.Driver").newInstance();
-                String url = "jdbc:postgresql://192.168.0.79:5432/matcha";
+                String url = new DBControl().url;
                 Properties props = new Properties();
                 props.setProperty("user", "postgres");
                 props.setProperty("password", "admin123");

@@ -27,11 +27,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/et_email"
+    android:inputType="text"
     android:hint="e-mail"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/et_password"
+        android:inputType="textPassword"
         android:hint="password"/>
     <Button
         android:layout_width="wrap_content"
