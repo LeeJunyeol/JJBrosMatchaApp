@@ -161,18 +161,20 @@ public class LoginActivity extends AppCompatActivity{
             ResultSet rs = null;
             String tbl_name = "";
             if(loginInfo[2].equals("user")){
-                tbl_name = "\"MATCHA_USER\"";
+                sql = "select * from \"MATCHA_USER\" where \"EMAIL\"=?";
             } else if(loginInfo[2].equals("owner")){
-                tbl_name = "\"OWNER\"";
+                sql = "select * from \"OWNER\" where \"EMAIL\"=?";
             }
-            sql = "select * from " + tbl_name +" where \"EMAIL\"=?";
+            Log.d("SQL", sql);
             try {
                 pstm = conn.prepareStatement(sql);
-                pstm.setString(1, loginInfo[0]);
+                pstm.setString(1, loginInfo[0].toString());
+                Log.d("logininfo", loginInfo[0]);
                 rs = pstm.executeQuery();
                 if(rs.next()){
                     if(rs.getString(2).equals(loginInfo[1])) {
                         if (loginInfo[2].equals("user")) {
+                            Log.d("login process", "in user");
                             guser.setId(rs.getInt(1));
                             User user = new User();
                             user.setEmail(rs.getString(2));
@@ -181,17 +183,18 @@ public class LoginActivity extends AppCompatActivity{
                             user.setBirth(rs.getDate(4));
                             guser.setUser(user);
                         } else if (loginInfo[2].equals("owner")) {
+                            Log.d("login process", "in owner");
                             guser.setId(rs.getInt(1));
                             Owner owner = new Owner();
                             owner.setEmail(rs.getString(2));
-                            owner.setPw(rs.getString(2));
-                            owner.setSex(rs.getBoolean(3));
-                            owner.setBirth(rs.getDate(4));
-                            owner.setName(rs.getString(5));
-                            owner.setPhone(rs.getInt(6));
-                            owner.setReg_num(rs.getInt(7));
-                            owner.setMenu_category(rs.getString(8));
-                            owner.setAdmition_status(rs.getBoolean(9));
+                            owner.setPw(rs.getString(3));
+                            owner.setSex(rs.getBoolean(4));
+                            owner.setBirth(rs.getDate(5));
+                            owner.setName(rs.getString(6));
+                            owner.setPhone(rs.getInt(7));
+                            owner.setReg_num(rs.getInt(8));
+                            owner.setMenu_category(rs.getString(9));
+                            owner.setAdmition_status(rs.getBoolean(10));
                             guser.setOwner(owner);
                         }
                     } else {
@@ -216,7 +219,7 @@ public class LoginActivity extends AppCompatActivity{
 
         @Override
         protected void onPostExecute(GenUser user) {
-            Log.d("PPJY", "onPostExecute");
+            Log.d("PPJY", "" + user.getId() + "");
             Context context = getApplicationContext();
             CharSequence text = "";
             int duration = Toast.LENGTH_LONG;
