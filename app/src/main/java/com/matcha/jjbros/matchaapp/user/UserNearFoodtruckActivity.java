@@ -106,7 +106,6 @@ public class UserNearFoodtruckActivity extends AppCompatActivity implements OnMa
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 18));
         marker = googleMap.addMarker(new MarkerOptions().position(currentPosition));
 
-
     }
 
 

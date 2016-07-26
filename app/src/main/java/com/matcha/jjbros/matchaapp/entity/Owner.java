@@ -10,8 +10,8 @@ import java.sql.Date;
  */
 public class Owner extends User implements Parcelable {
     private String name;
-    private int phone;
-    private int reg_num;
+    private String phone;
+    private String reg_num;
     private String menu_category;
     private Boolean admition_status = false;
 
@@ -19,7 +19,7 @@ public class Owner extends User implements Parcelable {
         super();
     }
 
-    public Owner(String email, String pw, Boolean sex, Date birth, String name, int phone, int reg_num, String menu_category, Boolean admition_status) {
+    public Owner(String email, String pw, Boolean sex, Date birth, String name, String phone, String reg_num, String menu_category, Boolean admition_status) {
         super(email, pw, sex, birth);
         this.name = name;
         this.phone = phone;
@@ -37,8 +37,8 @@ public class Owner extends User implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeString(this.name);
-        dest.writeInt(this.phone);
-        dest.writeInt(this.reg_num);
+        dest.writeString(this.phone);
+        dest.writeString(this.reg_num);
         dest.writeString(this.menu_category);
         dest.writeValue(this.admition_status);
     }
@@ -49,8 +49,8 @@ public class Owner extends User implements Parcelable {
         super.setSex(Boolean.class.cast(in.readValue(Boolean.class.getClassLoader())));
         super.setBirth(Date.class.cast(in.readValue(Date.class.getClassLoader())));
         this.name = in.readString();
-        this.phone = in.readInt();
-        this.reg_num = in.readInt();
+        this.phone = in.readString();
+        this.reg_num = in.readString();
         this.menu_category = in.readString();
         this.admition_status = Boolean.class.cast(in.readValue(Boolean.class.getClassLoader()));
     }
@@ -112,19 +112,19 @@ public class Owner extends User implements Parcelable {
         this.name = name;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public int getReg_num() {
+    public String getReg_num() {
         return reg_num;
     }
 
-    public void setReg_num(int reg_num) {
+    public void setReg_num(String reg_num) {
         this.reg_num = reg_num;
     }
 

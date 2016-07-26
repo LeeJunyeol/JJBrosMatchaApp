@@ -334,7 +334,7 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     // 일정에 등록된 정보를 불러온다.
-    public class loadSchedules extends AsyncTask<Integer, Integer, HashMap<String, Schedule>>{
+    private class loadSchedules extends AsyncTask<Integer, Integer, HashMap<String, Schedule>>{
         @Override
         protected HashMap<String, Schedule> doInBackground(Integer... owner_id) {
             Connection conn = null;

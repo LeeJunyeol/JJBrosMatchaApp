@@ -66,8 +66,8 @@ public class OwnerJoinActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String name = et_foodtruck_name.getText().toString();
-                int phone = Integer.parseInt(et_foodtruck_phone.getText().toString());
-                int reg_num = Integer.parseInt(et_foodtruck_reg_num.getText().toString());
+                String phone = et_foodtruck_phone.getText().toString();
+                String reg_num = et_foodtruck_reg_num.getText().toString();
 
                 Context context = getApplicationContext();
                 CharSequence text = "";
@@ -128,8 +128,8 @@ public class OwnerJoinActivity extends AppCompatActivity {
                 pstm.setBoolean(3, owners[0].isSex());
                 pstm.setDate(4, owners[0].getBirth());
                 pstm.setString(5, owners[0].getName());
-                pstm.setInt(6, owners[0].getPhone());
-                pstm.setInt(7, owners[0].getReg_num());
+                pstm.setString(6, owners[0].getPhone());
+                pstm.setString(7, owners[0].getReg_num());
                 pstm.setString(8, owners[0].getMenu_category());
                 pstm.setBoolean(9, owners[0].getAdmition_status());
 

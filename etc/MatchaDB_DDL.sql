@@ -1,606 +1,609 @@
--- °³º°ÇªµåÆ®·°°øÁö
+-- ï¿½ï¿½ï¿½ï¿½Çªï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "PRIVATE_NOTICE"
-	DROP CONSTRAINT IF EXISTS "FK_OWNER_TO_PRIVATE_NOTICE"; -- ¾÷ÁÖ -> °³º°ÇªµåÆ®·°°øÁö
+	DROP CONSTRAINT IF EXISTS "FK_OWNER_TO_PRIVATE_NOTICE"; -- ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½Çªï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
--- ÀÏÁ¤
+-- ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "SCHEDULE"
-	DROP CONSTRAINT IF EXISTS "FK_OWNER_TO_SCHEDULE"; -- ¾÷ÁÖ -> ÀÏÁ¤
+	DROP CONSTRAINT IF EXISTS "FK_OWNER_TO_SCHEDULE"; -- ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½
 
--- ÆòÁ¡¸®ºä
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "STAR_REVIEW"
-	DROP CONSTRAINT IF EXISTS "FK_OWNER_TO_STAR_REVIEW"; -- ¾÷ÁÖ -> ÆòÁ¡¸®ºä
+	DROP CONSTRAINT IF EXISTS "FK_OWNER_TO_STAR_REVIEW"; -- ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
--- ³»ÄíÆù
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "MYCOUPON"
-	DROP CONSTRAINT IF EXISTS "FK_COUPON_TO_MYCOUPON"; -- ÄíÆù -> ³»ÄíÆù
+	DROP CONSTRAINT IF EXISTS "FK_COUPON_TO_MYCOUPON"; -- ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
--- ³»ÄíÆù
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "MYCOUPON"
-	DROP CONSTRAINT IF EXISTS "FK_MATCHA_USER_TO_MYCOUPON"; -- À¯Àú -> ³»ÄíÆù
+	DROP CONSTRAINT IF EXISTS "FK_MATCHA_USER_TO_MYCOUPON"; -- ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
--- ½Ç½Ã°£À§Ä¡
+-- ï¿½Ç½Ã°ï¿½ï¿½ï¿½Ä¡
 ALTER TABLE "REALTIME_LOCATION"
-	DROP CONSTRAINT IF EXISTS "FK_OWNER_TO_REALTIME_LOCATION"; -- ¾÷ÁÖ -> ½Ç½Ã°£À§Ä¡
+	DROP CONSTRAINT IF EXISTS "FK_OWNER_TO_REALTIME_LOCATION"; -- ï¿½ï¿½ï¿½ï¿½ -> ï¿½Ç½Ã°ï¿½ï¿½ï¿½Ä¡
 
--- ´ñ±Û
+-- ï¿½ï¿½ï¿½
 ALTER TABLE "COMMENT"
-	DROP CONSTRAINT IF EXISTS "FK_STAR_REVIEW_TO_COMMENT"; -- ÆòÁ¡¸®ºä -> ´ñ±Û
+	DROP CONSTRAINT IF EXISTS "FK_STAR_REVIEW_TO_COMMENT"; -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½
 
--- ÄíÆù
+-- ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "COUPON"
-	DROP CONSTRAINT IF EXISTS "FK_OWNER_TO_COUPON"; -- ¾÷ÁÖ -> ÄíÆù
+	DROP CONSTRAINT IF EXISTS "FK_OWNER_TO_COUPON"; -- ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½
 
--- ¸Þ´º
+-- ï¿½Þ´ï¿½
 ALTER TABLE "MENU"
-	DROP CONSTRAINT IF EXISTS "FK_OWNER_TO_MENU"; -- ¾÷ÁÖ -> ¸Þ´º
+	DROP CONSTRAINT IF EXISTS "FK_OWNER_TO_MENU"; -- ï¿½ï¿½ï¿½ï¿½ -> ï¿½Þ´ï¿½
 
--- Áñ°ÜÃ£´Â ÇªµåÆ®·°
+-- ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ Çªï¿½ï¿½Æ®ï¿½ï¿½
 ALTER TABLE "BOOKMARK_TRUCK"
-	DROP CONSTRAINT IF EXISTS "FK_MATCHA_USER_TO_BOOKMARK_TRUCK"; -- À¯Àú -> Áñ°ÜÃ£´Â ÇªµåÆ®·°
+	DROP CONSTRAINT IF EXISTS "FK_MATCHA_USER_TO_BOOKMARK_TRUCK"; -- ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ Çªï¿½ï¿½Æ®ï¿½ï¿½
 
--- Áñ°ÜÃ£´Â ÇªµåÆ®·°
+-- ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ Çªï¿½ï¿½Æ®ï¿½ï¿½
 ALTER TABLE "BOOKMARK_TRUCK"
-	DROP CONSTRAINT IF EXISTS "FK_OWNER_TO_BOOKMARK_TRUCK"; -- ¾÷ÁÖ -> Áñ°ÜÃ£´Â ÇªµåÆ®·°
+	DROP CONSTRAINT IF EXISTS "FK_OWNER_TO_BOOKMARK_TRUCK"; -- ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ Çªï¿½ï¿½Æ®ï¿½ï¿½
 
--- ¾÷ÁÖ
+-- ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "OWNER"
-	DROP CONSTRAINT IF EXISTS "PK_OWNER"; -- ¾÷ÁÖ ±âº»Å°
+	DROP CONSTRAINT IF EXISTS "PK_OWNER"; -- ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 
--- °³º°ÇªµåÆ®·°°øÁö
+-- ï¿½ï¿½ï¿½ï¿½Çªï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "PRIVATE_NOTICE"
-	DROP CONSTRAINT IF EXISTS "PK_PRIVATE_NOTICE"; -- °³º°ÇªµåÆ®·°°øÁö ±âº»Å°
+	DROP CONSTRAINT IF EXISTS "PK_PRIVATE_NOTICE"; -- ï¿½ï¿½ï¿½ï¿½Çªï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 
--- ÀÏÁ¤
+-- ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "SCHEDULE"
-	DROP CONSTRAINT IF EXISTS "PK_SCHEDULE"; -- ÀÏÁ¤ ±âº»Å°
+	DROP CONSTRAINT IF EXISTS "PK_SCHEDULE"; -- ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 
--- ÆòÁ¡¸®ºä
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "STAR_REVIEW"
-	DROP CONSTRAINT IF EXISTS "PK_STAR_REVIEW"; -- ÆòÁ¡¸®ºä ±âº»Å°
+	DROP CONSTRAINT IF EXISTS "PK_STAR_REVIEW"; -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 
--- ³»ÄíÆù
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "MYCOUPON"
-	DROP CONSTRAINT IF EXISTS "PK_MYCOUPON"; -- ³»ÄíÆù ±âº»Å°
+	DROP CONSTRAINT IF EXISTS "PK_MYCOUPON"; -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 
--- ÀÌº¥Æ® °øÁö»çÇ×
+-- ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "EVENT_NOTICE"
-	DROP CONSTRAINT IF EXISTS "PK_EVENT_NOTICE"; -- ÀÌº¥Æ® °øÁö»çÇ× ±âº»Å°
+	DROP CONSTRAINT IF EXISTS "PK_EVENT_NOTICE"; -- ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 
--- Çà»çÁ¤º¸
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "FESTIVAL_INFO"
-	DROP CONSTRAINT IF EXISTS "PK_FESTIVAL_INFO"; -- Çà»çÁ¤º¸ ±âº»Å°
+	DROP CONSTRAINT IF EXISTS "PK_FESTIVAL_INFO"; -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 
--- ´ñ±Û
+-- ï¿½ï¿½ï¿½
 ALTER TABLE "COMMENT"
-	DROP CONSTRAINT IF EXISTS "PK_COMMENT"; -- ´ñ±Û ±âº»Å°
+	DROP CONSTRAINT IF EXISTS "PK_COMMENT"; -- ï¿½ï¿½ï¿½ ï¿½âº»Å°
 
--- À¯Àú
+-- ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "MATCHA_USER"
-	DROP CONSTRAINT IF EXISTS "PK_MATCHA_USER"; -- À¯Àú ±âº»Å°
+	DROP CONSTRAINT IF EXISTS "PK_MATCHA_USER"; -- ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 
--- ÄíÆù
+-- ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "COUPON"
-	DROP CONSTRAINT IF EXISTS "PK_COUPON"; -- ÄíÆù ±âº»Å°
+	DROP CONSTRAINT IF EXISTS "PK_COUPON"; -- ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 
--- ¸Þ´º
+-- ï¿½Þ´ï¿½
 ALTER TABLE "MENU"
-	DROP CONSTRAINT IF EXISTS "PK_MENU"; -- ¸Þ´º ±âº»Å°
+	DROP CONSTRAINT IF EXISTS "PK_MENU"; -- ï¿½Þ´ï¿½ ï¿½âº»Å°
 
--- ¾÷ÁÖ
+-- ï¿½ï¿½ï¿½ï¿½
 DROP TABLE IF EXISTS "OWNER";
 
--- °³º°ÇªµåÆ®·°°øÁö
+-- ï¿½ï¿½ï¿½ï¿½Çªï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 DROP TABLE IF EXISTS "PRIVATE_NOTICE";
 
--- ÀÏÁ¤
+-- ï¿½ï¿½ï¿½ï¿½
 DROP TABLE IF EXISTS "SCHEDULE";
 
--- ÆòÁ¡¸®ºä
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 DROP TABLE IF EXISTS "STAR_REVIEW";
 
--- ³»ÄíÆù
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 DROP TABLE IF EXISTS "MYCOUPON";
 
--- ÀÌº¥Æ® °øÁö»çÇ×
+-- ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 DROP TABLE IF EXISTS "EVENT_NOTICE";
 
--- Çà»çÁ¤º¸
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 DROP TABLE IF EXISTS "FESTIVAL_INFO";
 
--- ½Ç½Ã°£À§Ä¡
+-- ï¿½Ç½Ã°ï¿½ï¿½ï¿½Ä¡
 DROP TABLE IF EXISTS "REALTIME_LOCATION";
 
--- ´ñ±Û
+-- ï¿½ï¿½ï¿½
 DROP TABLE IF EXISTS "COMMENT";
 
--- À¯Àú
+-- ï¿½ï¿½ï¿½ï¿½
 DROP TABLE IF EXISTS "MATCHA_USER";
 
--- ÄíÆù
+-- ï¿½ï¿½ï¿½ï¿½
 DROP TABLE IF EXISTS "COUPON";
 
--- ¸Þ´º
+-- ï¿½Þ´ï¿½
 DROP TABLE IF EXISTS "MENU";
 
--- Áñ°ÜÃ£´Â ÇªµåÆ®·°
+-- ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ Çªï¿½ï¿½Æ®ï¿½ï¿½
 DROP TABLE IF EXISTS "BOOKMARK_TRUCK";
 
--- ³» ½ºÅ°¸¶
+-- ï¿½ï¿½ ï¿½ï¿½Å°ï¿½ï¿½
 DROP SCHEMA IF EXISTS "MY_SCHEMA" RESTRICT;
 
--- ¾÷ÁÖ
+-- ï¿½ï¿½ï¿½ï¿½
 CREATE TABLE "OWNER"
 (
-	"ID"              serial  NOT NULL, -- ¾÷ÁÖID
-	"EMAIL"           varchar NULL,     -- ÀÌ¸ÞÀÏ
-	"PW"              varchar NULL,     -- ºñ¹Ð¹øÈ£
-	"SEX"             boolean NULL,     -- ¼ºº°
-	"BIRTH"           date    NULL,     -- »ý³â¿ùÀÏ
-	"NAME"            varchar NULL,     -- ÀÌ¸§
-	"PHONE"           int     NULL,     -- ÈÞ´ëÆù¹øÈ£
-	"REG_NUM"         varchar NULL,     -- µî·Ï¹øÈ£
-	"MENU_CATEGORY"   varchar NULL,     -- ÆÇ¸ÅÀ½½ÄÁ¾·ù
-	"ADMITION_STATUS" boolean NULL      -- ½ÂÀÎ¿©ºÎ
+	"ID"              serial  NOT NULL, -- ï¿½ï¿½ï¿½ï¿½ID
+	"EMAIL"           varchar NULL,     -- ï¿½Ì¸ï¿½ï¿½ï¿½
+	"PW"              varchar NULL,     -- ï¿½ï¿½Ð¹ï¿½È£
+	"SEX"             boolean NULL,     -- ï¿½ï¿½ï¿½ï¿½
+	"BIRTH"           date    NULL,     -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	"NAME"            varchar NULL,     -- ï¿½Ì¸ï¿½
+	"PHONE"           int     NULL,     -- ï¿½Þ´ï¿½ï¿½ï¿½ï¿½ï¿½È£
+	"REG_NUM"         varchar NULL,     -- ï¿½ï¿½Ï¹ï¿½È£
+	"MENU_CATEGORY"   varchar NULL,     -- ï¿½Ç¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	"ADMITION_STATUS" boolean NULL      -- ï¿½ï¿½ï¿½Î¿ï¿½ï¿½ï¿½
 )
 WITH (
 OIDS=false
 );
 
--- ¾÷ÁÖ ±âº»Å°
+-- ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 CREATE UNIQUE INDEX "PK_OWNER"
 	ON "OWNER"
-	( -- ¾÷ÁÖ
-		"ID" ASC -- ¾÷ÁÖID
+	( -- ï¿½ï¿½ï¿½ï¿½
+		"ID" ASC -- ï¿½ï¿½ï¿½ï¿½ID
 	)
 ;
--- ¾÷ÁÖ
+-- ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "OWNER"
 	ADD CONSTRAINT "PK_OWNER"
-		 -- ¾÷ÁÖ ±âº»Å°
+		 -- ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 	PRIMARY KEY 
 	USING INDEX "PK_OWNER";
 
--- °³º°ÇªµåÆ®·°°øÁö
+-- ï¿½ï¿½ï¿½ï¿½Çªï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 CREATE TABLE "PRIVATE_NOTICE"
 (
-	"ID"       serial  NOT NULL, -- °³º°°øÁöID
-	"TITLE"    varchar NULL,     -- Á¦¸ñ
-	"CONTENT"  varchar NULL,     -- ³»¿ë
-	"DATE"     date    NULL,     -- µî·Ï³¯Â¥
-	"WRITER"   varchar NULL,     -- ÀÛ¼ºÀÚ
-	"CATEGORY" int     NULL,     -- ºÐ·ù
-	"OWNER_ID" serial  NOT NULL  -- ¾÷ÁÖID
+	"ID"       serial  NOT NULL, -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ID
+	"TITLE"    varchar NULL,     -- ï¿½ï¿½ï¿½ï¿½
+	"CONTENT"  varchar NULL,     -- ï¿½ï¿½ï¿½ï¿½
+	"DATE"     date    NULL,     -- ï¿½ï¿½Ï³ï¿½Â¥
+	"WRITER"   varchar NULL,     -- ï¿½Û¼ï¿½ï¿½ï¿½
+	"CATEGORY" int     NULL,     -- ï¿½Ð·ï¿½
+	"OWNER_ID" serial  NOT NULL  -- ï¿½ï¿½ï¿½ï¿½ID
 )
 WITH (
 OIDS=false
 );
 
--- °³º°ÇªµåÆ®·°°øÁö ±âº»Å°
+-- ï¿½ï¿½ï¿½ï¿½Çªï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 CREATE UNIQUE INDEX "PK_PRIVATE_NOTICE"
 	ON "PRIVATE_NOTICE"
-	( -- °³º°ÇªµåÆ®·°°øÁö
-		"ID" ASC -- °³º°°øÁöID
+	( -- ï¿½ï¿½ï¿½ï¿½Çªï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		"ID" ASC -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ID
 	)
 ;
--- °³º°ÇªµåÆ®·°°øÁö
+-- ï¿½ï¿½ï¿½ï¿½Çªï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "PRIVATE_NOTICE"
 	ADD CONSTRAINT "PK_PRIVATE_NOTICE"
-		 -- °³º°ÇªµåÆ®·°°øÁö ±âº»Å°
+		 -- ï¿½ï¿½ï¿½ï¿½Çªï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 	PRIMARY KEY 
 	USING INDEX "PK_PRIVATE_NOTICE";
 
--- ÀÏÁ¤
+-- ï¿½ï¿½ï¿½ï¿½
 CREATE TABLE "SCHEDULE"
 (
-	"ID"         serial      NOT NULL, -- ÀÏÁ¤ID
-	"LOCATION"   point       NULL,     -- À§Ä¡
-	"START_DATE" date        NULL,     -- ½ÃÀÛÀÏ
-	"END_DATE"   date        NULL,     -- Á¾·áÀÏ
-	"START_TIME" time        NULL,     -- ½ÃÀÛ½Ã°£
-	"END_TIME"   time        NULL,     -- Á¾·á½Ã°£
-	"DAY"        varchar(50) NULL,     -- ¿äÀÏ
-	"REPEAT"     boolean     NULL,     -- ¹Ýº¹¿©ºÎ
-	"OWNER_ID"   serial      NOT NULL  -- ¾÷ÁÖID
+	"ID"         serial      NOT NULL, -- ï¿½ï¿½ï¿½ï¿½ID
+	"LOCATION"   point       NULL,     -- ï¿½ï¿½Ä¡
+	"START_DATE" date        NULL,     -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	"END_DATE"   date        NULL,     -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	"START_TIME" time        NULL,     -- ï¿½ï¿½ï¿½Û½Ã°ï¿½
+	"END_TIME"   time        NULL,     -- ï¿½ï¿½ï¿½ï¿½Ã°ï¿½
+	"DAY"        varchar(50) NULL,     -- ï¿½ï¿½ï¿½ï¿½
+	"REPEAT"     boolean     NULL,     -- ï¿½Ýºï¿½ï¿½ï¿½ï¿½ï¿½
+	"OWNER_ID"   serial      NOT NULL  -- ï¿½ï¿½ï¿½ï¿½ID
 )
 WITH (
 OIDS=false
 );
 
--- ÀÏÁ¤ ±âº»Å°
+-- ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 CREATE UNIQUE INDEX "PK_SCHEDULE"
 	ON "SCHEDULE"
-	( -- ÀÏÁ¤
-		"ID" ASC -- ÀÏÁ¤ID
+	( -- ï¿½ï¿½ï¿½ï¿½
+		"ID" ASC -- ï¿½ï¿½ï¿½ï¿½ID
 	)
 ;
--- ÀÏÁ¤
+-- ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "SCHEDULE"
 	ADD CONSTRAINT "PK_SCHEDULE"
-		 -- ÀÏÁ¤ ±âº»Å°
+		 -- ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 	PRIMARY KEY 
 	USING INDEX "PK_SCHEDULE";
 
--- ÆòÁ¡¸®ºä
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 CREATE TABLE "STAR_REVIEW"
 (
-	"ID"       serial  NOT NULL, -- ÆòÁ¡¸®ºäID
-	"STAR"     float   NULL,     -- º°Á¡¼ö
-	"REVIEW"   varchar NULL,     -- ¸®ºä
-	"DATE"     date    NULL,     -- ÀÛ¼ºÀÏ
-	"OWNER_ID" serial  NOT NULL  -- ¾÷ÁÖID
+	"ID"       serial  NOT NULL, -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ID
+	"STAR"     float   NULL,     -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	"REVIEW"   varchar NULL,     -- ï¿½ï¿½ï¿½ï¿½
+	"DATE"     date    NULL,     -- ï¿½Û¼ï¿½ï¿½ï¿½
+	"OWNER_ID" serial  NOT NULL  -- ï¿½ï¿½ï¿½ï¿½ID
 )
 WITH (
 OIDS=false
 );
 
--- ÆòÁ¡¸®ºä ±âº»Å°
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 CREATE UNIQUE INDEX "PK_STAR_REVIEW"
 	ON "STAR_REVIEW"
-	( -- ÆòÁ¡¸®ºä
-		"ID" ASC -- ÆòÁ¡¸®ºäID
+	( -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		"ID" ASC -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ID
 	)
 ;
--- ÆòÁ¡¸®ºä
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "STAR_REVIEW"
 	ADD CONSTRAINT "PK_STAR_REVIEW"
-		 -- ÆòÁ¡¸®ºä ±âº»Å°
+		 -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 	PRIMARY KEY 
 	USING INDEX "PK_STAR_REVIEW";
 
--- ³»ÄíÆù
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 CREATE TABLE "MYCOUPON"
 (
-	"ID"         serial  NOT NULL, -- ³»ÄíÆùID
-	"USED"       boolean NULL,     -- »ç¿ë¿©ºÎ
-	"SERIAL_NUM" varchar NULL,     -- ½Ã¸®¾ó¹øÈ£
-	"COUPON_ID"  serial  NOT NULL, -- ÄíÆùID
-	"USER_ID"    serial  NOT NULL  -- À¯ÀúID
+	"ID"         serial  NOT NULL, -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ID
+	"USED"       boolean NULL,     -- ï¿½ï¿½ë¿©ï¿½ï¿½
+	"SERIAL_NUM" varchar NULL,     -- ï¿½Ã¸ï¿½ï¿½ï¿½ï¿½È£
+	"COUPON_ID"  serial  NOT NULL, -- ï¿½ï¿½ï¿½ï¿½ID
+	"USER_ID"    serial  NOT NULL  -- ï¿½ï¿½ï¿½ï¿½ID
 )
 WITH (
 OIDS=false
 );
 
--- ³»ÄíÆù ±âº»Å°
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 CREATE UNIQUE INDEX "PK_MYCOUPON"
 	ON "MYCOUPON"
-	( -- ³»ÄíÆù
-		"ID" ASC -- ³»ÄíÆùID
+	( -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		"ID" ASC -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ID
 	)
 ;
--- ³»ÄíÆù
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "MYCOUPON"
 	ADD CONSTRAINT "PK_MYCOUPON"
-		 -- ³»ÄíÆù ±âº»Å°
+		 -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 	PRIMARY KEY 
 	USING INDEX "PK_MYCOUPON";
 
--- ÀÌº¥Æ® °øÁö»çÇ×
+-- ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 CREATE TABLE "EVENT_NOTICE"
 (
-	"ID"       serial  NOT NULL, -- ÀÌº¥Æ®°øÁöID
-	"TITLE"    varchar NULL,     -- Á¦¸ñ
-	"CONTENT"  varchar NULL,     -- ³»¿ë
-	"DATE"     date    NULL,     -- ÀÛ¼ºÀÏ
-	"WRITER"   varchar NULL,     -- ÀÛ¼ºÀÚ
-	"CATEGORY" varchar NULL      -- ºÐ·ù
+	"ID"       serial  NOT NULL, -- ï¿½Ìºï¿½Æ®ï¿½ï¿½ï¿½ï¿½ID
+	"TITLE"    varchar NULL,     -- ï¿½ï¿½ï¿½ï¿½
+	"CONTENT"  varchar NULL,     -- ï¿½ï¿½ï¿½ï¿½
+	"DATE"     date    NULL,     -- ï¿½Û¼ï¿½ï¿½ï¿½
+	"WRITER"   varchar NULL,     -- ï¿½Û¼ï¿½ï¿½ï¿½
+	"CATEGORY" varchar NULL      -- ï¿½Ð·ï¿½
 )
 WITH (
 OIDS=false
 );
 
--- ÀÌº¥Æ® °øÁö»çÇ× ±âº»Å°
+-- ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 CREATE UNIQUE INDEX "PK_EVENT_NOTICE"
 	ON "EVENT_NOTICE"
-	( -- ÀÌº¥Æ® °øÁö»çÇ×
-		"ID" ASC -- ÀÌº¥Æ®°øÁöID
+	( -- ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		"ID" ASC -- ï¿½Ìºï¿½Æ®ï¿½ï¿½ï¿½ï¿½ID
 	)
 ;
--- ÀÌº¥Æ® °øÁö»çÇ×
+-- ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "EVENT_NOTICE"
 	ADD CONSTRAINT "PK_EVENT_NOTICE"
-		 -- ÀÌº¥Æ® °øÁö»çÇ× ±âº»Å°
+		 -- ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 	PRIMARY KEY 
 	USING INDEX "PK_EVENT_NOTICE";
 
--- Çà»çÁ¤º¸
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 CREATE TABLE "FESTIVAL_INFO"
 (
-	"ID"         serial  NOT NULL, -- Çà»çÁ¤º¸ID
-	"TITLE"      varchar NULL,     -- Á¦¸ñ
-	"CONTENT"    varchar NULL,     -- ³»¿ë
-	"START_DATE" date    NULL,     -- ½ÃÀÛÀÏ
-	"END_DATE"   date    NULL,     -- Á¾·áÀÏ
-	"WRITER"     varchar NULL,     -- ÀÛ¼ºÀÚ
-	"LOCATION"   point   NULL      -- À§Ä¡
+	"ID"         serial  NOT NULL, -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ID
+	"TITLE"      varchar NULL,     -- ï¿½ï¿½ï¿½ï¿½
+	"CONTENT"    varchar NULL,     -- ï¿½ï¿½ï¿½ï¿½
+	"START_DATE" date    NULL,     -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	"END_DATE"   date    NULL,     -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	"WRITER"     varchar NULL,     -- ï¿½Û¼ï¿½ï¿½ï¿½
+	"LOCATION"   point   NULL      -- ï¿½ï¿½Ä¡
 )
 WITH (
 OIDS=false
 );
 
--- Çà»çÁ¤º¸ ±âº»Å°
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 CREATE UNIQUE INDEX "PK_FESTIVAL_INFO"
 	ON "FESTIVAL_INFO"
-	( -- Çà»çÁ¤º¸
-		"ID" ASC -- Çà»çÁ¤º¸ID
+	( -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		"ID" ASC -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ID
 	)
 ;
--- Çà»çÁ¤º¸
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "FESTIVAL_INFO"
 	ADD CONSTRAINT "PK_FESTIVAL_INFO"
-		 -- Çà»çÁ¤º¸ ±âº»Å°
+		 -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 	PRIMARY KEY 
 	USING INDEX "PK_FESTIVAL_INFO";
 
--- ½Ç½Ã°£À§Ä¡
+-- ï¿½Ç½Ã°ï¿½ï¿½ï¿½Ä¡
 CREATE TABLE "REALTIME_LOCATION"
 (
-	"location" point  NULL,     -- ½Ç½Ã°£À§Ä¡
-	"OWNER_ID" serial NOT NULL  -- ¾÷ÁÖID
+	"location" point  NULL,     -- ï¿½Ç½Ã°ï¿½ï¿½ï¿½Ä¡
+	"OWNER_ID" serial NOT NULL  -- ï¿½ï¿½ï¿½ï¿½ID
 )
 WITH (
 OIDS=false
 );
 
--- ´ñ±Û
+-- ï¿½ï¿½ï¿½
 CREATE TABLE "COMMENT"
 (
-	"ID"            serial  NOT NULL, -- ´ñ±ÛID
-	"CONTENT"       varchar NULL,     -- ³»¿ë
-	"DATE"          date    NULL,     -- ³¯Â¥
-	"WRITER"        varchar NULL,     -- ÀÛ¼ºÀÚ
-	"STARREVIEW_ID" serial  NOT NULL  -- ÆòÁ¡¸®ºäID
+	"ID"            serial  NOT NULL, -- ï¿½ï¿½ï¿½ID
+	"CONTENT"       varchar NULL,     -- ï¿½ï¿½ï¿½ï¿½
+	"DATE"          date    NULL,     -- ï¿½ï¿½Â¥
+	"WRITER"        varchar NULL,     -- ï¿½Û¼ï¿½ï¿½ï¿½
+	"STARREVIEW_ID" serial  NOT NULL  -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ID
 )
 WITH (
 OIDS=false
 );
 
--- ´ñ±Û ±âº»Å°
+-- ï¿½ï¿½ï¿½ ï¿½âº»Å°
 CREATE UNIQUE INDEX "PK_COMMENT"
 	ON "COMMENT"
-	( -- ´ñ±Û
-		"ID" ASC -- ´ñ±ÛID
+	( -- ï¿½ï¿½ï¿½
+		"ID" ASC -- ï¿½ï¿½ï¿½ID
 	)
 ;
--- ´ñ±Û
+-- ï¿½ï¿½ï¿½
 ALTER TABLE "COMMENT"
 	ADD CONSTRAINT "PK_COMMENT"
-		 -- ´ñ±Û ±âº»Å°
+		 -- ï¿½ï¿½ï¿½ ï¿½âº»Å°
 	PRIMARY KEY 
 	USING INDEX "PK_COMMENT";
 
--- À¯Àú
+-- ï¿½ï¿½ï¿½ï¿½
 CREATE TABLE "MATCHA_USER"
 (
-	"ID"    serial  NOT NULL, -- À¯ÀúID
-	"EMAIL" varchar NULL,     -- ÀÌ¸ÞÀÏ
-	"PW"    varchar NULL,     -- ºñ¹Ð¹øÈ£
-	"SEX"   boolean NULL,     -- ¼ºº°
-	"BIRTH" date    NULL      -- »ý³â¿ùÀÏ
+	"ID"    serial  NOT NULL, -- ï¿½ï¿½ï¿½ï¿½ID
+	"EMAIL" varchar NULL,     -- ï¿½Ì¸ï¿½ï¿½ï¿½
+	"PW"    varchar NULL,     -- ï¿½ï¿½Ð¹ï¿½È£
+	"SEX"   boolean NULL,     -- ï¿½ï¿½ï¿½ï¿½
+	"BIRTH" date    NULL      -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 )
 WITH (
 OIDS=false
 );
 
--- À¯Àú ±âº»Å°
+-- ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 CREATE UNIQUE INDEX "PK_MATCHA_USER"
 	ON "MATCHA_USER"
-	( -- À¯Àú
-		"ID" ASC -- À¯ÀúID
+	( -- ï¿½ï¿½ï¿½ï¿½
+		"ID" ASC -- ï¿½ï¿½ï¿½ï¿½ID
 	)
 ;
--- À¯Àú
+-- ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "MATCHA_USER"
 	ADD CONSTRAINT "PK_MATCHA_USER"
-		 -- À¯Àú ±âº»Å°
+		 -- ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 	PRIMARY KEY 
 	USING INDEX "PK_MATCHA_USER";
 
--- ÄíÆù
+-- ï¿½ï¿½ï¿½ï¿½
 CREATE TABLE "COUPON"
 (
-	"ID"         serial  NOT NULL, -- ÄíÆùID
-	"NAME"       varchar NULL,     -- ÄíÆù¸í
-	"START_DATE" date    NULL,     -- À¯È¿±â°£½ÃÀÛÀÏ
-	"END_DATE"   date    NULL,     -- À¯È¿±â°£Á¾·áÀÏ
-	"DETAIL"     varchar NULL,     -- ¼³¸í
-	"OWNER_ID"   serial  NOT NULL  -- ¾÷ÁÖID
+	"ID"         serial  NOT NULL, -- ï¿½ï¿½ï¿½ï¿½ID
+	"NAME"       varchar NULL,     -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	"START_DATE" date    NULL,     -- ï¿½ï¿½È¿ï¿½â°£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	"END_DATE"   date    NULL,     -- ï¿½ï¿½È¿ï¿½â°£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	"DETAIL"     varchar NULL,     -- ï¿½ï¿½ï¿½ï¿½
+	"OWNER_ID"   serial  NOT NULL  -- ï¿½ï¿½ï¿½ï¿½ID
 )
 WITH (
 OIDS=false
 );
 
--- ÄíÆù ±âº»Å°
+-- ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 CREATE UNIQUE INDEX "PK_COUPON"
 	ON "COUPON"
-	( -- ÄíÆù
-		"ID" ASC -- ÄíÆùID
+	( -- ï¿½ï¿½ï¿½ï¿½
+		"ID" ASC -- ï¿½ï¿½ï¿½ï¿½ID
 	)
 ;
--- ÄíÆù
+-- ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "COUPON"
 	ADD CONSTRAINT "PK_COUPON"
-		 -- ÄíÆù ±âº»Å°
+		 -- ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
 	PRIMARY KEY 
 	USING INDEX "PK_COUPON";
 
--- ¸Þ´º
+-- ï¿½Þ´ï¿½
 CREATE TABLE "MENU"
 (
-	"ID"          serial  NOT NULL, -- ¸Þ´ºID
-	"NAME"        varchar NULL,     -- ¸Þ´ºÀÌ¸§
-	"PRICE"       int     NULL,     -- °¡°Ý
-	"INGREDIENTS" varchar NULL,     -- Àç·á
-	"DETAIL"      varchar NULL,     -- ¼³¸í
-	"STATUS"      int     NULL,     -- ½Å»ó¿©ºÎ
-	"OWNER_ID"    serial  NOT NULL  -- ¾÷ÁÖID
+	"ID"          serial  NOT NULL, -- ï¿½Þ´ï¿½ID
+	"NAME"        varchar NULL,     -- ï¿½Þ´ï¿½ï¿½Ì¸ï¿½
+	"PRICE"       int     NULL,     -- ï¿½ï¿½ï¿½ï¿½
+	"INGREDIENTS" varchar NULL,     -- ï¿½ï¿½ï¿½
+	"DETAIL"      varchar NULL,     -- ï¿½ï¿½ï¿½ï¿½
+	"STATUS"      int     NULL,     -- ï¿½Å»ó¿©ºï¿½
+	"OWNER_ID"    serial  NOT NULL  -- ï¿½ï¿½ï¿½ï¿½ID
 )
 WITH (
 OIDS=false
 );
 
--- ¸Þ´º ±âº»Å°
+-- ï¿½Þ´ï¿½ ï¿½âº»Å°
 CREATE UNIQUE INDEX "PK_MENU"
 	ON "MENU"
-	( -- ¸Þ´º
-		"ID" ASC -- ¸Þ´ºID
+	( -- ï¿½Þ´ï¿½
+		"ID" ASC -- ï¿½Þ´ï¿½ID
 	)
 ;
--- ¸Þ´º
+-- ï¿½Þ´ï¿½
 ALTER TABLE "MENU"
 	ADD CONSTRAINT "PK_MENU"
-		 -- ¸Þ´º ±âº»Å°
+		 -- ï¿½Þ´ï¿½ ï¿½âº»Å°
 	PRIMARY KEY 
 	USING INDEX "PK_MENU";
 
--- Áñ°ÜÃ£´Â ÇªµåÆ®·°
+-- ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ Çªï¿½ï¿½Æ®ï¿½ï¿½
 CREATE TABLE "BOOKMARK_TRUCK"
 (
-	"USER_ID" serial NOT NULL, -- »ç¿ëÀÚID
-	"ID"      serial NOT NULL  -- ¾÷ÁÖID
+	"USER_ID" serial NOT NULL, -- ï¿½ï¿½ï¿½ï¿½ï¿½ID
+	"ID"      serial NOT NULL  -- ï¿½ï¿½ï¿½ï¿½ID
 )
 WITH (
 OIDS=false
 );
 
--- °³º°ÇªµåÆ®·°°øÁö
+-- ï¿½ï¿½ï¿½ï¿½Çªï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "PRIVATE_NOTICE"
 	ADD CONSTRAINT "FK_OWNER_TO_PRIVATE_NOTICE"
-	 -- ¾÷ÁÖ -> °³º°ÇªµåÆ®·°°øÁö
+	 -- ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½Çªï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		FOREIGN KEY (
-			"OWNER_ID" -- ¾÷ÁÖID
+			"OWNER_ID" -- ï¿½ï¿½ï¿½ï¿½ID
 		)
-		REFERENCES "OWNER" ( -- ¾÷ÁÖ
-			"ID" -- ¾÷ÁÖID
+		REFERENCES "OWNER" ( -- ï¿½ï¿½ï¿½ï¿½
+			"ID" -- ï¿½ï¿½ï¿½ï¿½ID
 		)
 		ON UPDATE CASCADE ON DELETE CASCADE
 		NOT VALID;
 
--- ÀÏÁ¤
+-- ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "SCHEDULE"
 	ADD CONSTRAINT "FK_OWNER_TO_SCHEDULE"
-	 -- ¾÷ÁÖ -> ÀÏÁ¤
+	 -- ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½
 		FOREIGN KEY (
-			"OWNER_ID" -- ¾÷ÁÖID
+			"OWNER_ID" -- ï¿½ï¿½ï¿½ï¿½ID
 		)
-		REFERENCES "OWNER" ( -- ¾÷ÁÖ
-			"ID" -- ¾÷ÁÖID
+		REFERENCES "OWNER" ( -- ï¿½ï¿½ï¿½ï¿½
+			"ID" -- ï¿½ï¿½ï¿½ï¿½ID
 		)
 		ON UPDATE CASCADE ON DELETE CASCADE
 		NOT VALID;
 
--- ÆòÁ¡¸®ºä
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "STAR_REVIEW"
 	ADD CONSTRAINT "FK_OWNER_TO_STAR_REVIEW"
-	 -- ¾÷ÁÖ -> ÆòÁ¡¸®ºä
+	 -- ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		FOREIGN KEY (
-			"OWNER_ID" -- ¾÷ÁÖID
+			"OWNER_ID" -- ï¿½ï¿½ï¿½ï¿½ID
 		)
-		REFERENCES "OWNER" ( -- ¾÷ÁÖ
-			"ID" -- ¾÷ÁÖID
+		REFERENCES "OWNER" ( -- ï¿½ï¿½ï¿½ï¿½
+			"ID" -- ï¿½ï¿½ï¿½ï¿½ID
 		)
 		ON UPDATE CASCADE ON DELETE CASCADE
 		NOT VALID;
 
--- ³»ÄíÆù
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "MYCOUPON"
 	ADD CONSTRAINT "FK_COUPON_TO_MYCOUPON"
-	 -- ÄíÆù -> ³»ÄíÆù
+	 -- ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		FOREIGN KEY (
-			"COUPON_ID" -- ÄíÆùID
+			"COUPON_ID" -- ï¿½ï¿½ï¿½ï¿½ID
 		)
-		REFERENCES "COUPON" ( -- ÄíÆù
-			"ID" -- ÄíÆùID
+		REFERENCES "COUPON" ( -- ï¿½ï¿½ï¿½ï¿½
+			"ID" -- ï¿½ï¿½ï¿½ï¿½ID
 		)
 		ON UPDATE CASCADE ON DELETE CASCADE
 		NOT VALID;
 
--- ³»ÄíÆù
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "MYCOUPON"
 	ADD CONSTRAINT "FK_MATCHA_USER_TO_MYCOUPON"
-	 -- À¯Àú -> ³»ÄíÆù
+	 -- ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		FOREIGN KEY (
-			"USER_ID" -- À¯ÀúID
+			"USER_ID" -- ï¿½ï¿½ï¿½ï¿½ID
 		)
-		REFERENCES "MATCHA_USER" ( -- À¯Àú
-			"ID" -- À¯ÀúID
+		REFERENCES "MATCHA_USER" ( -- ï¿½ï¿½ï¿½ï¿½
+			"ID" -- ï¿½ï¿½ï¿½ï¿½ID
 		)
 		ON UPDATE CASCADE ON DELETE CASCADE
 		NOT VALID;
 
--- ½Ç½Ã°£À§Ä¡
+-- ï¿½Ç½Ã°ï¿½ï¿½ï¿½Ä¡
 ALTER TABLE "REALTIME_LOCATION"
 	ADD CONSTRAINT "FK_OWNER_TO_REALTIME_LOCATION"
-	 -- ¾÷ÁÖ -> ½Ç½Ã°£À§Ä¡
+	 -- ï¿½ï¿½ï¿½ï¿½ -> ï¿½Ç½Ã°ï¿½ï¿½ï¿½Ä¡
 		FOREIGN KEY (
-			"OWNER_ID" -- ¾÷ÁÖID
+			"OWNER_ID" -- ï¿½ï¿½ï¿½ï¿½ID
 		)
-		REFERENCES "OWNER" ( -- ¾÷ÁÖ
-			"ID" -- ¾÷ÁÖID
+		REFERENCES "OWNER" ( -- ï¿½ï¿½ï¿½ï¿½
+			"ID" -- ï¿½ï¿½ï¿½ï¿½ID
 		)
 		ON UPDATE CASCADE ON DELETE CASCADE
 		NOT VALID;
 
--- ´ñ±Û
+-- ï¿½ï¿½ï¿½
 ALTER TABLE "COMMENT"
 	ADD CONSTRAINT "FK_STAR_REVIEW_TO_COMMENT"
-	 -- ÆòÁ¡¸®ºä -> ´ñ±Û
+	 -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½
 		FOREIGN KEY (
-			"STARREVIEW_ID" -- ÆòÁ¡¸®ºäID
+			"STARREVIEW_ID" -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ID
 		)
-		REFERENCES "STAR_REVIEW" ( -- ÆòÁ¡¸®ºä
-			"ID" -- ÆòÁ¡¸®ºäID
+		REFERENCES "STAR_REVIEW" ( -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			"ID" -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ID
 		)
 		ON UPDATE CASCADE ON DELETE CASCADE
 		NOT VALID;
 
--- ÄíÆù
+-- ï¿½ï¿½ï¿½ï¿½
 ALTER TABLE "COUPON"
 	ADD CONSTRAINT "FK_OWNER_TO_COUPON"
-	 -- ¾÷ÁÖ -> ÄíÆù
+	 -- ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½
 		FOREIGN KEY (
-			"OWNER_ID" -- ¾÷ÁÖID
+			"OWNER_ID" -- ï¿½ï¿½ï¿½ï¿½ID
 		)
-		REFERENCES "OWNER" ( -- ¾÷ÁÖ
-			"ID" -- ¾÷ÁÖID
+		REFERENCES "OWNER" ( -- ï¿½ï¿½ï¿½ï¿½
+			"ID" -- ï¿½ï¿½ï¿½ï¿½ID
 		)
 		ON UPDATE CASCADE ON DELETE CASCADE
 		NOT VALID;
 
--- ¸Þ´º
+-- ï¿½Þ´ï¿½
 ALTER TABLE "MENU"
 	ADD CONSTRAINT "FK_OWNER_TO_MENU"
-	 -- ¾÷ÁÖ -> ¸Þ´º
+	 -- ï¿½ï¿½ï¿½ï¿½ -> ï¿½Þ´ï¿½
 		FOREIGN KEY (
-			"OWNER_ID" -- ¾÷ÁÖID
+			"OWNER_ID" -- ï¿½ï¿½ï¿½ï¿½ID
 		)
-		REFERENCES "OWNER" ( -- ¾÷ÁÖ
-			"ID" -- ¾÷ÁÖID
+		REFERENCES "OWNER" ( -- ï¿½ï¿½ï¿½ï¿½
+			"ID" -- ï¿½ï¿½ï¿½ï¿½ID
 		)
 		ON UPDATE CASCADE ON DELETE CASCADE
 		NOT VALID;
 
--- Áñ°ÜÃ£´Â ÇªµåÆ®·°
+-- ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ Çªï¿½ï¿½Æ®ï¿½ï¿½
 ALTER TABLE "BOOKMARK_TRUCK"
 	ADD CONSTRAINT "FK_MATCHA_USER_TO_BOOKMARK_TRUCK"
-	 -- À¯Àú -> Áñ°ÜÃ£´Â ÇªµåÆ®·°
+	 -- ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ Çªï¿½ï¿½Æ®ï¿½ï¿½
 		FOREIGN KEY (
-			"USER_ID" -- »ç¿ëÀÚID
+			"USER_ID" -- ï¿½ï¿½ï¿½ï¿½ï¿½ID
 		)
-		REFERENCES "MATCHA_USER" ( -- À¯Àú
-			"ID" -- À¯ÀúID
+		REFERENCES "MATCHA_USER" ( -- ï¿½ï¿½ï¿½ï¿½
+			"ID" -- ï¿½ï¿½ï¿½ï¿½ID
 		)
 		ON UPDATE CASCADE ON DELETE CASCADE
 		NOT VALID;
 
--- Áñ°ÜÃ£´Â ÇªµåÆ®·°
+-- ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ Çªï¿½ï¿½Æ®ï¿½ï¿½
 ALTER TABLE "BOOKMARK_TRUCK"
 	ADD CONSTRAINT "FK_OWNER_TO_BOOKMARK_TRUCK"
-	 -- ¾÷ÁÖ -> Áñ°ÜÃ£´Â ÇªµåÆ®·°
+	 -- ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ Çªï¿½ï¿½Æ®ï¿½ï¿½
 		FOREIGN KEY (
-			"ID" -- ¾÷ÁÖID
+			"ID" -- ï¿½ï¿½ï¿½ï¿½ID
 		)
-		REFERENCES "OWNER" ( -- ¾÷ÁÖ
-			"ID" -- ¾÷ÁÖID
+		REFERENCES "OWNER" ( -- ï¿½ï¿½ï¿½ï¿½
+			"ID" -- ï¿½ï¿½ï¿½ï¿½ID
 		)
 		ON UPDATE CASCADE ON DELETE CASCADE
 		NOT VALID;
+
+ALTER TABLE "OWNER" alter COLUMN "PHONE" type VARCHAR;
+ALTER TABLE "OWNER" alter COLUMN "REG_NUM" type VARCHAR;
