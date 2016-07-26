@@ -20,9 +20,12 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -30,39 +33,166 @@ import android.widget.Toast;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.LocationSource;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.matcha.jjbros.matchaapp.R;
+import com.matcha.jjbros.matchaapp.common.DBControl;
+import com.matcha.jjbros.matchaapp.entity.Schedule;
+import com.matcha.jjbros.matchaapp.entity.ScheduleVO;
 
+import org.postgresql.geometric.PGpoint;
 
-public class UserNearFoodtruckActivity extends FragmentActivity {
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Properties;
 
-    BackgroundTask backgroundTask;
+public class UserNearFoodtruckActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener{
+
+    SupportMapFragment mapFragment;
+    GoogleMap googleMap;
+    LocationManager locationManager;
+    Location location;
+    double lat;
+    double lng;
+    LatLng currentPosition;
+    Marker marker;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_near_foodtruck);
 
-        backgroundTask = new BackgroundTask();
-        backgroundTask.execute();
 
-
-    }
-
-    class BackgroundTask extends AsyncTask<Integer,Integer,Integer>{
-
-
-        @Override
-        protected Integer doInBackground(Integer... params) {
-            return null;
+        locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
         }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,10000,0,this);
+
+
+        mapFragment =  (SupportMapFragment) this.getSupportFragmentManager().findFragmentById(R.id.map_user_near_foodtruck);;
+        mapFragment.getMapAsync(this);
+
+
     }
+
+
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+
+        googleMap = map;
+        currentPosition = new LatLng(lat, lng);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 18));
+        marker = googleMap.addMarker(new MarkerOptions().position(currentPosition));
+
+
+    }
+
+
+
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+
+        lat = location.getLatitude();
+        lng = location.getLongitude();
+        currentPosition = null;
+        marker.remove();
+
+        onMapReady(googleMap);
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+
+
+
+    public class updateMyLocation extends AsyncTask<Location, Integer, Integer>{
+        @Override
+        protected Integer doInBackground(Location... location) {
+            return 0;
+        }
+
+        // 일정 다 불러온 후, 마커를 지도에 추가한다.
+        @Override
+        protected void onPostExecute(Integer schedules) {
+            super.onPostExecute(schedules);
+        }
+
+
+    }
+
+
+
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //    private GoogleMap mGoogleMap;
 //    Marker mMarker;
@@ -131,12 +261,7 @@ public class UserNearFoodtruckActivity extends FragmentActivity {
 //    }
 //
 //
-//    private class MapInitTask extends AsyncTask<String,String,String>{
-//
-//        @Override
-//        protected String doInBackground(String... params) {
-//            return null;
-//        }
+
 //
 //
 //    private class GPSListener implements LocationListener {
