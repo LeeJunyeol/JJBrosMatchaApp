@@ -14,9 +14,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
@@ -33,6 +35,7 @@ import com.matcha.jjbros.matchaapp.entity.GenUser;
 import com.matcha.jjbros.matchaapp.entity.Schedule;
 import com.matcha.jjbros.matchaapp.entity.ScheduleVO;
 
+import org.postgresql.PGConnection;
 import org.postgresql.geometric.PGpoint;
 
 import java.sql.Connection;
@@ -82,8 +85,12 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
     private CheckBox cbx_sun;
     private CheckBox cbx_repeat_stat;
     private Button btn_add_plan;
+    private Button btn_cancle_plan;
     private Button btn_update_plan;
     private Button btn_delete_plan;
+
+    private CheckBox cbx_input_mode;
+    private LinearLayout container_input_plan;
 
     private HashMap<String, Schedule> this_schedules = new HashMap<String, Schedule>();
     private String schedule_key = "";
@@ -100,6 +107,7 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
         setSupportActionBar(tb_add_plan);
 
         btn_add_plan = (Button) findViewById(R.id.btn_add_plan);
+        btn_cancle_plan = (Button) findViewById(R.id.btn_cancle_plan);
         btn_update_plan = (Button) findViewById(R.id.btn_update_plan);
         btn_delete_plan = (Button) findViewById(R.id.btn_delete_plan);
         tv_lat_plan = (TextView) findViewById(R.id.tv_lat_plan);
@@ -118,6 +126,11 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
         cbx_sun = (CheckBox) findViewById(R.id.cbx_sun);
         cbx_repeat_stat = (CheckBox) findViewById(R.id.cbx_repeat_stat);
 
+        cbx_input_mode = (CheckBox) findViewById(R.id.cbx_input_mode);
+
+        container_input_plan = (LinearLayout) findViewById(R.id.container_input_plan);
+
+
         // 지도 셋팅
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.plan_map);
         mapFragment.getMapAsync(this);
@@ -126,13 +139,15 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
         btn_add_plan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 입력 레이아웃의 정보 불러오기
-                if(stat != 1){
+                if(tv_lat_plan.getText().toString()==null){
                     Toast.makeText(getApplicationContext(), "먼저 위치를 등록하세요.", Toast.LENGTH_LONG).show();
                     return;
                 }
+
+                // 입력 레이아웃의 정보 불러오기
                 double lat = Double.valueOf(tv_lat_plan.getText().toString());
                 double lng = Double.valueOf(tv_lng_plan.getText().toString());
+
                 String str_day = "";
                 Date start_date = Date.valueOf(et_start_date.getText().toString());
                 Date end_date = Date.valueOf(et_end_date.getText().toString());
@@ -179,13 +194,20 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
                 schedule_key = newSchedule.getId() + "_" + newSchedule.getStat();
                 this_schedules.put(schedule_key,newSchedule);
 
-                // 주어진 위치에 마크를 그림
-                addMarkersToMap(new LatLng(lat, lng));
-
                 //입력이 끝나면, 입력단추는 사라지고 수정/삭제 버튼 등장
                 btn_add_plan.setVisibility(View.GONE);
+                btn_cancle_plan.setVisibility(View.GONE);
                 btn_update_plan.setVisibility(View.VISIBLE);
                 btn_delete_plan.setVisibility(View.VISIBLE);
+
+                Toast.makeText(getApplicationContext(), "일정이 등록 되었습니다.", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        btn_cancle_plan.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                mMap.clear();
             }
         });
 
@@ -404,10 +426,11 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     // 일정디비에 지금까지 입력, 수정, 삭제한 결과를 적용한다.
-    public class inputSchedules extends AsyncTask<Integer, Integer, HashMap<Integer, Schedule>>{
+    public class inputSchedules extends AsyncTask<ArrayList<Schedule>, Integer, Integer>{
         @Override
-        protected HashMap<Integer, Schedule> doInBackground(Integer... owner_id) {
+        protected Integer doInBackground(ArrayList<Schedule>... schedules) {
             Connection conn = null;
+            int result = 0;
             try {
                 Class.forName("org.postgresql.Driver").newInstance();
                 String url = new DBControl().url;
@@ -427,55 +450,174 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
                 return null;
             }
 
-            Schedule schedule = null;
-            ScheduleVO scheduleVO = null;
-            HashMap<Integer, Schedule> scheduleList = new HashMap<>();
             PreparedStatement pstm = null;
-            ResultSet rs = null;
-            String sql = "select * from \"SCHEDULE\" where \"OWNER_ID\"=?";
+            int res = 0;
+            String sql = "insert into \"SCHEDULE\"(\"ID\", \"LOCATION\", \"START_DATE\", \"END_DATE\"," +
+                    "\"START_TIME\", \"END_TIME\", \"DAY\", \"REPEAT\", \"OWNER_ID\") values (DEFAULT, point(?,?),?,?,?,?,?,?,?)";
             try {
                 pstm = conn.prepareStatement(sql);
-                pstm.setInt(1, owner_id[0]);
-                rs = pstm.executeQuery();
-                while(rs.next()){
-                    scheduleVO = new ScheduleVO();
-                    PGpoint pGpoint = (PGpoint)rs.getObject(2);
-                    scheduleVO.setLat(pGpoint.x);
-                    scheduleVO.setLng(pGpoint.y);
-                    scheduleVO.setStart_date(rs.getDate(3));
-                    scheduleVO.setEnd_date(rs.getDate(4));
-                    scheduleVO.setStart_time(rs.getTime(5));
-                    scheduleVO.setEnd_time(rs.getTime(6));
-                    scheduleVO.setDay(rs.getString(7));
-                    scheduleVO.setRepeat(rs.getBoolean(8));
-                    scheduleVO.setOwner_id(rs.getInt(9));
+                Iterator itr = schedules[0].iterator();
+                while(itr.hasNext()){
+                    Schedule sc = (Schedule) itr.next();
+                    pstm.setDouble(1, sc.getScheduleVO().getLat());
+                    pstm.setDouble(2, sc.getScheduleVO().getLng());
+                    pstm.setDate(3, sc.getScheduleVO().getStart_date());
+                    pstm.setDate(4, sc.getScheduleVO().getEnd_date());
+                    pstm.setTime(5, sc.getScheduleVO().getStart_time());
+                    pstm.setTime(6, sc.getScheduleVO().getEnd_time());
+                    pstm.setString(7, sc.getScheduleVO().getDay());
+                    pstm.setBoolean(8, sc.getScheduleVO().isRepeat());
+                    pstm.setInt(9, sc.getScheduleVO().getOwner_id());
 
-                    schedule = new Schedule(rs.getInt(1), 0, scheduleVO);
-                    scheduleList.put(rs.getInt(1), schedule);
+                    res = pstm.executeUpdate();
+                    if(res > 0){
+                        Commit(conn);
+                        result += 1;
+                    }
                 }
 
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             } finally {
-                Close(rs);
                 Close(pstm);
                 Close(conn);
             }
-            return scheduleList;
+            return result;
         }
 
-        // 일정 다 불러온 후, 마커를 지도에 추가한다.
         @Override
-        protected void onPostExecute(HashMap<Integer, Schedule> schedules) {
-            super.onPostExecute(schedules);
-            Collection<Schedule> scheduleCollection = schedules.values();
-            Iterator<Schedule> scheduleIterator = scheduleCollection.iterator();
-            while(scheduleIterator.hasNext()){
-                ScheduleVO tmpScheduleVO = scheduleIterator.next().getScheduleVO();
-                mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(tmpScheduleVO.getLat(), tmpScheduleVO.getLng()))
-                        .title("일정"));
+        protected void onPostExecute(Integer result) {
+            super.onPostExecute(result);
+            if(result > 0){
+                Log.d("db insert","success");
+            }
+        }
+    }
+
+    public class updateSchedules extends AsyncTask<ArrayList<Schedule>, Integer, Integer>{
+        @Override
+        protected Integer doInBackground(ArrayList<Schedule>... schedules) {
+            Connection conn = null;
+            int result = 0;
+            try {
+                Class.forName("org.postgresql.Driver").newInstance();
+                String url = new DBControl().url;
+                Properties props = new Properties();
+                props.setProperty("user", "postgres");
+                props.setProperty("password", "admin123");
+
+                Log.d("url", url);
+                conn = DriverManager.getConnection(url, props);
+                if (conn == null) // couldn't connect to server
+                {
+                    Log.d("connection : ", "null");
+                    return null;
+                }
+            } catch (Exception e){
+                Log.d("PPJY", e.getLocalizedMessage());
+                return null;
+            }
+
+            PreparedStatement pstm = null;
+            int res = 0;
+            String sql = "update \"SCHEDULE\" SET \"LOCATION\"=point(?,?), \"START_DATE\"=?, \"END_DATE\"=?," +
+                    "\"START_TIME\"=?, \"END_TIME\"=?, \"DAY\"=?, \"REPEAT\"=? where \"ID\"=?";
+            try {
+                pstm = conn.prepareStatement(sql);
+                Iterator itr = schedules[0].iterator();
+                while(itr.hasNext()){
+                    Schedule sc = (Schedule) itr.next();
+                    pstm.setDouble(1, sc.getScheduleVO().getLat());
+                    pstm.setDouble(2, sc.getScheduleVO().getLng());
+                    pstm.setDate(3, sc.getScheduleVO().getStart_date());
+                    pstm.setDate(4, sc.getScheduleVO().getEnd_date());
+                    pstm.setTime(5, sc.getScheduleVO().getStart_time());
+                    pstm.setTime(6, sc.getScheduleVO().getEnd_time());
+                    pstm.setString(7, sc.getScheduleVO().getDay());
+                    pstm.setBoolean(8, sc.getScheduleVO().isRepeat());
+                    pstm.setInt(9, sc.getId());
+
+                    res = pstm.executeUpdate();
+                    if(res > 0){
+                        Commit(conn);
+                        result += 1;
+                    }
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } finally {
+                Close(pstm);
+                Close(conn);
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            super.onPostExecute(result);
+            if(result > 0){
+                Log.d("db update","success");
+            }
+        }
+    }
+
+    public class deleteSchedules extends AsyncTask<ArrayList<Schedule>, Integer, Integer>{
+        @Override
+        protected Integer doInBackground(ArrayList<Schedule>... schedules) {
+            Connection conn = null;
+            int result = 0;
+            try {
+                Class.forName("org.postgresql.Driver").newInstance();
+                String url = new DBControl().url;
+                Properties props = new Properties();
+                props.setProperty("user", "postgres");
+                props.setProperty("password", "admin123");
+
+                Log.d("url", url);
+                conn = DriverManager.getConnection(url, props);
+                if (conn == null) // couldn't connect to server
+                {
+                    Log.d("connection : ", "null");
+                    return null;
+                }
+            } catch (Exception e){
+                Log.d("PPJY", e.getLocalizedMessage());
+                return null;
+            }
+
+            PreparedStatement pstm = null;
+            int res = 0;
+            String sql = "delete from \"SCHEDULE\" where \"ID\"=?";
+            try {
+                pstm = conn.prepareStatement(sql);
+                Iterator itr = schedules[0].iterator();
+                while(itr.hasNext()){
+                    Schedule sc = (Schedule) itr.next();
+                    pstm.setInt(1, sc.getId());
+
+                    res = pstm.executeUpdate();
+                    if(res > 0){
+                        Commit(conn);
+                        result += 1;
+                    }
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } finally {
+                Close(pstm);
+                Close(conn);
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            super.onPostExecute(result);
+            if(result > 0){
+                Log.d("db delete","success");
             }
         }
     }
@@ -501,8 +643,11 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
         mMap.setOnMapClickListener(this);
         mMap.setOnMapLongClickListener(this);
         mMap.setOnInfoWindowClickListener(this); // 마커 클릭하면 정보창 보이게
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(37.541957, 126.988168)));
     }
 
+    // 말풍선
     class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         @Override
         public View getInfoWindow(Marker marker) {
@@ -517,12 +662,21 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public void onMapClick(LatLng latLng) {
-        stat = 1; // 마커 입력 가능
-        Toast.makeText(getApplicationContext(), "위치를 선택하셨습니다.", Toast.LENGTH_LONG).show();
-        tv_lat_plan.setText(String.valueOf(latLng.latitude));
-        tv_lng_plan.setText(String.valueOf(latLng.longitude));
-        Log.d("lat",tv_lat_plan.getText().toString());
-        Log.d("lng",tv_lng_plan.getText().toString());
+
+        if(cbx_input_mode.isChecked()){
+            viewInputLayout(1);
+            Toast.makeText(getApplicationContext(), "위치를 선택하셨습니다.", Toast.LENGTH_LONG).show();
+            tv_lat_plan.setText(String.valueOf(latLng.latitude));
+            tv_lng_plan.setText(String.valueOf(latLng.longitude));
+            Log.d("lat",tv_lat_plan.getText().toString());
+            Log.d("lng",tv_lng_plan.getText().toString());
+            // 주어진 위치에 마크를 그림
+            addMarkersToMap(new LatLng(latLng.latitude, latLng.longitude));
+
+        } else {
+            viewInputLayout(0);
+        }
+
     }
 
     @Override
@@ -532,7 +686,11 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        stat = 0; // 수정 전
+        if(cbx_input_mode.isChecked()){
+            viewInputLayout(2);
+        } else {
+            viewInputLayout(0);
+        }
 
         return false;
     }
@@ -567,6 +725,44 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
                 mMap.clear();
         } else if (id == R.id.mi_save_plan_map){
             // 지금까지 수행한 결과를 디비에 저장한다.
+            try{
+                ArrayList<Schedule> insert_schedules = new ArrayList<Schedule>();
+                ArrayList<Schedule> update_schedules = new ArrayList<Schedule>();
+                ArrayList<Schedule> delete_schedules = new ArrayList<Schedule>();
+
+                int a = 0;
+                Iterator itr = this_schedules.keySet().iterator();
+                while(itr.hasNext()){
+                    String s = (String) itr.next();
+                    if (s.endsWith("1")){
+                        insert_schedules.add(this_schedules.get(s)); // new
+                    } else if (s.endsWith("2")) {
+                        update_schedules.add(this_schedules.get(s)); // new
+                    } else if (s.endsWith("3")) {
+                        delete_schedules.add(this_schedules.get(s)); // new
+                    }
+                }
+                if(insert_schedules.size() > 0){
+                    new inputSchedules().execute(insert_schedules);
+                    a += 1;
+                }
+                if(update_schedules.size() > 0){
+                    new updateSchedules().execute(update_schedules);
+                    a += 1;
+                }
+                if(delete_schedules.size() > 0){
+                    new deleteSchedules().execute(delete_schedules);
+                    a += 1;
+                }
+                if(a==0){
+                    Toast.makeText(AddPlanActivity.this, "변경된 사항이 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(AddPlanActivity.this, "성공적으로 저장!", Toast.LENGTH_SHORT).show();
+                }
+
+            } catch (Exception e){
+                Log.d("save", e.getMessage());
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -653,6 +849,16 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void viewInputLayout(int a){
+        if(cbx_input_mode.isChecked() && a == 1){
+            container_input_plan.setVisibility(View.VISIBLE);
+        } else if (cbx_input_mode.isChecked() && a == 2) {
+            container_input_plan.setVisibility(View.VISIBLE);
+        } else {
+            container_input_plan.setVisibility(View.GONE);
         }
     }
 }

@@ -40,6 +40,7 @@ public class LoginActivity extends AppCompatActivity{
     private String chkPw;
     private EditText et_email;
     private EditText et_password;
+    private LoginProcess loginProcess;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class LoginActivity extends AppCompatActivity{
         tv_forgot = (TextView) findViewById(R.id.tv_forgot);
         rb_login_owner = (RadioButton) findViewById(R.id.rb_login_owner);
         rb_login_user = (RadioButton) findViewById(R.id.rb_login_user);
+        loginProcess = new LoginProcess();
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,9 +98,10 @@ public class LoginActivity extends AppCompatActivity{
                     finish();
                 } else {
                     if(rb_login_owner.isChecked()){
-                        new loginProcess().execute(email, password, "owner");
+                        Log.d("dd","ddd");
+                        loginProcess.execute(email, password, "owner");
                     } else if(rb_login_user.isChecked()){
-                        new loginProcess().execute(email, password, "user");
+                        loginProcess.execute(email, password, "user");
                     } else {
                         return;
                     };
@@ -129,13 +132,15 @@ public class LoginActivity extends AppCompatActivity{
 
     }
 
-    public class loginProcess extends AsyncTask<String, Integer, GenUser> {
+    public class LoginProcess extends AsyncTask<String, Integer, GenUser> {
 
         @Override
         protected GenUser doInBackground(String... loginInfo) {
             Connection conn = null;
             GenUser guser = new GenUser();
+            guser.setId(0);
 
+            Log.d("loginprocess", "in loginprocess");
             try {
                 Class.forName("org.postgresql.Driver").newInstance();
                 String url = new DBControl().url;
@@ -161,37 +166,41 @@ public class LoginActivity extends AppCompatActivity{
             ResultSet rs = null;
             String tbl_name = "";
             if(loginInfo[2].equals("user")){
-                tbl_name = "\"MATCHA_USER\"";
+                sql = "select * from \"MATCHA_USER\" where \"EMAIL\"=?;";
             } else if(loginInfo[2].equals("owner")){
-                tbl_name = "\"OWNER\"";
+                sql = "select * from \"OWNER\" where \"EMAIL\"=?;";
+            } else {
+
             }
-            sql = "select * from " + tbl_name +" where \"EMAIL\"=?";
+            Log.d("SQL", sql);
             try {
                 pstm = conn.prepareStatement(sql);
                 pstm.setString(1, loginInfo[0]);
                 rs = pstm.executeQuery();
-                if(rs.next()){
-                    if(rs.getString(2).equals(loginInfo[1])) {
+                if(rs.next()) {
+                    if (rs.getString(3).equals(loginInfo[1])) {
                         if (loginInfo[2].equals("user")) {
+                            Log.d("login process", "in user");
                             guser.setId(rs.getInt(1));
                             User user = new User();
                             user.setEmail(rs.getString(2));
-                            user.setPw(rs.getString(2));
-                            user.setSex(rs.getBoolean(3));
-                            user.setBirth(rs.getDate(4));
+                            user.setPw(rs.getString(3));
+                            user.setSex(rs.getBoolean(4));
+                            user.setBirth(rs.getDate(5));
                             guser.setUser(user);
                         } else if (loginInfo[2].equals("owner")) {
+                            Log.d("login process", "in owner");
                             guser.setId(rs.getInt(1));
                             Owner owner = new Owner();
                             owner.setEmail(rs.getString(2));
-                            owner.setPw(rs.getString(2));
-                            owner.setSex(rs.getBoolean(3));
-                            owner.setBirth(rs.getDate(4));
-                            owner.setName(rs.getString(5));
-                            owner.setPhone(rs.getInt(6));
-                            owner.setReg_num(rs.getInt(7));
-                            owner.setMenu_category(rs.getString(8));
-                            owner.setAdmition_status(rs.getBoolean(9));
+                            owner.setPw(rs.getString(3));
+                            owner.setSex(rs.getBoolean(4));
+                            owner.setBirth(rs.getDate(5));
+                            owner.setName(rs.getString(6));
+                            owner.setPhone(rs.getInt(7));
+                            owner.setReg_num(rs.getInt(8));
+                            owner.setMenu_category(rs.getString(9));
+                            owner.setAdmition_status(rs.getBoolean(10));
                             guser.setOwner(owner);
                         }
                     } else {
@@ -216,7 +225,6 @@ public class LoginActivity extends AppCompatActivity{
 
         @Override
         protected void onPostExecute(GenUser user) {
-            Log.d("PPJY", "onPostExecute");
             Context context = getApplicationContext();
             CharSequence text = "";
             int duration = Toast.LENGTH_LONG;
@@ -247,13 +255,13 @@ public class LoginActivity extends AppCompatActivity{
                     toast.show();
                 }
             } else if(user.getId() == -1){
-                text = "회원가입에 실패 하였습니다.";
-                Log.d("PPJY", "회원가입에 실패 하였습니다.");
+                text = "비밀번호가 맞지 않습니다.";
+                Log.d("PPJY", "로그인 실패 하였습니다.");
                 toast = Toast.makeText(context, text, duration);
                 toast.show();
             } else if(user.getId() == -2){
-                text = "회원가입에 실패 하였습니다.";
-                Log.d("PPJY", "회원가입에 실패 하였습니다.");
+                text = "일치하는 아이디가 없습니다.";
+                Log.d("PPJY", "로그인 실패 하였습니다.");
                 toast = Toast.makeText(context, text, duration);
                 toast.show();
             }
@@ -318,5 +326,15 @@ public class LoginActivity extends AppCompatActivity{
             }
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (loginProcess != null){
+            loginProcess.cancel(true);
+        }
+    }
+
+
 }
 
