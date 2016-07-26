@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:background="@drawable/border_rectangle">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView android:id="@+id/lb_location"
+            android:layout_width="0dp"
+            android:layout_height="28dp"
+            android:layout_weight="0.4"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:text="장소"
+            android:gravity="center"
+            android:background="@drawable/border_radius_rectangle" />
+        <TextView android:id="@+id/tv_location"
+            android:layout_width="0dp"
+            android:layout_height="28dp"
+            android:layout_weight="0.6"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:gravity="center"
+            android:background="@drawable/border_radius_rectangle"/>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white" >
+        <TextView android:id="@+id/lb_openning_hours"
+            android:layout_width="0dp"
+            android:layout_height="28dp"
+            android:layout_weight="0.4"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:text="영업시간"
+            android:gravity="center"
+            android:background="@drawable/border_radius_rectangle" />
+        <TextView android:id="@+id/tv_openning_hours"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_weight="0.6"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:gravity="center"
+            android:background="@drawable/border_radius_rectangle"/>
+    </LinearLayout>
+</LinearLayout>
