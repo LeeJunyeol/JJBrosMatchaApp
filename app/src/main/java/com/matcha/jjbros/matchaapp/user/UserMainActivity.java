@@ -3,15 +3,24 @@ package com.matcha.jjbros.matchaapp.user;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
-
 import com.matcha.jjbros.matchaapp.R;
+
 
 
 public class UserMainActivity extends AppCompatActivity {
@@ -21,6 +30,12 @@ public class UserMainActivity extends AppCompatActivity {
     Button btn_my_near_foodtruck;
     Button btn_best_foodtruck;
     Button btn_category_drink_dessert;
+    Toolbar toolbar;
+    DrawerLayout dlDrawer;
+    ActionBarDrawerToggle dtToggle;
+    ListView listview;
+    String[] navItems = {"Brown", "Cadet Blue", "Dark Olive Green", "Dark Orange", "Golden Rod"};
+
 
     public void showSettingsAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(UserMainActivity.this);
@@ -45,11 +60,55 @@ public class UserMainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        dtToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        dtToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (dtToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_main);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        dlDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        listview = (ListView) findViewById(R.id.lv_activity_main_nav_list);
+        listview.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navItems));
+
+        setSupportActionBar(toolbar);
+        ActionBar ab = getSupportActionBar();
+        if (null != ab) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+
+        dtToggle = new ActionBarDrawerToggle(this, dlDrawer, R.string.app_name, R.string.app_name);
+        dlDrawer.setDrawerListener(dtToggle);
+
+
 
 
 
@@ -94,18 +153,16 @@ public class UserMainActivity extends AppCompatActivity {
             }
         });
 
-        btn_category_drink_dessert.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-/*
-                Intent intent = new Intent(getApplicationContext(), UserCategoryDrinkDessertActivity.class);
-                startActivity(intent);
-*/
-
-
-            }
-        });
+//        btn_category_drink_dessert.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                Intent intent = new Intent(getApplicationContext(), UserCategoryDrinkDessertActivity.class);
+//                startActivity(intent);
+//
+//
+//            }
+//        });
 
 
 
