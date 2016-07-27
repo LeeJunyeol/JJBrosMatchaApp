@@ -1,6 +1,7 @@
 package com.matcha.jjbros.matchaapp.owner;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -23,7 +25,7 @@ public class OwnerMainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_FESTINFO = 1004;
     private GenUser owner;
     private Toolbar tb_owner_main;
-    private DrawerLayout drawer_layout_owner_main;
+    private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle dtToggle;
 
     @Override
@@ -34,17 +36,20 @@ public class OwnerMainActivity extends AppCompatActivity {
         owner = (GenUser)getIntent().getParcelableExtra("owner");
 
         tb_owner_main = (Toolbar) findViewById(R.id.tb_owner_main);
-        drawer_layout_owner_main = (DrawerLayout) findViewById(R.id.drawer_layout_owner_main);
-
         setSupportActionBar(tb_owner_main);
+
+        // drawerLayout setting         //////////////////////////////////////////////
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout_owner_main);
+
+        dtToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name);
+        drawerLayout.addDrawerListener(dtToggle);
 
         ActionBar ab = getSupportActionBar();
         if (null != ab) {
             ab.setDisplayHomeAsUpEnabled(true);
         }
+        ///////////////////////////////////////////////////////////////////////////////
 
-        dtToggle = new ActionBarDrawerToggle(this, drawer_layout_owner_main, R.string.app_name, R.string.app_name);
-        drawer_layout_owner_main.setDrawerListener(dtToggle);
 
         // 시간표 관리 버튼
         Button timeMngBtn = (Button) findViewById(R.id.timeMngButton);
@@ -94,6 +99,30 @@ public class OwnerMainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+// Sync the toggle state after onRestoreInstanceState has occurred.
+        dtToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        dtToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (dtToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

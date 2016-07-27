@@ -19,55 +19,77 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
-
-    <RadioGroup
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/foodtruck_main"/>
+        <RadioGroup
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rb_login_owner"
+                android:layout_weight="1"
+                android:text="사업자"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rb_login_user"
+                android:layout_weight="1"
+                android:text="일반"/>
+        </RadioGroup>
 
-        <RadioButton
+        <EditText
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_email"
+            android:inputType="text"
+            android:hint="e-mail"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/et_password"
+            android:inputType="textPassword"
+            android:hint="password"/>
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:layout_gravity="center"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_login"
+                android:text="log-in"/>
+            <Button
+                android:layout_gravity="center"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:text="회원가입"
+                android:id="@+id/btn_join"/>
+        </LinearLayout>
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/rb_login_owner"
-            android:text="사업자"/>
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/rb_login_user"
-            android:text="일반"/>
-
-    </RadioGroup>
-
-   <EditText
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/et_email"
-    android:inputType="text"
-    android:hint="e-mail"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/et_password"
-        android:inputType="textPassword"
-        android:hint="password"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btn_login"
-        android:text="log-in"
-       />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="회원가입"
-        android:id="@+id/btn_join"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_forgot"
-        android:text="비밀번호 찾기"/>
-
-
+            android:id="@+id/tv_forgot"
+            android:text="비밀번호 찾기"/>
+    </LinearLayout>
 </LinearLayout>

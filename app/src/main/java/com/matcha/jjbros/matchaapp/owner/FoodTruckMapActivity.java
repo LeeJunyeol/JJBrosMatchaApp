@@ -102,7 +102,7 @@ public class FoodTruckMapActivity extends FragmentActivity implements OnMapReady
             ResultSet rs = null;
             String sql = "select \"SCHEDULE\".*, \"OWNER\".\"NAME\", \"OWNER\".\"EMAIL\", \"OWNER\".\"PHONE\"" +
                     ", \"OWNER\".\"MENU_CATEGORY\" from \"SCHEDULE\" INNER JOIN \"OWNER\" ON" +
-                    " \"SCHEDULE\".\"OWNER_ID\"=\"OWNER\".\"ID\"";
+                    " \"SCHEDULE\".\"OWNER_ID\"=\"OWNER\".\"ID\" ORDER BY \"SCHEDULE\".\"OWNER_ID\";";
             try {
                 stmt = conn.createStatement();
                 rs = stmt.executeQuery(sql);
@@ -120,15 +120,14 @@ public class FoodTruckMapActivity extends FragmentActivity implements OnMapReady
                     scheduleVO.setEnd_time(rs.getTime(6));
                     scheduleVO.setDay(rs.getString(7));
                     scheduleVO.setRepeat(rs.getBoolean(8));
-                    int owner_id = rs.getInt(9);
-                    scheduleVO.setOwner_id(owner_id);
+                    scheduleVO.setOwner_id(rs.getInt(9));
                     truckScheduleInfo.setScheduleVO(scheduleVO);
                     truckScheduleInfo.setName(rs.getString(10));
                     truckScheduleInfo.setEmail(rs.getString(11));
                     truckScheduleInfo.setPhone(rs.getString(12));
                     truckScheduleInfo.setMenu_category(rs.getString(13));
 
-                    scheduleInfoHashMap.put(owner_id, truckScheduleInfo);
+                    scheduleInfoHashMap.put(rs.getInt(1), truckScheduleInfo);
 
                 }
             } catch (SQLException e) {
@@ -157,7 +156,6 @@ public class FoodTruckMapActivity extends FragmentActivity implements OnMapReady
                 Integer key = (Integer) iterator.next();
                 TruckScheduleInfo tmpTruckScheduleInfo = scheduleInfoHashMap.get(key);
                 ScheduleVO tmpScheduleVO = tmpTruckScheduleInfo.getScheduleVO();
-
                 mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(tmpScheduleVO.getLat(), tmpScheduleVO.getLng()))
                     .title(tmpTruckScheduleInfo.getName()));

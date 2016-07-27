@@ -76,6 +76,7 @@
             android:layout_height="300dp"
             android:orientation="vertical"
             android:layout_gravity="start"
+            android:background="@drawable/border_rectangle"
             android:paddingTop="6dp">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -153,7 +154,6 @@
                 android:layout_marginBottom="3dp"
                 android:id="@+id/btn_myinfo_setting"
                 android:text="@string/btn_user_myinfo_setting"/>
-
         </LinearLayout>
     </android.support.v4.widget.DrawerLayout>
 </LinearLayout>

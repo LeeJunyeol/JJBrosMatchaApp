@@ -607,3 +607,26 @@ ALTER TABLE "BOOKMARK_TRUCK"
 
 ALTER TABLE "OWNER" alter COLUMN "PHONE" type VARCHAR;
 ALTER TABLE "OWNER" alter COLUMN "REG_NUM" type VARCHAR;
+
+-- �ǽð���ġ
+CREATE TABLE "REALTIME_LOCATION_USER"
+(
+	"location" point  NULL,     -- �ǽð���ġ
+	"USER_ID" serial NOT NULL  -- ����ID
+)
+WITH (
+OIDS=false
+);
+
+-- �ǽð���ġ
+ALTER TABLE "REALTIME_LOCATION_USER"
+	ADD CONSTRAINT "FK_USER_TO_REALTIME_LOCATION_USER"
+	 -- ���� -> �ǽð���ġ
+		FOREIGN KEY (
+			"USER_ID" -- ����ID
+		)
+		REFERENCES "MATCHA_USER" ( -- ����
+			"ID" -- ����ID
+		)
+		ON UPDATE CASCADE ON DELETE CASCADE
+		NOT VALID;

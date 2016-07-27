@@ -1,88 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/et_join_email"
-        android:maxLines="1"
-        android:inputType="text"
-        android:hint="e-mail"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/et_join_password"
-        android:maxLines="1"
-        android:inputType="textPassword"
-        android:hint="password"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/et_join_repassword"
-        android:maxLines="1"
-        android:inputType="textPassword"
-        android:hint="re-password"/>
-    
-<RadioGroup
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    >
-
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/rb_owner_user"
-        android:text="사업자"/>
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/rb_nomal_user"
-        android:text="일반"/>
-
-</RadioGroup>
-
-    <RadioGroup
+    android:layout_height="match_parent">
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <RadioButton
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/tb_login"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp">
+        <EditText
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rb_male"
-            android:text="남"/>
-
-        <RadioButton
-            android:layout_width="wrap_content"
+            android:id="@+id/et_join_email"
+            android:maxLines="1"
+            android:inputType="text"
+            android:hint="e-mail"/>
+        <EditText
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rb_female"
-            android:text="여"/>
+            android:id="@+id/et_join_password"
+            android:maxLines="1"
+            android:inputType="textPassword"
+            android:hint="password"/>
 
-    </RadioGroup>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_join_repassword"
+            android:maxLines="1"
+            android:inputType="textPassword"
+            android:hint="re-password"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="생년월일"/>
+        <RadioGroup
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <DatePicker
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/dp_join"
-        android:layout_gravity="center_horizontal"
-        android:datePickerMode="spinner"
-        android:calendarViewShown="false"/>
+            <RadioButton
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/rb_owner_user"
+                android:text="사업자"/>
+            <RadioButton
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/rb_nomal_user"
+                android:text="일반"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btn_join_next"
-        android:text="다음"
-        />
+        </RadioGroup>
+
+        <RadioGroup
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <RadioButton
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/rb_male"
+                android:text="남"/>
+
+            <RadioButton
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/rb_female"
+                android:text="여"/>
+
+        </RadioGroup>
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="생년월일"/>
+
+        <DatePicker
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dp_join"
+            android:layout_gravity="center_horizontal"
+            android:datePickerMode="spinner"
+            android:calendarViewShown="false"/>
+
+        <Button
+            android:layout_gravity="center"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_join_next"
+            android:text="다음"/>
+    </LinearLayout>
+
 </LinearLayout>
