@@ -114,9 +114,74 @@ public class UserNearFoodtruckActivity extends AppCompatActivity implements OnMa
     @Override
     public void onLocationChanged(Location location) {
 
+       final Location setlocation = location;
 
-        lat = location.getLatitude();
-        lng = location.getLongitude();
+
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                double setLat = setlocation.getLatitude();
+                double setLng = setlocation.getLatitude();
+
+
+                Connection conn = null;
+                try {
+                    Class.forName("org.postgresql.Driver").newInstance();
+                    String url = new DBControl().url;
+                    Properties props = new Properties();
+                    props.setProperty("user", "postgres");
+                    props.setProperty("password", "admin123");
+
+                    Log.d("url", url);
+                    conn = DriverManager.getConnection(url, props);
+
+                    if (conn == null) // couldn't connect to server
+                    {
+                        Log.d("connection : ", "null");
+                    }
+                } catch (Exception e){
+                    Log.d("PPJY", e.getLocalizedMessage());
+                }
+
+
+                PreparedStatement pstm = null;
+                ResultSet rs = null;
+
+//                String sql = "select * from \"REALTIME_LOCATION\" where \"OWNER_ID\"=?";
+//                try {
+//                    pstm = conn.prepareStatement(sql);
+//                    //pstm.setInt(1, owner_id[0]);
+//                    rs = pstm.executeQuery();
+//                    while(rs.next()){
+//                        scheduleVO = new ScheduleVO();
+//                        PGpoint pGpoint = (PGpoint)rs.getObject(2);
+//                        scheduleVO.setLat(pGpoint.x);
+//                        scheduleVO.setLng(pGpoint.y);
+//                        scheduleVO.setStart_date(rs.getDate(3));
+//                        scheduleVO.setEnd_date(rs.getDate(4));
+//                        scheduleVO.setStart_time(rs.getTime(5));
+//                        scheduleVO.setEnd_time(rs.getTime(6));
+//                        scheduleVO.setDay(rs.getString(7));
+//                        scheduleVO.setRepeat(rs.getBoolean(8));
+//                        scheduleVO.setOwner_id(rs.getInt(9));
+//
+//                        schedule = new Schedule(rs.getInt(1), 0, scheduleVO);
+//                        tmp_schedule_key = rs.getInt(1) +"_"+ 0;
+//                        scheduleList.put(tmp_schedule_key, schedule);
+//                    }
+//
+//                } catch (SQLException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
+
+            }
+        });
+
+
+        lat = setlocation.getLatitude();
+        lng = setlocation.getLongitude();
         currentPosition = null;
         marker.remove();
 
@@ -138,26 +203,6 @@ public class UserNearFoodtruckActivity extends AppCompatActivity implements OnMa
     public void onProviderDisabled(String provider) {
 
     }
-
-
-
-
-    public class updateMyLocation extends AsyncTask<Location, Integer, Integer>{
-        @Override
-        protected Integer doInBackground(Location... location) {
-            return 0;
-        }
-
-        // 일정 다 불러온 후, 마커를 지도에 추가한다.
-        @Override
-        protected void onPostExecute(Integer schedules) {
-            super.onPostExecute(schedules);
-        }
-
-
-    }
-
-
 
 
 }
