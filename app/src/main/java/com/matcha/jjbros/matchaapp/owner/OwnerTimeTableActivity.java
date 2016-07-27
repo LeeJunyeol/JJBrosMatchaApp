@@ -80,6 +80,7 @@ public class OwnerTimeTableActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+/*
     // 일정에 등록된 정보를 불러온다.
     public class LoadSchedulesAll extends AsyncTask<Integer, Integer, ArrayList<Schedule>> {
         @Override
@@ -174,6 +175,7 @@ public class OwnerTimeTableActivity extends AppCompatActivity {
             }
         }
     }
+*/
 
 
 }

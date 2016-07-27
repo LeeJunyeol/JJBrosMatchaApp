@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -47,6 +48,9 @@ public class LoginActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        Toolbar tb_login = (Toolbar) findViewById(R.id.tb_login);
+        setSupportActionBar(tb_login);
+
         btn_login = (Button) findViewById(R.id.btn_login);
         btn_join = (Button) findViewById(R.id.btn_join);
         tv_forgot = (TextView) findViewById(R.id.tv_forgot);
@@ -82,8 +86,8 @@ public class LoginActivity extends AppCompatActivity{
                     owner.setBirth(Date.valueOf("1989-12-11"));
                     owner.setMenu_category("짬뽕");
                     owner.setName("준열");
-                    owner.setPhone(01065744);
-                    owner.setReg_num(123456);
+                    owner.setPhone("01065744");
+                    owner.setReg_num("123456");
                     owner.setSex(true);
                     GenUser gen_user = new GenUser();
                     gen_user.setId(1004);
@@ -197,8 +201,8 @@ public class LoginActivity extends AppCompatActivity{
                             owner.setSex(rs.getBoolean(4));
                             owner.setBirth(rs.getDate(5));
                             owner.setName(rs.getString(6));
-                            owner.setPhone(rs.getInt(7));
-                            owner.setReg_num(rs.getInt(8));
+                            owner.setPhone(rs.getString(7));
+                            owner.setReg_num(rs.getString(8));
                             owner.setMenu_category(rs.getString(9));
                             owner.setAdmition_status(rs.getBoolean(10));
                             guser.setOwner(owner);

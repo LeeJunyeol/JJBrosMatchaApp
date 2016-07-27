@@ -10,7 +10,8 @@ import com.matcha.jjbros.matchaapp.entity.Schedule;
 /**
  * Created by hadoop on 16. 7. 26.
  */
-public class PlanAdapter extends ListAdapter<Schedule> {
+public class PlanAdapter{
+/*
     @Override
     public boolean areAllItemsEnabled() {
         return false;
@@ -70,4 +71,5 @@ public class PlanAdapter extends ListAdapter<Schedule> {
     public boolean isEmpty() {
         return false;
     }
+*/
 }
