@@ -118,21 +118,21 @@
                         android:layout_width="0dp"
                         android:layout_height="54dp"
                         android:layout_weight="1"
-                        android:id="@+id/btn_myinfo_bookmark_turck"
-                        android:text="@string/btn_user_myinfo_bookmark"/>
+                        android:id="@+id/btn_myinfo_mynotice"
+                        android:text="@string/mynotice"/>
 
                     <Button
                         android:layout_width="0dp"
                         android:layout_height="54dp"
                         android:layout_weight="1"
                         android:id="@+id/btn_myinfo_coupon"
-                        android:text="@string/btn_user_myinfo_coupon"/>
+                        android:text="@string/mng_coupon"/>
 
                     <Button
                         android:layout_width="0dp"
                         android:layout_height="54dp"
                         android:layout_weight="1"
-                        android:id="@+id/btn_myinfo_review_admin"
+                        android:id="@+id/btn_myinfo_review_mng"
                         android:text="@string/btn_user_myinfo_review"/>
 
                 </TableRow>

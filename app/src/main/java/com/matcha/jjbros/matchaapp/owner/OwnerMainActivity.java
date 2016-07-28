@@ -16,6 +16,8 @@ import android.widget.ListView;
 
 import com.matcha.jjbros.matchaapp.R;
 import com.matcha.jjbros.matchaapp.entity.GenUser;
+import com.matcha.jjbros.matchaapp.main.LoginActivity;
+import com.matcha.jjbros.matchaapp.user.UserMyinfoActivity;
 
 public class OwnerMainActivity extends AppCompatActivity {
 
@@ -50,6 +52,53 @@ public class OwnerMainActivity extends AppCompatActivity {
         }
         ///////////////////////////////////////////////////////////////////////////////
 
+        // Drawer Click Events
+        Button btnUpdate = (Button)drawerLayout.findViewById(R.id.btn_myinfo_update);
+        btnUpdate.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), OwnerInfoActivity.class);
+                intent.putExtra("owner", owner);
+                startActivityForResult(intent, REQUEST_CODE_OWNERINFO);
+            }
+        });
+
+        Button btnLogout = (Button)drawerLayout.findViewById(R.id.btn_myinfo_logout);
+        btnLogout.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_OWNERINFO);
+                finish();
+            }
+        });
+
+        Button btnNotice = (Button)drawerLayout.findViewById(R.id.btn_myinfo_mynotice);
+        btnNotice.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), OwnerNoticeActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_OWNERINFO);
+            }
+        });
+
+        Button btnCoupon = (Button)drawerLayout.findViewById(R.id.btn_myinfo_coupon);
+        btnCoupon.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), OwnerCouponActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_OWNERINFO);
+            }
+        });
+
+        Button btnReview = (Button)drawerLayout.findViewById(R.id.btn_myinfo_review_mng);
+        btnReview.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), OwnerReviewActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_OWNERINFO);
+            }
+        });
 
         // 시간표 관리 버튼
         Button timeMngBtn = (Button) findViewById(R.id.timeMngButton);

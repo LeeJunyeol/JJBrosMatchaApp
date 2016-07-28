@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -47,6 +48,10 @@ public class OwnerJoinActivity extends AppCompatActivity {
         setContentView(R.layout.activity_owner_join);
 
         User user = (User)getIntent().getParcelableExtra("user");
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tb_owner_join);
+        setSupportActionBar(toolbar);
+
 
         iv_foodtruck_photo = (ImageView)findViewById(R.id.iv_foodtruck_photo);
         et_foodtruck_name = (EditText)findViewById(R.id.et_foodtruck_name);

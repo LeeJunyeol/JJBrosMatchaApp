@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -55,6 +56,9 @@ public class JoinActivity extends AppCompatActivity {
         rb_male = (RadioButton) findViewById(R.id.rb_male);
         rb_female = (RadioButton) findViewById(R.id.rb_female);
         dp_join = (DatePicker) findViewById(R.id.dp_join);
+
+        Toolbar tb_join = (Toolbar) findViewById(R.id.tb_join);
+        setSupportActionBar(tb_join);
 
         btn_join_next.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -9,7 +9,7 @@ import com.matcha.jjbros.matchaapp.R;
 /**
  * Created by hadoop on 16. 7. 7.
  */
-public class OwnerInfoActivity extends AppCompatActivity {
+public class OwnerReviewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

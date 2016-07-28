@@ -14,6 +14,8 @@
     <string name="btn_user_myinfo_logout">로그아웃</string>
     <string name="btn_user_myinfo_bookmark">찜한 트럭</string>
     <string name="btn_user_myinfo_coupon">쿠폰</string>
+    <string name="mng_coupon">쿠폰 제작 및 발송</string>
+    <string name="mynotice">개인공지사항</string>
     <string name="btn_user_myinfo_review">리뷰 관리</string>
     <string name="btn_user_myinfo_event_notice">이벤트 및 공지사항</string>
     <string name="btn_user_myinfo_setting">환경설정</string>
@@ -22,7 +24,6 @@
     <string name="btn_user_myinfo_update_delete">회원 탈퇴</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
 
 
     <string name="map_not_ready">지도가 아직 준비되지 않았습니다.</string>

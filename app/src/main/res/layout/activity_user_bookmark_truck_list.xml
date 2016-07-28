@@ -23,7 +23,7 @@
 
 
     <ListView
-        android:id="@+id/lv_user_bookmark_truck"
+    android:id="@+id/lv_user_bookmark_truck"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:divider="#ffcc22"

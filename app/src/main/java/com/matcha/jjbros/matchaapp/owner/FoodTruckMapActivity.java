@@ -7,10 +7,12 @@ import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.matcha.jjbros.matchaapp.R;
 import com.matcha.jjbros.matchaapp.common.DBControl;
@@ -21,16 +23,18 @@ import com.matcha.jjbros.matchaapp.entity.TruckScheduleInfo;
 import org.postgresql.geometric.PGpoint;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
 
-public class FoodTruckMapActivity extends FragmentActivity implements OnMapReadyCallback {
+public class FoodTruckMapActivity extends FragmentActivity implements OnMapReadyCallback, OnInfoWindowClickListener {
 
     private GoogleMap mMap;
     private HashMap<Integer, TruckScheduleInfo> this_TruckScheduleInfoHashMap;
@@ -156,10 +160,18 @@ public class FoodTruckMapActivity extends FragmentActivity implements OnMapReady
                 Integer key = (Integer) iterator.next();
                 TruckScheduleInfo tmpTruckScheduleInfo = scheduleInfoHashMap.get(key);
                 ScheduleVO tmpScheduleVO = tmpTruckScheduleInfo.getScheduleVO();
+
                 mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(tmpScheduleVO.getLat(), tmpScheduleVO.getLng()))
-                    .title(tmpTruckScheduleInfo.getName()));
+                    .title(tmpTruckScheduleInfo.getOwner_id() + "." + tmpTruckScheduleInfo.getSchedule_id() + "." + tmpTruckScheduleInfo.getName())
+                    .snippet(tmpTruckScheduleInfo.getMenu_category()));
             }
         }
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        String title = marker.getTitle();
+
     }
 }

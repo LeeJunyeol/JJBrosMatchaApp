@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/tb_owner_join"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
@@ -9,8 +24,7 @@
         android:layout_height="170dp"
         android:layout_margin="10dp"
         android:layout_above="@+id/bottom"
-        android:layout_below="@+id/ll_title_layout"
-        >
+        android:layout_below="@+id/ll_title_layout">
     </android.support.v4.view.ViewPager>
 
     <RatingBar
@@ -23,47 +37,59 @@
         android:orientation="horizontal" android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="3">
-
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/btn_foodtruck_view_time_location"
             android:layout_weight="1"/>
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/btn_foodtruck_view_menu"
             android:layout_weight="1"/>
         <ImageButton
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_action_tel"
             android:layout_weight="1"/>
-        </LinearLayout>
+    </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ExpandableListView android:id="@+id/content_ft_view_time_location"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:visibility="gone"/>
+        <ExpandableListView android:id="@+id/content_ft_view_menu"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:visibility="gone"/>
+    </FrameLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="150dp">
-
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="wrap_content"
                 android:text="많은 이용 부탁드릴게요! 후기 많이 남겨주세요!"
                 android:textSize="15sp"
-                android:layout_margin="10dp"
-                />
-
+                android:layout_margin="10dp"/>
+            <ListView
+                android:id="@+id/lv_user_bookmark_truck"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:divider="#ffcc22"
+                android:dividerHeight="1.5dp"
+                android:choiceMode="singleChoice"/>
         </LinearLayout>
-
     </ScrollView>
-
-            <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/btn_foodtruck_view_review"/>
-
-        </LinearLayout>
+    <Button
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:text="@string/btn_foodtruck_view_review"/>
+</LinearLayout>
