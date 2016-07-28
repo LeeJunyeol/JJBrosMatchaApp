@@ -2,9 +2,13 @@ package com.matcha.jjbros.matchaapp.owner;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -43,14 +47,29 @@ import java.util.Properties;
 public class OwnerTimeTableActivity extends AppCompatActivity {
     private GenUser owner;
     private ListView lv_owner_tmtbl;
+    private DrawerLayout drawerLayout;
+    private Toolbar tb_owner_tmtbl;
+    private ActionBarDrawerToggle dtToggle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owner_timetable);
 
-        Toolbar tb_owner_tmtbl = (Toolbar) findViewById(R.id.tb_owner_tmtbl);
+        tb_owner_tmtbl = (Toolbar) findViewById(R.id.tb_owner_tmtbl);
         setSupportActionBar(tb_owner_tmtbl);
+
+        // drawerLayout setting         //////////////////////////////////////////////
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout_owner_tmtbl);
+
+        dtToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name);
+        drawerLayout.addDrawerListener(dtToggle);
+
+        ActionBar ab = getSupportActionBar();
+        if (null != ab) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+        ///////////////////////////////////////////////////////////////////////////////
 
         owner = (GenUser)getIntent().getParcelableExtra("owner");
         lv_owner_tmtbl = (ListView) findViewById(R.id.lv_owner_tmtbl);
@@ -71,6 +90,9 @@ public class OwnerTimeTableActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (dtToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
         int id = item.getItemId();
         if (id == R.id.mi_add_plan){
             Intent intent = new Intent(getApplicationContext(),AddPlanActivity.class);
@@ -80,6 +102,23 @@ public class OwnerTimeTableActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+// Sync the toggle state after onRestoreInstanceState has occurred.
+        dtToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        dtToggle.onConfigurationChanged(newConfig);
+    }
+
+
+
+/*
     // 일정에 등록된 정보를 불러온다.
     public class LoadSchedulesAll extends AsyncTask<Integer, Integer, ArrayList<Schedule>> {
         @Override
@@ -174,6 +213,7 @@ public class OwnerTimeTableActivity extends AppCompatActivity {
             }
         }
     }
+*/
 
 
 }

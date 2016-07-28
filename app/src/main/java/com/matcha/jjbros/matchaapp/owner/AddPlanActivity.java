@@ -1,8 +1,12 @@
 package com.matcha.jjbros.matchaapp.owner;
 
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -26,6 +30,7 @@ import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -97,14 +102,30 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
     private LatLng clicked_latlng; // 지도 클릭했을 때 위치 받는 변수
     private int last_marker_no = 0;
 
+    private Toolbar tb_add_plan;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle dtToggle;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owner_add_plan);
 
-        Toolbar tb_add_plan = (Toolbar) findViewById(R.id.tb_add_plan);
+        tb_add_plan = (Toolbar) findViewById(R.id.tb_add_plan);
         setSupportActionBar(tb_add_plan);
+
+        // drawerLayout setting         //////////////////////////////////////////////
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout_owner_add_plan);
+
+        dtToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name);
+        drawerLayout.addDrawerListener(dtToggle);
+
+        ActionBar ab = getSupportActionBar();
+        if (null != ab) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+        ///////////////////////////////////////////////////////////////////////////////
 
         btn_add_plan = (Button) findViewById(R.id.btn_add_plan);
         btn_cancle_plan = (Button) findViewById(R.id.btn_cancle_plan);
@@ -644,7 +665,11 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
         mMap.setOnMapLongClickListener(this);
         mMap.setOnInfoWindowClickListener(this); // 마커 클릭하면 정보창 보이게
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(37.541957, 126.988168)));
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(37.541957, 126.988168))
+                .zoom(10)
+                .build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
     // 말풍선
@@ -718,7 +743,24 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
         return true;
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+// Sync the toggle state after onRestoreInstanceState has occurred.
+        dtToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        dtToggle.onConfigurationChanged(newConfig);
+    }
+
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (dtToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
         int id = item.getItemId();
         if (id == R.id.mi_reset_plan_map){
             if (checkReady())
@@ -861,4 +903,7 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
             container_input_plan.setVisibility(View.GONE);
         }
     }
+
+
+
 }

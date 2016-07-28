@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".owner.AddPlanActivity">
+    android:layout_height="match_parent">
     <android.support.design.widget.AppBarLayout android:id="@+id/layout_appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,11 +12,17 @@
             android:id="@+id/tb_add_plan"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@color/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
     </android.support.design.widget.AppBarLayout>
-    <FrameLayout
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout_owner_add_plan"
         android:layout_below="@+id/layout_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".owner.OwnerTimeTableActivity">
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <fragment
@@ -209,6 +214,97 @@
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>
+        <LinearLayout
+            android:id="@+id/drawer_list_owner_add_plan"
+            android:layout_width="240dp"
+            android:layout_height="300dp"
+            android:layout_gravity="start"
+            android:background="@drawable/border_rectangle"
+            android:orientation="vertical"
+            android:paddingTop="6dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="114dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="86dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="14dp"
+                    android:src="@drawable/ic_baisc_profile" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <Button
+                        android:id="@+id/btn_myinfo_update_add_plan"
+                        android:layout_width="match_parent"
+                        android:layout_height="43dp"
+                        android:text="@string/btn_user_myinfo_update" />
+
+                    <Button
+                        android:id="@+id/btn_myinfo_logout_add_plan"
+                        android:layout_width="match_parent"
+                        android:layout_height="43dp"
+                        android:text="@string/btn_user_myinfo_logout" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:paddingBottom="3dp"
+                android:paddingTop="3dp"
+                android:stretchColumns="*">
+
+                <TableRow>
+
+                    <Button
+                        android:id="@+id/btn_myinfo_bookmark_turck_add_plan"
+                        android:layout_width="0dp"
+                        android:layout_height="54dp"
+                        android:layout_weight="1"
+                        android:text="@string/btn_user_myinfo_bookmark" />
+
+                    <Button
+                        android:id="@+id/btn_myinfo_coupon_add_plan"
+                        android:layout_width="0dp"
+                        android:layout_height="54dp"
+                        android:layout_weight="1"
+                        android:text="@string/btn_user_myinfo_coupon" />
+
+                    <Button
+                        android:id="@+id/btn_myinfo_review_admin_add_plan"
+                        android:layout_width="0dp"
+                        android:layout_height="54dp"
+                        android:layout_weight="1"
+                        android:text="@string/btn_user_myinfo_review" />
+
+                </TableRow>
+
+            </TableLayout>
+
+            <Button
+                android:id="@+id/btn_myinfo_event_notice_add_plan"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                android:text="@string/btn_user_myinfo_event_notice" />
+
+            <Button
+                android:id="@+id/btn_myinfo_setting_add_plan"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                android:text="@string/btn_user_myinfo_setting" />
+        </LinearLayout>
+    </android.support.v4.widget.DrawerLayout>
 
 
 </RelativeLayout>

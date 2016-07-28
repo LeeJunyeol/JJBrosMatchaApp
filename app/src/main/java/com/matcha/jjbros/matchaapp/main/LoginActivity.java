@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -46,6 +47,9 @@ public class LoginActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        Toolbar tb_login = (Toolbar) findViewById(R.id.tb_login);
+        setSupportActionBar(tb_login);
 
         btn_login = (Button) findViewById(R.id.btn_login);
         btn_join = (Button) findViewById(R.id.btn_join);
