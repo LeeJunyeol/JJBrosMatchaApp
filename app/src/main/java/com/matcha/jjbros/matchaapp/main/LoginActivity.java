@@ -82,8 +82,8 @@ public class LoginActivity extends AppCompatActivity{
                     owner.setBirth(Date.valueOf("1989-12-11"));
                     owner.setMenu_category("짬뽕");
                     owner.setName("준열");
-                    owner.setPhone(01065744);
-                    owner.setReg_num(123456);
+                    owner.setPhone("01065744");
+                    owner.setReg_num("123456");
                     owner.setSex(true);
                     GenUser gen_user = new GenUser();
                     gen_user.setId(1004);
@@ -197,8 +197,8 @@ public class LoginActivity extends AppCompatActivity{
                             owner.setSex(rs.getBoolean(4));
                             owner.setBirth(rs.getDate(5));
                             owner.setName(rs.getString(6));
-                            owner.setPhone(rs.getInt(7));
-                            owner.setReg_num(rs.getInt(8));
+                            owner.setPhone(rs.getString(7));
+                            owner.setReg_num(rs.getString(8));
                             owner.setMenu_category(rs.getString(9));
                             owner.setAdmition_status(rs.getBoolean(10));
                             guser.setOwner(owner);

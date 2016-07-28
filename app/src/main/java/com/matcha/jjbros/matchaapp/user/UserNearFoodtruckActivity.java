@@ -148,11 +148,37 @@ public class UserNearFoodtruckActivity extends AppCompatActivity implements OnMa
                 PreparedStatement pstm = null;
                 ResultSet rs = null;
 
-//                String sql = "select * from \"REALTIME_LOCATION\" where \"OWNER_ID\"=?";
-//                try {
-//                    pstm = conn.prepareStatement(sql);
-//                    //pstm.setInt(1, owner_id[0]);
-//                    rs = pstm.executeQuery();
+                String sql = "select * from \"REALTIME_LOCATION_USER\" where \"USER_ID\"='1'";
+                try {
+                    pstm = conn.prepareStatement(sql);
+                   // pstm.setInt(1,"user");
+                    rs = pstm.executeQuery();
+                    Log.d("connection : ", "요기");
+
+                    if(rs != null)
+                    {
+                        String sql_update = "update \"REALTIME_LOCATION_USER\" SET \"location\"=point(?,?) where \"USER_ID\"=1";
+                        pstm = conn.prepareStatement(sql_update);
+                        pstm.setDouble(1, setLat); // longitude
+                        pstm.setDouble(2, setLng); // latitude
+                        pstm.executeUpdate();
+                        Log.d("connection : ", "뀨");
+
+                    }
+
+                    else{
+
+                        String sql_insert =  "INSERT INTO \"REALTIME_LOCATION_USER\" (USER_ID, geom) VALUES (?, ST_SetSRID(ST_MakePoint(?, ?), 2100));";
+                        pstm = conn.prepareStatement(sql_insert);
+                        pstm.setInt(1, 1);
+                        pstm.setDouble(5, setLat); // longitude
+                        pstm.setDouble(6, setLng); // latitude
+                        pstm.executeUpdate();
+                        Log.d("connection : ", "죠기");
+
+                    }
+
+
 //                    while(rs.next()){
 //                        scheduleVO = new ScheduleVO();
 //                        PGpoint pGpoint = (PGpoint)rs.getObject(2);
@@ -170,14 +196,22 @@ public class UserNearFoodtruckActivity extends AppCompatActivity implements OnMa
 //                        tmp_schedule_key = rs.getInt(1) +"_"+ 0;
 //                        scheduleList.put(tmp_schedule_key, schedule);
 //                    }
-//
-//                } catch (SQLException e) {
-//                    // TODO Auto-generated catch block
-//                    e.printStackTrace();
-//                }
+
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
 
             }
         });
+
+
+
+
+        //1. 실시간 푸드트럭 위치 등록하기,
+        //2. 쿼리해오기,
+        //3. 쿼리결과 마커 보여주기.
+
 
 
         lat = setlocation.getLatitude();
