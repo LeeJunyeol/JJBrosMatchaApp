@@ -37,8 +37,8 @@ dependencies {
     */
     compile 'com.android.support:appcompat-v7:23.+'
     compile 'com.wrapp.floatlabelededittext:library:0.0.6'
-    compile 'com.google.android.gms:play-services:9.2.0'
-    compile 'com.google.android.gms:play-services-auth:9.2.0'
+    compile 'com.google.android.gms:play-services:9.2.1'
+    compile 'com.google.android.gms:play-services-auth:9.2.1'
     compile 'com.firebase:firebase-client-android:2.3.1'
     compile 'com.android.support:design:23.+'
     compile files('libs/postgresql-9.4.1208.jar')

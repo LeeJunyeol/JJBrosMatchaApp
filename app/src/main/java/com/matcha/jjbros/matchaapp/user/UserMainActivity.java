@@ -124,8 +124,6 @@ public class UserMainActivity extends AppCompatActivity {
                 locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
                 isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-
-
                 if (!isGPSEnabled) {
                     Toast.makeText(getApplicationContext(), "안되요", Toast.LENGTH_LONG).show();
                     showSettingsAlert();

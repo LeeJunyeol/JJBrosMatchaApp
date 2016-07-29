@@ -3,7 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,12 +22,16 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
+    <LinearLayout
+        android:padding="8dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="170dp"
-        android:layout_margin="10dp"
         android:layout_above="@+id/bottom"
         android:layout_below="@+id/ll_title_layout">
     </android.support.v4.view.ViewPager>
@@ -33,23 +42,23 @@
         android:layout_gravity="center"/>
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:orientation="horizontal" android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="3">
         <Button
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:text="@string/btn_foodtruck_view_time_location"
             android:layout_weight="1"/>
         <Button
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:text="@string/btn_foodtruck_view_menu"
             android:layout_weight="1"/>
         <ImageButton
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:src="@drawable/ic_action_tel"
             android:layout_weight="1"/>
     </LinearLayout>
@@ -90,6 +99,11 @@
     </ScrollView>
     <Button
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="50dp"
     android:text="@string/btn_foodtruck_view_review"/>
+    </LinearLayout>
+
+</LinearLayout>
+
+</ScrollView>
 </LinearLayout>
