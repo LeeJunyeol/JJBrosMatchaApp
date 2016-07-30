@@ -30,12 +30,15 @@ import com.matcha.jjbros.matchaapp.entity.ScheduleVO;
 
 import org.postgresql.geometric.PGpoint;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -118,7 +121,6 @@ public class OwnerTimeTableActivity extends AppCompatActivity {
 
 
 
-/*
     // 일정에 등록된 정보를 불러온다.
     public class LoadSchedulesAll extends AsyncTask<Integer, Integer, ArrayList<Schedule>> {
         @Override
@@ -148,7 +150,7 @@ public class OwnerTimeTableActivity extends AppCompatActivity {
             ArrayList<Schedule> scheduleList = new ArrayList<>();
             PreparedStatement pstm = null;
             ResultSet rs = null;
-            String tmp_schedule_key = "";
+            ArrayList<Date> openDates = new ArrayList<Date>();
             String sql = "select * from \"SCHEDULE\" where \"OWNER_ID\"=?";
             try {
                 pstm = conn.prepareStatement(sql);
@@ -194,26 +196,60 @@ public class OwnerTimeTableActivity extends AppCompatActivity {
             Iterator<Schedule> iterator = schedules.iterator();
 
             while(iterator.hasNext()){
+/*
                 String key = (String) iterator.next();
                 Schedule tmpSchedule = schedules.get(key);
                 ScheduleVO tmpScheduleVO = tmpSchedule.getScheduleVO();
-
-                int markerNo = tmpSchedule.getId();
-
-                mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(tmpScheduleVO.getLat(), tmpScheduleVO.getLng()))
-                        .title(String.valueOf(markerNo)));
-
-                this_schedules.put(key, tmpSchedule);
-
-                int tmp = last_marker_no;
-                if(tmp < markerNo){
-                    last_marker_no = markerNo;
-                }
+*/
             }
         }
     }
-*/
 
+    protected  ArrayList<Date> DateSplitor(String days, Date start_date, Date end_date){
+        String[] strings = days.split(",");
+        ArrayList<Integer> integers = new ArrayList<Integer>();
+        ArrayList<Date> resultDates = new ArrayList<Date>();
+        // 비교하기 위해 요일을 리스트로 만들어준다.
+        for(int i = 0; i < strings.length; i++){
+            switch (strings[i]){
+                case "월":
+                    integers.add(2);
+                    break;
+                case "화":
+                    integers.add(3);
+                    break;
+                case "수":
+                    integers.add(4);
+                    break;
+                case "목":
+                    integers.add(5);
+                    break;
+                case "금":
+                    integers.add(6);
+                    break;
+                case "토":
+                    integers.add(7);
+                    break;
+                case "일":
+                    integers.add(1);
+                    break;
+            }
+        }
 
+        Calendar cal = Calendar.getInstance();
+        // 시간차이를 시간,분,초를 곱한 값으로 나누면 하루 단위가 나옴
+        long diff = end_date.getTime() - start_date.getTime();
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+        cal.setTime(start_date);
+
+        for(int i = 0; i<=diffDays; i++){
+            int chkday =cal.get(Calendar.DAY_OF_WEEK);
+            if(integers.contains(chkday)){
+                Date d = new Date(cal.getTimeInMillis());
+                resultDates.add(d);
+            }
+            cal.add(Calendar.DAY_OF_YEAR, 1);
+        }
+        return resultDates;
+    }
 }
