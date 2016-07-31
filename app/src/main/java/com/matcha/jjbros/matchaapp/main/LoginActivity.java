@@ -116,20 +116,16 @@ public class LoginActivity extends AppCompatActivity{
         btn_join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(LoginActivity.this, JoinActivity.class);
                 startActivity(intent);
-
             }
         });
 
         tv_forgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(LoginActivity.this, ForgotActivity.class);
                 startActivity(intent);
-
             }
         });
 

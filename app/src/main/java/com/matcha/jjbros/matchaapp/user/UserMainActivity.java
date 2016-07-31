@@ -108,14 +108,9 @@ public class UserMainActivity extends AppCompatActivity {
         dtToggle = new ActionBarDrawerToggle(this, dlDrawer, R.string.app_name, R.string.app_name);
         dlDrawer.setDrawerListener(dtToggle);
 
-
-
-
-
         btn_my_near_foodtruck = (Button) findViewById(R.id.btn_my_near_foodtruck);
         btn_best_foodtruck = (Button) findViewById(R.id.btn_best_foodtruck);
-         btn_category_drink_dessert = (Button)findViewById(R.id.btn_category_drink_dessert);
-
+        btn_category_drink_dessert = (Button)findViewById(R.id.btn_category_drink_dessert);
 
         btn_my_near_foodtruck.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,22 +127,15 @@ public class UserMainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "되요", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getApplicationContext(),UserNearFoodtruckActivity.class);
                     startActivity(intent);
-
-
                 }
             }
         });
 
-
-
         btn_best_foodtruck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(getApplicationContext(), UserBestFoodtruckListActivity.class);
                 startActivity(intent);
-
-
             }
         });
 

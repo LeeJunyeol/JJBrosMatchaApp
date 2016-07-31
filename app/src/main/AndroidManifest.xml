@@ -33,6 +33,7 @@
         <activity android:name=".user.UserNearFoodtruckActivity" />
         <activity android:name=".user.UserBestFoodtruckListActivity" />
         <activity android:name=".owner.OwnerInfoActivity" />
+        <activity android:name=".owner.TruckInfoActivity" />
 
 
         <!--

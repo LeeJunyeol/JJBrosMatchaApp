@@ -87,7 +87,7 @@ public class JoinActivity extends AppCompatActivity {
                     toast = Toast.makeText(context, text, duration);
                     toast.show();
                     return;
-                } else if (email.contains("@") || email.contains(".com")) {
+                } else if (!email.contains("@") || !email.contains(".com")) {
                     text = "이메일 형식에 맞지 않습니다.";
                     toast = Toast.makeText(context, text, duration);
                     toast.show();
