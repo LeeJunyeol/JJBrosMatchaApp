@@ -65,6 +65,8 @@ import java.util.Properties;
 public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCallback, OnMapClickListener, OnMapLongClickListener,
         OnMarkerClickListener, OnInfoWindowClickListener {
 
+    private HashMap<Integer, Marker> markerMap;
+
     private GoogleMap mMap;
     private double lat = 0.0;
     private double lng = 0.0;
@@ -106,6 +108,8 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle dtToggle;
 
+    private TextView markerNoInInputLayout;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -126,6 +130,7 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
             ab.setDisplayHomeAsUpEnabled(true);
         }
         ///////////////////////////////////////////////////////////////////////////////
+        markerNoInInputLayout = (TextView) findViewById(R.id.markerNo_plan);
 
         btn_add_plan = (Button) findViewById(R.id.btn_add_plan);
         btn_cancle_plan = (Button) findViewById(R.id.btn_cancle_plan);
@@ -216,10 +221,7 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
                 this_schedules.put(schedule_key,newSchedule);
 
                 //입력이 끝나면, 입력단추는 사라지고 수정/삭제 버튼 등장
-                btn_add_plan.setVisibility(View.GONE);
-                btn_cancle_plan.setVisibility(View.GONE);
-                btn_update_plan.setVisibility(View.VISIBLE);
-                btn_delete_plan.setVisibility(View.VISIBLE);
+                changeButton(1);
 
                 Toast.makeText(getApplicationContext(), "일정이 등록 되었습니다.", Toast.LENGTH_LONG).show();
             }
@@ -228,7 +230,14 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
         btn_cancle_plan.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                mMap.clear();
+                // 마커 지움
+                int thisNo = (Integer) Integer.valueOf(markerNoInInputLayout.getText().toString());
+                if(markerMap.get(thisNo).getSnippet().equals("입력중") || markerMap.get(thisNo).getSnippet().equals("입력완료")){
+                    markerMap.get(thisNo).remove(); // 지도에서 마커 제거
+                    markerMap.remove(thisNo); // 리스트에서 마커 제거
+                } else {
+                    Toast.makeText(getApplicationContext(), "초기화 할 수 없습니다.", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -249,6 +258,25 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
         et_end_date.addTextChangedListener(endDateTextWatcher);
         et_start_time.addTextChangedListener(startTimeTextWatcher);
         et_end_time.addTextChangedListener(endTimeTextWatcher);
+    }
+
+    // 지도 클릭했을 때/마커에 데이터 없을 때(0) 입력/초기화 버튼 보이고
+    // 마커에 데이터 있을 때(1) 수정/삭제 버튼 보인다
+    public void changeButton(int stat){
+        switch (stat){
+            case 0:
+                btn_add_plan.setVisibility(View.VISIBLE);
+                btn_cancle_plan.setVisibility(View.VISIBLE);
+                btn_update_plan.setVisibility(View.GONE);
+                btn_delete_plan.setVisibility(View.GONE);
+            case 1:
+                btn_add_plan.setVisibility(View.GONE);
+                btn_cancle_plan.setVisibility(View.GONE);
+                btn_update_plan.setVisibility(View.VISIBLE);
+                btn_delete_plan.setVisibility(View.VISIBLE);
+                break;
+        }
+
     }
 
     // 형식에 맞게 시간 입력받는다.
@@ -424,6 +452,7 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
             super.onPostExecute(schedules);
 
             Iterator<String> iterator = schedules.keySet().iterator();
+            markerMap = new HashMap<>();
 
             while(iterator.hasNext()){
                 String key = (String) iterator.next();
@@ -432,10 +461,11 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
 
                 int markerNo = tmpSchedule.getId();
 
-                mMap.addMarker(new MarkerOptions()
+                Marker marker = mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(tmpScheduleVO.getLat(), tmpScheduleVO.getLng()))
                         .title(String.valueOf(markerNo)));
 
+                markerMap.put(markerNo, marker);
                 this_schedules.put(key, tmpSchedule);
 
                 int tmp = last_marker_no;
@@ -689,7 +719,7 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
     public void onMapClick(LatLng latLng) {
 
         if(cbx_input_mode.isChecked()){
-            viewInputLayout(1);
+            viewInputLayout(1); // inputLayout 표시
             Toast.makeText(getApplicationContext(), "위치를 선택하셨습니다.", Toast.LENGTH_LONG).show();
             tv_lat_plan.setText(String.valueOf(latLng.latitude));
             tv_lng_plan.setText(String.valueOf(latLng.longitude));
@@ -699,7 +729,7 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
             addMarkersToMap(new LatLng(latLng.latitude, latLng.longitude));
 
         } else {
-            viewInputLayout(0);
+            viewInputLayout(0); // inputLayout 숨김
         }
 
     }
@@ -711,10 +741,14 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+        markerNoInInputLayout.setText(marker.getTitle());
+
         if(cbx_input_mode.isChecked()){
             viewInputLayout(2);
+            changeButton(1);
         } else {
             viewInputLayout(0);
+            changeButton(1);
         }
 
         return false;
@@ -724,7 +758,9 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
         last_marker_no += 1;
         Marker marker = mMap.addMarker(new MarkerOptions()
                 .position(latlng)
-                .title(String.valueOf(last_marker_no)));
+                .title(String.valueOf(last_marker_no))
+                .snippet("일정등록 전"));
+        markerMap.put(last_marker_no, marker);
     }
 
     private boolean checkReady() {
