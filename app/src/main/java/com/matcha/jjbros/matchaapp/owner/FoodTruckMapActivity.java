@@ -1,9 +1,17 @@
 package com.matcha.jjbros.matchaapp.owner;
 
+import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -16,20 +24,19 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.matcha.jjbros.matchaapp.R;
 import com.matcha.jjbros.matchaapp.common.DBControl;
-import com.matcha.jjbros.matchaapp.entity.Schedule;
+import com.matcha.jjbros.matchaapp.entity.GenUser;
 import com.matcha.jjbros.matchaapp.entity.ScheduleVO;
 import com.matcha.jjbros.matchaapp.entity.TruckScheduleInfo;
+import com.matcha.jjbros.matchaapp.truck.FoodTruckViewActivity;
 
 import org.postgresql.geometric.PGpoint;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
@@ -37,15 +44,74 @@ import java.util.Properties;
 public class FoodTruckMapActivity extends FragmentActivity implements OnMapReadyCallback, OnInfoWindowClickListener {
 
     private GoogleMap mMap;
-    private HashMap<Integer, TruckScheduleInfo> this_TruckScheduleInfoHashMap;
+    private Marker mLastSelectedMarker;
+    private HashMap<Marker, TruckScheduleInfo> msHashMap;
+    private GenUser owner;
+
+    /** Demonstrates customizing the info window and/or its contents. */
+    class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+
+        // These a both viewgroups containing an ImageView with id "badge" and two TextViews with id
+        // "title" and "snippet".
+        private final View mWindow;
+
+        CustomInfoWindowAdapter() {
+            mWindow = getLayoutInflater().inflate(R.layout.custom_info_window, null);
+        }
+
+        @Override
+        public View getInfoWindow(Marker marker) {
+            render(marker, mWindow);
+            return mWindow;
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            return null;
+        }
+
+        private void render(Marker marker, View view) {
+            // Use the equals() method on a Marker to check for equals.  Do not use ==.
+            String truckImgName =  "truck" + msHashMap.get(marker).getScheduleVO().getOwner_id();
+            Log.d("truckImgName", truckImgName);
+
+            Resources resources = getApplicationContext().getResources();
+            final int badge = resources.getIdentifier(truckImgName, "drawable",
+                    getApplicationContext().getPackageName());
+
+            ((ImageView) view.findViewById(R.id.badge)).setImageResource(badge);
+
+            String title = marker.getTitle();
+            TextView titleUi = ((TextView) view.findViewById(R.id.title));
+            if (title != null) {
+                // Spannable string allows us to edit the formatting of the text.
+                SpannableString titleText = new SpannableString(title);
+                titleText.setSpan(new ForegroundColorSpan(Color.RED), 0, titleText.length(), 0);
+                titleUi.setText(titleText);
+            } else {
+                titleUi.setText("");
+            }
+
+            String snippet = marker.getSnippet();
+            TextView snippetUi = ((TextView) view.findViewById(R.id.snippet));
+            if (snippet != null && snippet.length() > 12) {
+                SpannableString snippetText = new SpannableString(snippet);
+                snippetText.setSpan(new ForegroundColorSpan(Color.MAGENTA), 0, 10, 0);
+                snippetText.setSpan(new ForegroundColorSpan(Color.BLUE), 12, snippet.length(), 0);
+                snippetUi.setText(snippetText);
+            } else {
+                snippetUi.setText("");
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this_TruckScheduleInfoHashMap = new HashMap<>();
-
         setContentView(R.layout.activity_food_truck_map);
+        owner = (GenUser)getIntent().getParcelableExtra("owner");
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
         .findFragmentById(R.id.map);
@@ -66,6 +132,8 @@ public class FoodTruckMapActivity extends FragmentActivity implements OnMapReady
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
+        mMap.setOnInfoWindowClickListener(this);
         new LoadFoodScheduleInfo().execute(1); // 일정을 불러와 지도에 그린다.
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -75,10 +143,12 @@ public class FoodTruckMapActivity extends FragmentActivity implements OnMapReady
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
+
+
     // 일정에 등록된 모든 푸드트럭의 정보를 불러온다.
-    public class LoadFoodScheduleInfo extends AsyncTask<Integer, Integer, HashMap<Integer, TruckScheduleInfo>> {
+    public class LoadFoodScheduleInfo extends AsyncTask<Integer, Integer, ArrayList<TruckScheduleInfo>> {
         @Override
-        protected HashMap<Integer, TruckScheduleInfo> doInBackground(Integer... start) {
+        protected ArrayList<TruckScheduleInfo> doInBackground(Integer... start) {
             Connection conn = null;
             try {
                 Class.forName("org.postgresql.Driver").newInstance();
@@ -101,7 +171,7 @@ public class FoodTruckMapActivity extends FragmentActivity implements OnMapReady
 
             TruckScheduleInfo truckScheduleInfo = null;
             ScheduleVO scheduleVO = null;
-            HashMap<Integer, TruckScheduleInfo> scheduleInfoHashMap = new HashMap<>();
+            ArrayList<TruckScheduleInfo> scheduleInfoList = new ArrayList<>();
             Statement stmt = null;
             ResultSet rs = null;
             String sql = "select \"SCHEDULE\".*, \"OWNER\".\"NAME\", \"OWNER\".\"EMAIL\", \"OWNER\".\"PHONE\"" +
@@ -131,8 +201,7 @@ public class FoodTruckMapActivity extends FragmentActivity implements OnMapReady
                     truckScheduleInfo.setPhone(rs.getString(12));
                     truckScheduleInfo.setMenu_category(rs.getString(13));
 
-                    scheduleInfoHashMap.put(rs.getInt(1), truckScheduleInfo);
-
+                    scheduleInfoList.add(truckScheduleInfo);
                 }
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
@@ -146,32 +215,46 @@ public class FoodTruckMapActivity extends FragmentActivity implements OnMapReady
                     Log.d("exception", e.getMessage());
                 }
             }
-            return scheduleInfoHashMap;
+            return scheduleInfoList;
         }
 
         // 일정 다 불러온 후, 마커를 지도에 추가한다.
         @Override
-        protected void onPostExecute(HashMap<Integer, TruckScheduleInfo> scheduleInfoHashMap) {
-            super.onPostExecute(scheduleInfoHashMap);
+        protected void onPostExecute(ArrayList<TruckScheduleInfo> scheduleInfoList) {
+            super.onPostExecute(scheduleInfoList);
 
-            Iterator<Integer> iterator = scheduleInfoHashMap.keySet().iterator();
+            msHashMap = new HashMap<>();
+
+            Iterator iterator = scheduleInfoList.iterator();
 
             while(iterator.hasNext()){
-                Integer key = (Integer) iterator.next();
-                TruckScheduleInfo tmpTruckScheduleInfo = scheduleInfoHashMap.get(key);
+                TruckScheduleInfo tmpTruckScheduleInfo = (TruckScheduleInfo) iterator.next();
                 ScheduleVO tmpScheduleVO = tmpTruckScheduleInfo.getScheduleVO();
 
-                mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(tmpScheduleVO.getLat(), tmpScheduleVO.getLng()))
-                    .title(tmpTruckScheduleInfo.getOwner_id() + "." + tmpTruckScheduleInfo.getSchedule_id() + "." + tmpTruckScheduleInfo.getName())
-                    .snippet(tmpTruckScheduleInfo.getMenu_category()));
+                String context = "대표메뉴: " + tmpTruckScheduleInfo.getMenu_category() + "\n"
+                        + "기간: " + tmpScheduleVO.getStart_date() + "~" + tmpScheduleVO.getEnd_date() + "\n"
+                        + "시간: " + tmpScheduleVO.getStart_time() + "~" + tmpScheduleVO.getEnd_time();
+                context.concat("\n요일: ");
+                if(tmpScheduleVO.isRepeat()){
+                    context.concat("매주 ");
+                }
+                context.concat(tmpScheduleVO.getDay());
+
+                Marker marker = mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(tmpScheduleVO.getLat(), tmpScheduleVO.getLng()))
+                        .title(tmpTruckScheduleInfo.getName())
+                        .snippet(context)
+                );
+                msHashMap.put(marker, tmpTruckScheduleInfo);
             }
         }
     }
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        String title = marker.getTitle();
-
+        Intent intent = new Intent(getBaseContext(), FoodTruckViewActivity.class);
+        intent.putExtra("ownerID", msHashMap.get(marker).getScheduleVO().getOwner_id());
+        intent.putExtra("GenUser", owner);
+        startActivity(intent);
     }
 }

@@ -33,8 +33,6 @@
         <activity android:name=".user.UserNearFoodtruckActivity" />
         <activity android:name=".user.UserBestFoodtruckListActivity" />
         <activity android:name=".owner.OwnerInfoActivity" />
-        <activity android:name=".owner.TruckInfoActivity" />
-
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -64,6 +62,10 @@
         <activity
             android:name=".owner.AddPlanActivity"
             android:label="일정 추가" />
+        <activity
+            android:name=".truck.FoodTruckViewActivity"
+            android:label="@string/title_activity_food_truck_view"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

@@ -27,6 +27,7 @@
 
 
     <string name="map_not_ready">지도가 아직 준비되지 않았습니다.</string>
+    <string name="title_activity_food_truck_view">FoodTruckView</string>
 
 
 </resources>

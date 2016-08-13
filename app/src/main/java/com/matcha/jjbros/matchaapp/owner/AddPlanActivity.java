@@ -73,7 +73,7 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
 
     private GenUser owner;
     private int owner_id = 0;
-    // 처음 만들어진 것은 1, 수정된 것은 2, 삭제된 것은 3, 변하지 않은 것은 0
+    // 처음 만들어진 것은 1, 수정된 것은 2, 삭제된 것은 3, 변하지 않은 것은 0,
     private int stat = 0;
 
     //입력 레이아웃 속성
@@ -551,7 +551,7 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     // 일정디비에 지금까지 입력, 수정, 삭제한 결과를 적용한다.
-    public class inputSchedules extends AsyncTask<ArrayList<Schedule>, Integer, Integer>{
+    private class inputSchedules extends AsyncTask<ArrayList<Schedule>, Integer, Integer>{
         @Override
         protected Integer doInBackground(ArrayList<Schedule>... schedules) {
             Connection conn = null;
@@ -620,7 +620,7 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
         }
     }
 
-    public class updateSchedules extends AsyncTask<ArrayList<Schedule>, Integer, Integer>{
+    private class updateSchedules extends AsyncTask<ArrayList<Schedule>, Integer, Integer>{
         @Override
         protected Integer doInBackground(ArrayList<Schedule>... schedules) {
             Connection conn = null;
@@ -688,7 +688,7 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
         }
     }
 
-    public class deleteSchedules extends AsyncTask<ArrayList<Schedule>, Integer, Integer>{
+    private class deleteSchedules extends AsyncTask<ArrayList<Schedule>, Integer, Integer>{
         @Override
         protected Integer doInBackground(ArrayList<Schedule>... schedules) {
             Connection conn = null;
@@ -765,6 +765,7 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
 
         mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
 
+        mMap.setOnMarkerClickListener(this);
         mMap.setOnMapClickListener(this);
         mMap.setOnMapLongClickListener(this);
         mMap.setOnInfoWindowClickListener(this); // 마커 클릭하면 정보창 보이게
@@ -777,7 +778,7 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     // 말풍선
-    class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+    public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         @Override
         public View getInfoWindow(Marker marker) {
             return null;
@@ -814,12 +815,12 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     @Override
-    public boolean onMarkerClick(Marker marker) {
+    public boolean onMarkerClick(final Marker mMarker) {
         // 마커 클릭할 때, 현재 마커 번호를 레이아웃 속성값으로 저장
-        String strMarkerNo = marker.getTitle().substring(0, marker.getTitle().charAt('_'));
-        Log.d("strMarkerNo", strMarkerNo);
+        final String strMarkerNo = mMarker.getTitle().substring(0, mMarker.getTitle().indexOf("_"));
         markerNoInInputLayout.setText(strMarkerNo);
-        int chMarkerStat = Integer.valueOf(marker.getTitle().substring(marker.getTitle().length()-1, marker.getTitle().length()));
+        Log.d("strMarkerNo", strMarkerNo);
+        final int chMarkerStat = Integer.valueOf(mMarker.getTitle().substring(mMarker.getTitle().length()-1, mMarker.getTitle().length()));
         Log.d("chMarkerStat", String.valueOf(chMarkerStat));
 
         if(cbx_input_mode.isChecked()){
@@ -827,15 +828,14 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
             if(chMarkerStat == 1){
                 changeButton(0); // 0: 입력/취소 1: 수정/삭제
             } else if (chMarkerStat == 0){
-                setInputLayoutData(marker.getTitle());
+                setInputLayoutData(mMarker.getTitle());
                 changeButton(1);
             }
-            return true;
         } else {
             viewInputLayout(0);
             changeButton(1);
-            return true;
         }
+        return false;
     }
 
     public void setInputLayoutData(String key){

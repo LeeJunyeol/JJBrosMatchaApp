@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical" android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <android.support.design.widget.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/AppTheme.AppBarOverlay">
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/tb_truck_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@color/colorPrimary"
+                    app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+            </android.support.design.widget.AppBarLayout>
+            <LinearLayout
+                android:padding="8dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/iv_foodtruck_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp"
+                    android:layout_above="@+id/bottom"
+                    android:layout_below="@+id/ll_title_layout">
+                </ImageView>
+
+                <RatingBar android:id="@+id/rb_truck_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"/>
+
+
+                <LinearLayout
+                    android:orientation="horizontal" android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="3">
+                    <Button android:id="@+id/btn_schedule_truck"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:text="@string/btn_foodtruck_view_time_location"
+                        android:layout_weight="1"/>
+                    <Button android:id="@+id/btn_menu_truck"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:text="@string/btn_foodtruck_view_menu"
+                        android:layout_weight="1"/>
+                    <ImageButton android:id="@+id/imgbtn_tel_truck"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_action_tel"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ListView android:id="@+id/lv_schedule_truck"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:visibility="gone"/>
+                    <ListView android:id="@+id/lv_menu_truck"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:visibility="gone"/>
+                </FrameLayout>
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView android:id="@+id/tv_welcome_truck"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="많은 이용 부탁드릴게요! 후기 많이 남겨주세요!"
+                            android:textSize="15sp"
+                            android:layout_margin="10dp"/>
+                        <ListView
+                            android:id="@+id/lv_user_review_truck"
+                            android:layout_height="match_parent"
+                            android:layout_width="match_parent"
+                            android:divider="#ffcc22"
+                            android:dividerHeight="1.5dp"
+                            android:choiceMode="singleChoice"/>
+                    </LinearLayout>
+                </ScrollView>
+                <Button android:id="@+id/btn_add_review_truck"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="@string/btn_foodtruck_view_review"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

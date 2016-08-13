@@ -14,8 +14,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,7 +27,7 @@ import com.matcha.jjbros.matchaapp.common.DBControl;
 import com.matcha.jjbros.matchaapp.entity.Owner;
 import com.matcha.jjbros.matchaapp.entity.ScheduleVO;
 import com.matcha.jjbros.matchaapp.entity.TruckScheduleInfo;
-import com.matcha.jjbros.matchaapp.owner.TruckInfoActivity;
+import com.matcha.jjbros.matchaapp.truck.FoodTruckViewActivity;
 
 import org.postgresql.geometric.PGpoint;
 import java.sql.Connection;
@@ -110,7 +108,7 @@ public class UserNearFoodtruckActivity extends AppCompatActivity implements OnMa
 
     @Override
     public void onInfoWindowClick(Marker mMarker) {
-        Intent intent = new Intent(getApplicationContext(), TruckInfoActivity.class);
+        Intent intent = new Intent(getApplicationContext(), FoodTruckViewActivity.class);
         String s = mMarker.getTitle();
         intent.putExtra("foodtruckInfo", thisOwnerHashMap.get(s));
         startActivity(intent);
