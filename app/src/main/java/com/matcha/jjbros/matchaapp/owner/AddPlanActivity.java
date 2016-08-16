@@ -222,7 +222,7 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
 
                 //Schedule(int id, int stat, ScheduleVO scheduleVO)
                 // 처음 만들어진 것은 1, 수정된 것은 2, 삭제된 것은 3, 변하지 않은 것은 0, 미입력 상태 4
-                Schedule newSchedule = new Schedule(last_marker_no, 1, newScheduleVO);
+                Schedule newSchedule = new Schedule(thisNo, 1, newScheduleVO);
                 schedule_key = newSchedule.getId() + "_" + newSchedule.getStat();
                 this_schedules.put(schedule_key,newSchedule);
 
@@ -805,10 +805,7 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
         if(cbx_input_mode.isChecked()){
             viewInputLayout(1); // inputLayout 표시
             Toast.makeText(getApplicationContext(), "위치를 선택하셨습니다.", Toast.LENGTH_LONG).show();
-            tv_lat_plan.setText(String.valueOf(latLng.latitude));
-            tv_lng_plan.setText(String.valueOf(latLng.longitude));
-            Log.d("lat",tv_lat_plan.getText().toString());
-            Log.d("lng",tv_lng_plan.getText().toString());
+            initInputLayout(latLng);
             // 주어진 위치에 마크를 그림
             addMarkersToMap(new LatLng(latLng.latitude, latLng.longitude));
 
