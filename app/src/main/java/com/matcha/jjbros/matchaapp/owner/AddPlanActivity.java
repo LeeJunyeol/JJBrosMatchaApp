@@ -311,6 +311,65 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
             }
         });
 
+        btn_delete_plan.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                int markerNo = Integer.valueOf(markerNoInInputLayout.getText().toString());
+                String oldkey = markerNo + "_" + 0;
+                this_schedules.remove(oldkey);
+                String newkey = markerNo + "_" + 3;
+                Schedule s = new Schedule();
+                s.setId(markerNo);
+                s.setStat(3); // 수정된 상태 : 2
+
+                // 입력 레이아웃의 정보 불러오기
+                double lat = Double.valueOf(tv_lat_plan.getText().toString());
+                double lng = Double.valueOf(tv_lng_plan.getText().toString());
+
+                String str_day = "";
+                Date start_date = Date.valueOf(et_start_date.getText().toString());
+                Date end_date = Date.valueOf(et_end_date.getText().toString());
+                Time start_time = Time.valueOf(et_start_time.getText().toString()+":00");
+                Time end_time = Time.valueOf(et_end_time.getText().toString()+":00");
+
+                if(cbx_mon.isChecked()){
+                    str_day.concat("월,");
+                } else if(cbx_tue.isChecked()){
+                    str_day.concat("화,");
+                } else if(cbx_wed.isChecked()){
+                    str_day.concat("수,");
+                } else if(cbx_thur.isChecked()){
+                    str_day.concat("목,");
+                } else if(cbx_fri.isChecked()){
+                    str_day.concat("금,");
+                } else if(cbx_sat.isChecked()){
+                    str_day.concat("토,");
+                } else if(cbx_sun.isChecked()){
+                    str_day.concat("일,");
+                }
+                // 마지막 콤마 제거
+                Log.d("str_day : ", str_day);
+                if(str_day.endsWith(",")){
+                    StringBuffer sb = new StringBuffer(str_day);
+                    sb.delete(sb.lastIndexOf(",")-1, sb.lastIndexOf(","));
+                    str_day = sb.toString();
+                }
+                Log.d("After str_day : ", str_day);
+
+                Boolean repeat_stat = cbx_repeat_stat.isChecked();
+
+                ScheduleVO svo = new ScheduleVO(lat, lng,
+                        start_date, end_date,
+                        start_time, end_time,
+                        str_day,
+                        repeat_stat,
+                        owner_id);
+                s.setScheduleVO(svo);
+                this_schedules.put(newkey, s);
+                markerMap.get(markerNo).remove();
+            }
+        });
+
         // 형식에 맞게 입력하도록
         DateTextWatcher startDateTextWatcher = new DateTextWatcher(et_start_date);
         DateTextWatcher endDateTextWatcher = new DateTextWatcher(et_end_date);
@@ -904,11 +963,14 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
             return true;
         }
         int id = item.getItemId();
+        // 초기화 버튼
         if (id == R.id.mi_reset_plan_map){
-            if (checkReady())
+            if (checkReady()){
                 mMap.clear();
+                new loadSchedules().execute(owner_id);
+            }
         } else if (id == R.id.mi_save_plan_map){
-            // 지금까지 수행한 결과를 디비에 저장한다.
+            // 저장 아이콘 클릭 했을 때 지금까지 수행한 결과를 디비에 저장한다.
             try{
                 ArrayList<Schedule> insert_schedules = new ArrayList<Schedule>();
                 ArrayList<Schedule> update_schedules = new ArrayList<Schedule>();
