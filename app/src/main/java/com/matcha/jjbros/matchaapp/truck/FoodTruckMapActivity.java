@@ -1,4 +1,4 @@
-package com.matcha.jjbros.matchaapp.owner;
+package com.matcha.jjbros.matchaapp.truck;
 
 import android.content.Intent;
 import android.content.res.Resources;
@@ -24,6 +24,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.matcha.jjbros.matchaapp.R;
 import com.matcha.jjbros.matchaapp.common.DBControl;
+import com.matcha.jjbros.matchaapp.common.LocationConverter;
+import com.matcha.jjbros.matchaapp.common.Values;
 import com.matcha.jjbros.matchaapp.entity.GenUser;
 import com.matcha.jjbros.matchaapp.entity.ScheduleVO;
 import com.matcha.jjbros.matchaapp.entity.TruckScheduleInfo;
@@ -47,6 +49,8 @@ public class FoodTruckMapActivity extends FragmentActivity implements OnMapReady
     private Marker mLastSelectedMarker;
     private HashMap<Marker, TruckScheduleInfo> msHashMap;
     private GenUser owner;
+    private GenUser user;
+    private int loginType;
 
     /** Demonstrates customizing the info window and/or its contents. */
     class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
@@ -110,7 +114,16 @@ public class FoodTruckMapActivity extends FragmentActivity implements OnMapReady
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_food_truck_map);
-        owner = (GenUser)getIntent().getParcelableExtra("owner");
+        loginType = getIntent().getExtras().getInt("loginType");
+
+        switch (loginType){
+            case 0:
+                owner = (GenUser)getIntent().getParcelableExtra("owner");
+                break;
+            case 1:
+                user = (GenUser)getIntent().getParcelableExtra("user");
+                break;
+        }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -138,7 +151,7 @@ public class FoodTruckMapActivity extends FragmentActivity implements OnMapReady
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(37.541957, 126.988168))
-                .zoom(10)
+                .zoom(13)
                 .build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
@@ -230,10 +243,14 @@ public class FoodTruckMapActivity extends FragmentActivity implements OnMapReady
             while(iterator.hasNext()){
                 TruckScheduleInfo tmpTruckScheduleInfo = (TruckScheduleInfo) iterator.next();
                 ScheduleVO tmpScheduleVO = tmpTruckScheduleInfo.getScheduleVO();
+                String address = LocationConverter.getAddress(getApplicationContext(), tmpScheduleVO.getLat(), tmpScheduleVO.getLng());
+                String startTime = tmpScheduleVO.getStart_time().getHours() + ":" + tmpScheduleVO.getStart_time().getMinutes();
+                String endTime = tmpScheduleVO.getEnd_time().getHours() + ":" + tmpScheduleVO.getEnd_time().getMinutes();
 
                 String context = "대표메뉴: " + tmpTruckScheduleInfo.getMenu_category() + "\n"
+                        + "주소: " + address + "\n"
                         + "기간: " + tmpScheduleVO.getStart_date() + "~" + tmpScheduleVO.getEnd_date() + "\n"
-                        + "시간: " + tmpScheduleVO.getStart_time() + "~" + tmpScheduleVO.getEnd_time();
+                        + "시간: " + startTime + "~" + endTime;
                 context.concat("\n요일: ");
                 if(tmpScheduleVO.isRepeat()){
                     context.concat("매주 ");
@@ -254,7 +271,14 @@ public class FoodTruckMapActivity extends FragmentActivity implements OnMapReady
     public void onInfoWindowClick(Marker marker) {
         Intent intent = new Intent(getBaseContext(), FoodTruckViewActivity.class);
         intent.putExtra("ownerID", msHashMap.get(marker).getScheduleVO().getOwner_id());
-        intent.putExtra("GenUser", owner);
+        switch (loginType){
+            case 0:
+                intent.putExtra("GenUser", owner);
+                break;
+            case 1:
+                intent.putExtra("GenUser", user);
+                break;
+        }
         startActivity(intent);
     }
 }

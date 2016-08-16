@@ -20,11 +20,13 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.matcha.jjbros.matchaapp.R;
-
+import com.matcha.jjbros.matchaapp.common.Values;
+import com.matcha.jjbros.matchaapp.entity.GenUser;
+import com.matcha.jjbros.matchaapp.truck.FoodTruckMapActivity;
 
 
 public class UserMainActivity extends AppCompatActivity {
-
+    Button btn_truck_map;
     LocationManager locationManager;
     boolean isGPSEnabled;
     Button btn_my_near_foodtruck;
@@ -35,6 +37,8 @@ public class UserMainActivity extends AppCompatActivity {
     ActionBarDrawerToggle dtToggle;
     ListView listview;
     String[] navItems = {"Brown", "Cadet Blue", "Dark Olive Green", "Dark Orange", "Golden Rod"};
+    GenUser user;
+
 
 
     public void showSettingsAlert() {
@@ -94,6 +98,8 @@ public class UserMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_main);
 
+        user = (GenUser) getIntent().getParcelableExtra("user");
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         dlDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         listview = (ListView) findViewById(R.id.lv_activity_main_nav_list);
@@ -111,6 +117,17 @@ public class UserMainActivity extends AppCompatActivity {
         btn_my_near_foodtruck = (Button) findViewById(R.id.btn_my_near_foodtruck);
         btn_best_foodtruck = (Button) findViewById(R.id.btn_best_foodtruck);
         btn_category_drink_dessert = (Button)findViewById(R.id.btn_category_drink_dessert);
+        btn_truck_map = (Button)findViewById(R.id.btn_truck_map);
+
+        btn_truck_map.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),FoodTruckMapActivity.class);
+                intent.putExtra("user", user);
+                intent.putExtra("loginType", Values.USER);
+                startActivity(intent);
+            }
+        });
 
         btn_my_near_foodtruck.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +143,8 @@ public class UserMainActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), "되요", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getApplicationContext(),UserNearFoodtruckActivity.class);
+                    intent.putExtra("user", user);
+                    intent.putExtra("loginType", Values.USER);
                     startActivity(intent);
                 }
             }
@@ -135,6 +154,8 @@ public class UserMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), UserBestFoodtruckListActivity.class);
+                intent.putExtra("user", user);
+                intent.putExtra("loginType", Values.USER);
                 startActivity(intent);
             }
         });
@@ -149,9 +170,6 @@ public class UserMainActivity extends AppCompatActivity {
 //
 //            }
 //        });
-
-
-
 
     }
 }

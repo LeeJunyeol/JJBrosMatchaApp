@@ -58,6 +58,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import static com.matcha.jjbros.matchaapp.common.Values.VIEW;
+import static com.matcha.jjbros.matchaapp.common.Values.HIDE;
+
 /**
  * Created by hadoop on 16. 7. 13.
  */
@@ -73,7 +76,7 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
 
     private GenUser owner;
     private int owner_id = 0;
-    // 처음 만들어진 것은 1, 수정된 것은 2, 삭제된 것은 3, 변하지 않은 것은 0,
+    // 처음 만들어진 것은 1, 수정된 것은 2, 삭제된 것은 3, 변하지 않은 것은 0, 미입력 상태 4
     private int stat = 0;
 
     //입력 레이아웃 속성
@@ -169,6 +172,10 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
                     return;
                 }
 
+                int thisNo = (Integer) Integer.valueOf(markerNoInInputLayout.getText().toString());
+                String strTitle = thisNo + "_" + 1;
+                markerMap.get(thisNo).setTitle(strTitle);
+
                 // 입력 레이아웃의 정보 불러오기
                 double lat = Double.valueOf(tv_lat_plan.getText().toString());
                 double lng = Double.valueOf(tv_lng_plan.getText().toString());
@@ -214,7 +221,7 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
                         owner_id);
 
                 //Schedule(int id, int stat, ScheduleVO scheduleVO)
-                // 처음 만들어진 것은 1, 수정된 것은 2, 삭제된 것은 3, 변하지 않은 것은 0
+                // 처음 만들어진 것은 1, 수정된 것은 2, 삭제된 것은 3, 변하지 않은 것은 0, 미입력 상태 4
                 Schedule newSchedule = new Schedule(last_marker_no, 1, newScheduleVO);
                 schedule_key = newSchedule.getId() + "_" + newSchedule.getStat();
                 this_schedules.put(schedule_key,newSchedule);
@@ -232,13 +239,14 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
             public void onClick(View view) {
                 // 마커 지움
                 int thisNo = (Integer) Integer.valueOf(markerNoInInputLayout.getText().toString());
+
                 if(markerMap.get(thisNo).getSnippet().equals("입력중") || markerMap.get(thisNo).getSnippet().equals("입력완료")){
+                    initInputLayout(markerMap.get(thisNo).getPosition()); // 인풋 레이아웃 초기화
                     markerMap.get(thisNo).remove(); // 지도에서 마커 제거
                     markerMap.remove(thisNo); // 리스트에서 마커 제거
                 } else {
                     Toast.makeText(getApplicationContext(), "입력을 취소 할 수 없습니다.", Toast.LENGTH_LONG).show();
                 }
-                initInputLayout(); // 인풋 레이아웃 초기화
                 viewInputLayout(0); // 인풋 레이아웃 숨김
             }
         });
@@ -315,9 +323,9 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
         et_end_time.addTextChangedListener(endTimeTextWatcher);
     }   // OnCreate 끝
 
-    public void initInputLayout(){
-        tv_lat_plan.setText("");
-        tv_lng_plan.setText("");
+    public void initInputLayout(LatLng position){
+        tv_lat_plan.setText(String.valueOf(position.latitude));
+        tv_lng_plan.setText(String.valueOf(position.longitude));
 
         et_start_date.setText("");
         et_end_date.setText("");
@@ -343,6 +351,7 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
                 btn_cancle_plan.setVisibility(View.VISIBLE);
                 btn_update_plan.setVisibility(View.GONE);
                 btn_delete_plan.setVisibility(View.GONE);
+                break;
             case 1:
                 btn_add_plan.setVisibility(View.GONE);
                 btn_cancle_plan.setVisibility(View.GONE);
@@ -824,15 +833,16 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
         Log.d("chMarkerStat", String.valueOf(chMarkerStat));
 
         if(cbx_input_mode.isChecked()){
-            viewInputLayout(1);
-            if(chMarkerStat == 1){
+            viewInputLayout(VIEW);
+            if(chMarkerStat == 4){
+                initInputLayout(mMarker.getPosition());
                 changeButton(0); // 0: 입력/취소 1: 수정/삭제
             } else if (chMarkerStat == 0){
                 setInputLayoutData(mMarker.getTitle());
                 changeButton(1);
             }
         } else {
-            viewInputLayout(0);
+            viewInputLayout(HIDE);
             changeButton(1);
         }
         return false;
@@ -852,12 +862,14 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
 
     public void addMarkersToMap(LatLng latlng) {
         last_marker_no += 1;
-        String markerKey = last_marker_no + "_" + 1;
+        String markerKey = last_marker_no + "_" + 4;
         Marker marker = mMap.addMarker(new MarkerOptions()
                 .position(latlng)
                 .title(String.valueOf(markerKey))
         );
         markerMap.put(last_marker_no, marker);
+        String strMarkerNO = String.valueOf(last_marker_no);
+        markerNoInInputLayout.setText(strMarkerNO);
     }
 
     private boolean checkReady() {

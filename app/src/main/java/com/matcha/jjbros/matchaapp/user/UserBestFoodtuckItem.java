@@ -18,7 +18,6 @@ public class UserBestFoodtuckItem {
         this.rank = rank;
         this.img = img;
         this.star = star;
-
         this.category = category;
         this.name = name;
     }

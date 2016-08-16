@@ -12,12 +12,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 
 import com.matcha.jjbros.matchaapp.R;
+import com.matcha.jjbros.matchaapp.common.Values;
 import com.matcha.jjbros.matchaapp.entity.GenUser;
 import com.matcha.jjbros.matchaapp.main.LoginActivity;
-import com.matcha.jjbros.matchaapp.user.UserMyinfoActivity;
+import com.matcha.jjbros.matchaapp.truck.FoodTruckMapActivity;
 
 public class OwnerMainActivity extends AppCompatActivity {
 
@@ -130,6 +130,7 @@ public class OwnerMainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), FoodTruckMapActivity.class);
                 intent.putExtra("owner", owner);
+                intent.putExtra("loginType", Values.OWNER);
                 startActivityForResult(intent, REQUEST_CODE_FOODTRUCKMAP);
             }
         });

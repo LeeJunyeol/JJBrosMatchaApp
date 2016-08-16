@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:background="@drawable/border_rectangle">
+    <TextView android:id="@+id/tv_review"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="30dp"
+        android:text="글 내용 입력"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="2dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="left|center_vertical">
+        <TextView android:id="@+id/lbl_writer_review"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="3dp"
+            android:gravity="center"
+            android:text="작성자"/>
+        <TextView android:id="@+id/tv_writer_review"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="3dp"
+            android:text="익명"
+            android:gravity="center"
+            android:layout_weight="1"/>
+        <TextView android:id="@+id/lbl_writing_day"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="3dp"
+            android:gravity="center"
+            android:text="등록일"/>
+        <TextView android:id="@+id/tv_writing_day"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginRight="3dp"
+            android:layout_weight="1"/>
+        <Button android:id="@+id/btn_edit_review"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="4dp"
+            android:background="@drawable/border_radius_rectangle"
+            android:text="수정"
+            android:visibility="invisible"/>
+        <Button android:id="@+id/btn_del_review"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:background="@drawable/border_radius_rectangle"
+            android:text="삭제"
+            android:visibility="invisible"/>
+    </LinearLayout>
+
+</LinearLayout>
