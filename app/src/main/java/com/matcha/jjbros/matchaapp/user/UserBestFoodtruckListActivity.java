@@ -20,6 +20,8 @@ public class UserBestFoodtruckListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_best_foodtruck_list);
 
+
+
 //        ListView 커스터마이징
         //    1. 다량의 데이터 (ArrayList)
         //    2. Adapter
@@ -79,4 +81,6 @@ public class UserBestFoodtruckListActivity extends AppCompatActivity {
         listview = (ListView) findViewById(R.id.lv_user_best_foodtruck);
         listview.setAdapter(adapter);
     }
+
+
 }

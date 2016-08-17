@@ -912,8 +912,11 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
         tv_lng_plan.setText(String.valueOf(svo.getLng()));
         et_start_date.setText(svo.getStart_date().toString());
         et_end_date.setText(svo.getEnd_date().toString());
-        et_start_time.setText(svo.getStart_time().toString());
-        et_end_time.setText(svo.getEnd_time().toString());
+        String starttime = svo.getStart_time().getHours() + ":" + svo.getStart_time().getMinutes();
+        String endtime = svo.getEnd_time().getHours() + ":" + svo.getEnd_time().getMinutes();
+        et_start_time.setText(starttime);
+        et_end_time.setText(endtime);
+
     }
 
     public void addMarkersToMap(LatLng latlng) {

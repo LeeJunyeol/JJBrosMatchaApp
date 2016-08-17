@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -27,6 +28,7 @@ import com.matcha.jjbros.matchaapp.common.DBControl;
 import com.matcha.jjbros.matchaapp.common.LocationConverter;
 import com.matcha.jjbros.matchaapp.common.Values;
 import com.matcha.jjbros.matchaapp.entity.GenUser;
+import com.matcha.jjbros.matchaapp.entity.Schedule;
 import com.matcha.jjbros.matchaapp.entity.ScheduleVO;
 import com.matcha.jjbros.matchaapp.entity.TruckScheduleInfo;
 import com.matcha.jjbros.matchaapp.truck.FoodTruckViewActivity;
@@ -43,7 +45,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
 
-public class FoodTruckMapActivity extends FragmentActivity implements OnMapReadyCallback, OnInfoWindowClickListener {
+public class FoodTruckMapActivity extends FragmentActivity implements OnMapReadyCallback, OnInfoWindowClickListener, OnMarkerClickListener {
 
     private GoogleMap mMap;
     private Marker mLastSelectedMarker;
@@ -147,6 +149,7 @@ public class FoodTruckMapActivity extends FragmentActivity implements OnMapReady
 
         mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
         mMap.setOnInfoWindowClickListener(this);
+        mMap.setOnMarkerClickListener(this);
         new LoadFoodScheduleInfo().execute(1); // 일정을 불러와 지도에 그린다.
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -243,24 +246,9 @@ public class FoodTruckMapActivity extends FragmentActivity implements OnMapReady
             while(iterator.hasNext()){
                 TruckScheduleInfo tmpTruckScheduleInfo = (TruckScheduleInfo) iterator.next();
                 ScheduleVO tmpScheduleVO = tmpTruckScheduleInfo.getScheduleVO();
-                String address = LocationConverter.getAddress(getApplicationContext(), tmpScheduleVO.getLat(), tmpScheduleVO.getLng());
-                String startTime = tmpScheduleVO.getStart_time().getHours() + ":" + tmpScheduleVO.getStart_time().getMinutes();
-                String endTime = tmpScheduleVO.getEnd_time().getHours() + ":" + tmpScheduleVO.getEnd_time().getMinutes();
-
-                String context = "대표메뉴: " + tmpTruckScheduleInfo.getMenu_category() + "\n"
-                        + "주소: " + address + "\n"
-                        + "기간: " + tmpScheduleVO.getStart_date() + "~" + tmpScheduleVO.getEnd_date() + "\n"
-                        + "시간: " + startTime + "~" + endTime;
-                context.concat("\n요일: ");
-                if(tmpScheduleVO.isRepeat()){
-                    context.concat("매주 ");
-                }
-                context.concat(tmpScheduleVO.getDay());
-
                 Marker marker = mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(tmpScheduleVO.getLat(), tmpScheduleVO.getLng()))
                         .title(tmpTruckScheduleInfo.getName())
-                        .snippet(context)
                 );
                 msHashMap.put(marker, tmpTruckScheduleInfo);
             }
@@ -280,5 +268,27 @@ public class FoodTruckMapActivity extends FragmentActivity implements OnMapReady
                 break;
         }
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        TruckScheduleInfo tsi = msHashMap.get(marker);
+        ScheduleVO svo = tsi.getScheduleVO();
+        String address = LocationConverter.getAddress(getApplicationContext(), marker.getPosition().latitude, marker.getPosition().longitude);
+        String startTime = svo.getStart_time().getHours() + ":" + svo.getStart_time().getMinutes();
+        String endTime = svo.getEnd_time().getHours() + ":" + svo.getEnd_time().getMinutes();
+
+        String context = "대표메뉴: " + tsi.getMenu_category() + "\n"
+                + "주소: " + address + "\n"
+                + "기간: " + svo.getStart_date() + "~" + svo.getEnd_date() + "\n"
+                + "시간: " + startTime + "~" + endTime;
+        context.concat("\n요일: ");
+        if(svo.isRepeat()){
+            context.concat("매주 ");
+        }
+        context.concat(svo.getDay());
+        marker.setSnippet(context);
+
+        return false;
     }
 }

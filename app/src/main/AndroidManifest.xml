@@ -57,7 +57,7 @@
             android:label="@string/title_activity_fest_info" />
         <activity
             android:name=".owner.FoodMenuMngActivity"
-            android:label=""
+            android:label="푸드트럭 메뉴 관리"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".owner.AddPlanActivity"
@@ -65,7 +65,12 @@
         <activity
             android:name=".truck.FoodTruckViewActivity"
             android:label="@string/title_activity_food_truck_view"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".owner.OwnerCouponActivity"
+            android:label="쿠폰"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>

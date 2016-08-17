@@ -87,6 +87,7 @@ public class OwnerMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), OwnerCouponActivity.class);
+                intent.putExtra("owner",owner);
                 startActivityForResult(intent, REQUEST_CODE_OWNERINFO);
             }
         });
