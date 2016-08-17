@@ -6,15 +6,16 @@ import android.graphics.drawable.Drawable;
  * Created by Yu on 2016-07-11.
  */
 public class UserBestFoodtuckItem {
+    private int rank;
+    private int img;
+    private double star;
+    private String name;
+    private String category;
 
-        private String rank;
-        private int img;
-        private double star;
-        private String name;
-        private String category;
+    public UserBestFoodtuckItem() {
+    }
 
-
-    public UserBestFoodtuckItem(String rank, int img, double star,  String category, String name) {
+    public UserBestFoodtuckItem(int rank, int img, double star, String category, String name) {
         this.rank = rank;
         this.img = img;
         this.star = star;
@@ -22,7 +23,27 @@ public class UserBestFoodtuckItem {
         this.name = name;
     }
 
-    public String getRank() {
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
+
+    public void setImg(int img) {
+        this.img = img;
+    }
+
+    public void setStar(double star) {
+        this.star = star;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public int getRank() {
         return rank;
     }
 

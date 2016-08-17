@@ -1,5 +1,6 @@
 package com.matcha.jjbros.matchaapp.owner;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -27,12 +28,13 @@ public class OwnerCouponActivity extends AppCompatActivity {
 
         owner = (GenUser) getIntent().getParcelableExtra("owner");
 
-        FloatingActionButton fab_menu_mng = (FloatingActionButton) findViewById(R.id.btn_add_coupon_owner);
-        fab_menu_mng.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fabAdd = (FloatingActionButton) findViewById(R.id.btn_add_coupon_owner);
+        fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(getApplicationContext(), AddCouponActivity.class);
+                intent.putExtra("owner", owner);
+                startActivity(intent);
             }
         });
 
