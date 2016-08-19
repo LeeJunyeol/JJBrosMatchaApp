@@ -23,6 +23,7 @@ import com.matcha.jjbros.matchaapp.R;
 import com.matcha.jjbros.matchaapp.common.Values;
 import com.matcha.jjbros.matchaapp.entity.GenUser;
 import com.matcha.jjbros.matchaapp.truck.FoodTruckMapActivity;
+import com.matcha.jjbros.matchaapp.truck.UserNearFoodtruckActivity;
 
 
 public class UserMainActivity extends AppCompatActivity {

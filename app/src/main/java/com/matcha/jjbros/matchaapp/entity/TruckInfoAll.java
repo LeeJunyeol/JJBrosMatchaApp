@@ -1,17 +1,19 @@
 package com.matcha.jjbros.matchaapp.entity;
 
+import java.util.ArrayList;
+
 /**
  * Created by jylee on 2016-08-13.
  */
 public class TruckInfoAll {
     private GenUser truckOwner;
-    private Schedule truckSchedule;
-    private TruckMenu truckMenu;
+    private ArrayList<Schedule> truckSchedule;
+    private ArrayList<TruckMenu> truckMenu;
 
     public TruckInfoAll() {
     }
 
-    public TruckInfoAll(GenUser truckOwner, Schedule truckSchedule, TruckMenu truckMenu) {
+    public TruckInfoAll(GenUser truckOwner, ArrayList<Schedule> truckSchedule, ArrayList<TruckMenu> truckMenu) {
         this.truckOwner = truckOwner;
         this.truckSchedule = truckSchedule;
         this.truckMenu = truckMenu;
@@ -25,19 +27,19 @@ public class TruckInfoAll {
         this.truckOwner = truckOwner;
     }
 
-    public Schedule getTruckSchedule() {
+    public ArrayList<Schedule> getTruckSchedule() {
         return truckSchedule;
     }
 
-    public void setTruckSchedule(Schedule truckSchedule) {
+    public void setTruckSchedule(ArrayList<Schedule> truckSchedule) {
         this.truckSchedule = truckSchedule;
     }
 
-    public TruckMenu getTruckMenu() {
+    public ArrayList<TruckMenu> getTruckMenu() {
         return truckMenu;
     }
 
-    public void setTruckMenu(TruckMenu truckMenu) {
+    public void setTruckMenu(ArrayList<TruckMenu> truckMenu) {
         this.truckMenu = truckMenu;
     }
 }

@@ -118,7 +118,7 @@ public class UserBestFoodtruckAdapter extends BaseAdapter{
             //현재 position( getView()메소드의 첫번재 파라미터 )번째의 Data를 위 해당 View들에 연결..
             text_name.setText( datas.get(position).getName() );
             text_category.setText( datas.get(position).getCategory() );
-            text_rank.setText( String.valueOf(datas.get(position).getRank()) );
+            text_rank.setText( String.valueOf(datas.get(position).getRank()) + "위" );
             img_flag.setImageResource( datas.get(position).getImg() );
 
 

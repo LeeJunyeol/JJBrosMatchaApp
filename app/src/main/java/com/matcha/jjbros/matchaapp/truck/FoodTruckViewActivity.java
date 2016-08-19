@@ -76,6 +76,7 @@ public class FoodTruckViewActivity extends AppCompatActivity implements OnScroll
 
     private LayoutInflater mInflater;
     private ReviewListAdapter mReviewAdapter;
+    private ScheduleListAdapter mScheduleAdapter;
 
     private int reviewLastNum = 0;
 
@@ -101,6 +102,9 @@ public class FoodTruckViewActivity extends AppCompatActivity implements OnScroll
         btnAddReview = (Button) findViewById(R.id.btn_add_review_truck);
 
         reviewItemList = new ArrayList<StarReview>();
+
+
+
         // 리뷰 목록 추가
         lvReview = (ListView) findViewById(R.id.lv_user_review_truck);
         mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -117,22 +121,6 @@ public class FoodTruckViewActivity extends AppCompatActivity implements OnScroll
         mReviewAdapter = new ReviewListAdapter(this, reviewItemList);
         lvReview.setAdapter(mReviewAdapter);
 
-        btnSchedule.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                lvMenu.setVisibility(View.GONE);
-                lvSchedule.setVisibility(View.VISIBLE);
-            }
-        });
-
-        btnMenu.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                lvMenu.setVisibility(View.VISIBLE);
-                lvSchedule.setVisibility(View.GONE);
-            }
-        });
-
         // 푸드트럭 기본정보, 일정, 메뉴 불러옴
         new LoadTruckInfoAll().execute(truckOwnerID);
         // 평점, 리뷰 불러옴
@@ -147,9 +135,13 @@ public class FoodTruckViewActivity extends AppCompatActivity implements OnScroll
             Connection conn = null;
 
             TruckInfoAll TruckInfoAll = new TruckInfoAll();
-            TruckMenu truckMenu = new TruckMenu();
-            Schedule schedule = new Schedule();
-            ScheduleVO scheduleVO = new ScheduleVO();
+
+            ArrayList<TruckMenu> truckMenus = new ArrayList<>();
+            TruckMenu truckMenu;
+
+            ArrayList<Schedule> schedules = new ArrayList<>();
+            Schedule schedule;
+            ScheduleVO scheduleVO;
             GenUser genUser = new GenUser();
             genUser.setId(id[0]);
 
@@ -203,7 +195,9 @@ public class FoodTruckViewActivity extends AppCompatActivity implements OnScroll
                 pstm = conn.prepareStatement(sql);
                 pstm.setInt(1, id[0]);
                 rs = pstm.executeQuery();
-                if (rs.next()) {
+                while (rs.next()) {
+                    schedule = new Schedule();
+                    scheduleVO = new ScheduleVO();
                     PGpoint pGpoint = (PGpoint) rs.getObject(2);
                     scheduleVO.setLat(pGpoint.x);
                     scheduleVO.setLng(pGpoint.y);
@@ -217,6 +211,8 @@ public class FoodTruckViewActivity extends AppCompatActivity implements OnScroll
 
                     schedule.setId(rs.getInt(1));
                     schedule.setScheduleVO(scheduleVO);
+
+                    schedules.add(schedule);
                 }
                 pstm.close();
                 rs.close();
@@ -224,7 +220,8 @@ public class FoodTruckViewActivity extends AppCompatActivity implements OnScroll
                 pstm = conn.prepareStatement(sql);
                 pstm.setInt(1, id[0]);
                 rs = pstm.executeQuery();
-                if (rs.next()) {
+                while (rs.next()) {
+                    truckMenu = new TruckMenu();
                     truckMenu.setId(rs.getInt(1));
                     truckMenu.setName(rs.getString(2));
                     truckMenu.setPrice(rs.getInt(3));
@@ -232,10 +229,11 @@ public class FoodTruckViewActivity extends AppCompatActivity implements OnScroll
                     truckMenu.setDetail(rs.getString(5));
                     truckMenu.setStatus(rs.getInt(6));
                     truckMenu.setOwnerid(rs.getInt(7));
+                    truckMenus.add(truckMenu);
                 }
                 TruckInfoAll.setTruckOwner(genUser);
-                TruckInfoAll.setTruckSchedule(schedule);
-                TruckInfoAll.setTruckMenu(truckMenu);
+                TruckInfoAll.setTruckSchedule(schedules);
+                TruckInfoAll.setTruckMenu(truckMenus);
             } catch (Exception e) {
                 Log.d("PPJY", e.getLocalizedMessage());
                 return null;
@@ -267,14 +265,25 @@ public class FoodTruckViewActivity extends AppCompatActivity implements OnScroll
 
                 truckImgView.setImageResource(truckImgRes);
 
+                mScheduleAdapter = new ScheduleListAdapter(getApplicationContext(), thisTruckInfoAll.getTruckSchedule());
+                lvSchedule.setAdapter(mScheduleAdapter);
+
                 btnSchedule.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
+                        lvMenu.setVisibility(View.GONE);
                         lvSchedule.setVisibility(View.VISIBLE);
-
-
                     }
                 });
+
+                btnMenu.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        lvMenu.setVisibility(View.VISIBLE);
+                        lvSchedule.setVisibility(View.GONE);
+                    }
+                });
+
 
             }
         }
@@ -318,7 +327,7 @@ public class FoodTruckViewActivity extends AppCompatActivity implements OnScroll
                 pstm = conn.prepareStatement(sql);
                 pstm.setInt(1, id[0]);
                 rs = pstm.executeQuery();
-                if (rs.next()) {
+                while (rs.next()) {
                     StarReview sr = new StarReview();
                     sr.setId(rs.getInt(1));
                     sr.setStar(rs.getDouble(2));

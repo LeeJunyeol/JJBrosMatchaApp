@@ -1,10 +1,12 @@
-package com.matcha.jjbros.matchaapp.user;
+package com.matcha.jjbros.matchaapp.truck;
 
 
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -12,21 +14,32 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.matcha.jjbros.matchaapp.R;
 import com.matcha.jjbros.matchaapp.common.DBControl;
+import com.matcha.jjbros.matchaapp.common.LocationConverter;
+import com.matcha.jjbros.matchaapp.entity.GenUser;
 import com.matcha.jjbros.matchaapp.entity.Owner;
 import com.matcha.jjbros.matchaapp.entity.ScheduleVO;
 import com.matcha.jjbros.matchaapp.entity.TruckScheduleInfo;
+import com.matcha.jjbros.matchaapp.truck.FoodTruckMapActivity;
 import com.matcha.jjbros.matchaapp.truck.FoodTruckViewActivity;
 
 import org.postgresql.geometric.PGpoint;
@@ -35,29 +48,89 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
 
-public class UserNearFoodtruckActivity extends AppCompatActivity implements OnMapReadyCallback,
-        OnInfoWindowClickListener, LocationListener{
+public class UserNearFoodtruckActivity extends AppCompatActivity implements LocationListener, OnMapReadyCallback, OnInfoWindowClickListener, OnMarkerClickListener {
 
     private SupportMapFragment mapFragment;
-    private GoogleMap googleMap;
+    private GoogleMap mMap;
     double lat = 0.0;
     double lng = 0.0;
     private LatLng currentPosition;
     private Marker uMarker;
-    private Marker marker2;
-    private HashMap<String, Owner> thisOwnerHashMap = new HashMap<>();
+    private GenUser user;
 
-    private Location mLastLocation;
+    private HashMap<Marker, TruckScheduleInfo> msHashMap;
+
     // Check Permissions Now
     private static final int REQUEST_LOCATION = 2;
+
+    /** Demonstrates customizing the info window and/or its contents. */
+    protected class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+
+        // These a both viewgroups containing an ImageView with id "badge" and two TextViews with id
+        // "title" and "snippet".
+        private final View mWindow;
+
+        CustomInfoWindowAdapter() {
+            mWindow = getLayoutInflater().inflate(R.layout.custom_info_window, null);
+        }
+
+        @Override
+        public View getInfoWindow(Marker marker) {
+            render(marker, mWindow);
+            return mWindow;
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            return null;
+        }
+
+        private void render(Marker marker, View view) {
+            // Use the equals() method on a Marker to check for equals.  Do not use ==.
+            String truckImgName =  "truck" + msHashMap.get(marker).getScheduleVO().getOwner_id();
+            Log.d("truckImgName", truckImgName);
+
+            Resources resources = getApplicationContext().getResources();
+            final int badge = resources.getIdentifier(truckImgName, "drawable",
+                    getApplicationContext().getPackageName());
+
+            ((ImageView) view.findViewById(R.id.badge)).setImageResource(badge);
+
+            String title = marker.getTitle();
+            TextView titleUi = ((TextView) view.findViewById(R.id.title));
+            if (title != null) {
+                // Spannable string allows us to edit the formatting of the text.
+                SpannableString titleText = new SpannableString(title);
+                titleText.setSpan(new ForegroundColorSpan(Color.RED), 0, titleText.length(), 0);
+                titleUi.setText(titleText);
+            } else {
+                titleUi.setText("");
+            }
+
+            String snippet = marker.getSnippet();
+            TextView snippetUi = ((TextView) view.findViewById(R.id.snippet));
+            if (snippet != null && snippet.length() > 12) {
+                SpannableString snippetText = new SpannableString(snippet);
+                snippetText.setSpan(new ForegroundColorSpan(Color.MAGENTA), 0, 10, 0);
+                snippetText.setSpan(new ForegroundColorSpan(Color.BLUE), 12, snippet.length(), 0);
+                snippetUi.setText(snippetText);
+            } else {
+                snippetUi.setText("");
+            }
+        }
+    }
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_near_foodtruck);
+
+        user = (GenUser)getIntent().getParcelableExtra("user");
 
         // Acquire a reference to the system Location Manager
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -85,112 +158,33 @@ public class UserNearFoodtruckActivity extends AppCompatActivity implements OnMa
             Log.d("Main", "longtitude=" + lng + ", latitude=" + lat);
         }
 
-
         mapFragment = (SupportMapFragment) this.getSupportFragmentManager().findFragmentById(R.id.map_user_near_foodtruck);
         mapFragment.getMapAsync(this);
-
-        new LoadOwnersInfo().execute(1); // 모든 푸드트럭 사업자 정보를 불러온다.
-
-
     }
 
     @Override
-    public void onMapReady(GoogleMap map) {
-        googleMap = map;
-        currentPosition = new LatLng(lat, lng);
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
 
-        new LoadFoodScheduleInfo().execute(1);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 18));
-        uMarker = googleMap.addMarker(new MarkerOptions().position(currentPosition));
+        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
+        mMap.setOnInfoWindowClickListener(this);
+        mMap.setOnMarkerClickListener(this);
+        new LoadFoodScheduleInfo().execute(1); // 일정을 불러와 지도에 그린다.
 
-        googleMap.setOnInfoWindowClickListener(this);
-    }
-
-    @Override
-    public void onInfoWindowClick(Marker mMarker) {
-        Intent intent = new Intent(getApplicationContext(), FoodTruckViewActivity.class);
-        String s = mMarker.getTitle();
-        intent.putExtra("foodtruckInfo", thisOwnerHashMap.get(s));
-        startActivity(intent);
+        currentPosition = new LatLng(37.541957, 126.988168);
+        uMarker = googleMap.addMarker(new MarkerOptions().position(currentPosition)
+        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 15));
     }
 
     //1. 실시간 푸드트럭 위치 등록하기,
     //2. 쿼리해오기,
     //3. 쿼리결과 마커 보여주기.
 
-    public class LoadOwnersInfo extends AsyncTask<Integer, Integer, HashMap<String, Owner>> {
+    // 일정에 등록된 모든 푸드트럭의 정보를 불러온다.
+    public class LoadFoodScheduleInfo extends AsyncTask<Integer, Integer, ArrayList<TruckScheduleInfo>> {
         @Override
-        protected HashMap<String, Owner> doInBackground(Integer... start) {
-            Connection conn = null;
-            try {
-                Class.forName("org.postgresql.Driver").newInstance();
-                String url = new DBControl().url;
-                Properties props = new Properties();
-                props.setProperty("user", "postgres");
-                props.setProperty("password", "admin123");
-
-                Log.d("url", url);
-                conn = DriverManager.getConnection(url, props);
-                if (conn == null) // couldn't connect to server
-                {
-                    Log.d("connection : ", "null");
-                    return null;
-                }
-            } catch (Exception e) {
-                Log.d("PPJY", e.getLocalizedMessage());
-                return null;
-            }
-
-            Owner owner;
-            HashMap<String, Owner> ownerHashMap = new HashMap<>();
-            Statement stmt = null;
-            ResultSet rs = null;
-            String sql = "select * from \"OWNER\";";
-            try {
-                stmt = conn.createStatement();
-                rs = stmt.executeQuery(sql);
-
-                while (rs.next()) {
-                    owner = new Owner();
-                    owner.setEmail(rs.getString(2));
-                    owner.setPw(rs.getString(3));
-                    owner.setSex(rs.getBoolean(4));
-                    owner.setBirth(rs.getDate(5));
-                    owner.setName(rs.getString(6));
-                    owner.setPhone(rs.getString(7));
-                    owner.setReg_num(rs.getString(8));
-                    owner.setMenu_category(rs.getString(9));
-                    owner.setAdmition_status(rs.getBoolean(10));
-
-                    ownerHashMap.put(owner.getName(), owner);
-                }
-            } catch (SQLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } finally {
-                try {
-                    rs.close();
-                    stmt.close();
-                    conn.close();
-                } catch (SQLException e) {
-                    Log.d("exception", e.getMessage());
-                }
-            }
-            return ownerHashMap;
-        }
-
-        @Override
-        protected void onPostExecute(HashMap<String, Owner> stringOwnerHashMap) {
-            super.onPostExecute(stringOwnerHashMap);
-
-            thisOwnerHashMap = stringOwnerHashMap;
-        }
-    }
-
-
-    public class LoadFoodScheduleInfo extends AsyncTask<Integer, Integer, HashMap<Integer, TruckScheduleInfo>> {
-        @Override
-        protected HashMap<Integer, TruckScheduleInfo> doInBackground(Integer... start) {
+        protected ArrayList<TruckScheduleInfo> doInBackground(Integer... start) {
             Connection conn = null;
             try {
                 Class.forName("org.postgresql.Driver").newInstance();
@@ -213,7 +207,7 @@ public class UserNearFoodtruckActivity extends AppCompatActivity implements OnMa
 
             TruckScheduleInfo truckScheduleInfo = null;
             ScheduleVO scheduleVO = null;
-            HashMap<Integer, TruckScheduleInfo> scheduleInfoHashMap = new HashMap<>();
+            ArrayList<TruckScheduleInfo> scheduleInfoList = new ArrayList<>();
             Statement stmt = null;
             ResultSet rs = null;
             String sql = "select \"SCHEDULE\".*, \"OWNER\".\"NAME\", \"OWNER\".\"EMAIL\", \"OWNER\".\"PHONE\"" +
@@ -243,8 +237,7 @@ public class UserNearFoodtruckActivity extends AppCompatActivity implements OnMa
                     truckScheduleInfo.setPhone(rs.getString(12));
                     truckScheduleInfo.setMenu_category(rs.getString(13));
 
-                    scheduleInfoHashMap.put(rs.getInt(1), truckScheduleInfo);
-
+                    scheduleInfoList.add(truckScheduleInfo);
                 }
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
@@ -258,25 +251,59 @@ public class UserNearFoodtruckActivity extends AppCompatActivity implements OnMa
                     Log.d("exception", e.getMessage());
                 }
             }
-            return scheduleInfoHashMap;
+            return scheduleInfoList;
         }
 
         // 일정 다 불러온 후, 마커를 지도에 추가한다.
         @Override
-        protected void onPostExecute(HashMap<Integer, TruckScheduleInfo> scheduleInfoHashMap) {
-            super.onPostExecute(scheduleInfoHashMap);
+        protected void onPostExecute(ArrayList<TruckScheduleInfo> scheduleInfoList) {
+            super.onPostExecute(scheduleInfoList);
 
-            Iterator<Integer> iterator = scheduleInfoHashMap.keySet().iterator();
+            msHashMap = new HashMap<>();
+
+            Iterator iterator = scheduleInfoList.iterator();
 
             while(iterator.hasNext()){
-                Integer key = (Integer) iterator.next();
-                TruckScheduleInfo tmpTruckScheduleInfo = scheduleInfoHashMap.get(key);
+                TruckScheduleInfo tmpTruckScheduleInfo = (TruckScheduleInfo) iterator.next();
                 ScheduleVO tmpScheduleVO = tmpTruckScheduleInfo.getScheduleVO();
-                marker2 = googleMap.addMarker(new MarkerOptions()
+                Log.d("tmsSchedule", String.valueOf(tmpScheduleVO.getOwner_id()));
+                Marker marker = mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(tmpScheduleVO.getLat(), tmpScheduleVO.getLng()))
-                        .title(tmpTruckScheduleInfo.getName()));
+                        .title(tmpTruckScheduleInfo.getName())
+                );
+                msHashMap.put(marker, tmpTruckScheduleInfo);
             }
         }
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Intent intent = new Intent(getBaseContext(), FoodTruckViewActivity.class);
+        intent.putExtra("ownerID", msHashMap.get(marker).getScheduleVO().getOwner_id());
+        intent.putExtra("GenUser", user);
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        TruckScheduleInfo tsi = msHashMap.get(marker);
+        ScheduleVO svo = tsi.getScheduleVO();
+        String address = LocationConverter.getAddress(getApplicationContext(), marker.getPosition().latitude, marker.getPosition().longitude);
+        String startTime = svo.getStart_time().getHours() + ":" + svo.getStart_time().getMinutes();
+        String endTime = svo.getEnd_time().getHours() + ":" + svo.getEnd_time().getMinutes();
+
+        String context = "대표메뉴: " + tsi.getMenu_category() + "\n"
+                + "주소: " + address + "\n"
+                + "기간: " + svo.getStart_date() + "~" + svo.getEnd_date() + "\n"
+                + "시간: " + startTime + "~" + endTime;
+        context.concat("\n요일: ");
+        if(svo.isRepeat()){
+            context.concat("매주 ");
+        }
+        context.concat(svo.getDay());
+        marker.setSnippet(context);
+
+        return false;
     }
 
     public void onLocationChanged(Location location) {
@@ -285,7 +312,10 @@ public class UserNearFoodtruckActivity extends AppCompatActivity implements OnMa
 
         currentPosition = null;
         uMarker.remove();
-        onMapReady(googleMap);
+        currentPosition = new LatLng(lat, lng);
+        uMarker = mMap.addMarker(new MarkerOptions().position(currentPosition)
+        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 18));
 
         Log.d("latitude: ", String.valueOf(lat));
         Log.d("longitude: ", String.valueOf(lng));
@@ -302,6 +332,5 @@ public class UserNearFoodtruckActivity extends AppCompatActivity implements OnMa
     public void onProviderDisabled(String provider) {
         Log.d("onProviderDisabled", provider);
     }
-
 
 }

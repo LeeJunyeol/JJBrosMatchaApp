@@ -30,7 +30,7 @@
         <activity android:name=".main.ForgotActivity" />
         <activity android:name=".owner.OwnerJoinActivity" />
         <activity android:name=".owner.OwnerMainActivity" />
-        <activity android:name=".user.UserNearFoodtruckActivity" />
+        <activity android:name=".truck.UserNearFoodtruckActivity" />
         <activity android:name=".user.UserBestFoodtruckListActivity" />
         <activity android:name=".owner.OwnerInfoActivity" />
 

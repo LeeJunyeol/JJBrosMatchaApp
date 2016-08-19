@@ -1,16 +1,21 @@
 package com.matcha.jjbros.matchaapp.user;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.matcha.jjbros.matchaapp.R;
 import com.matcha.jjbros.matchaapp.common.DBControl;
+import com.matcha.jjbros.matchaapp.entity.GenUser;
+import com.matcha.jjbros.matchaapp.truck.FoodTruckViewActivity;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -29,6 +34,7 @@ public class UserBestFoodtruckListActivity extends AppCompatActivity {
     ArrayList<UserBestFoodtuckItem> al = new ArrayList(); // 다량의 데이터를 담을 객체
     ListView listview ;
     UserBestFoodtruckAdapter adapter;
+    GenUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +42,7 @@ public class UserBestFoodtruckListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_best_foodtruck_list);
 
         listview = (ListView) findViewById(R.id.lv_user_best_foodtruck);
+        user = (GenUser)getIntent().getParcelableExtra("user");
 
         new LoadBestFoodTruckList().execute(1);
 
@@ -87,6 +94,7 @@ public class UserBestFoodtruckListActivity extends AppCompatActivity {
                 while (rs.next()) {
                     rank ++;
                     UserBestFoodtuckItem ubfi = new UserBestFoodtuckItem();
+                    ubfi.setOwenr_id(rs.getInt(1));
                     ubfi.setRank(rank);
                     truckImgName = "truck" + rs.getInt(1);
                     imgRes = resources.getIdentifier(truckImgName, "drawable",
@@ -129,6 +137,18 @@ public class UserBestFoodtruckListActivity extends AppCompatActivity {
 
                 // 리스트뷰 참조 및 Adapter달기
                 listview.setAdapter(adapter);
+                listview.setOnItemClickListener(new ListView.OnItemClickListener(){
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        UserBestFoodtuckItem ubfi = (UserBestFoodtuckItem)parent.getItemAtPosition(position);
+
+                        Intent intent = new Intent(getApplicationContext(), FoodTruckViewActivity.class);
+                        intent.putExtra("ownerID", ubfi.getOwenr_id());
+                        intent.putExtra("GenUser", user);
+
+                        startActivity(intent);
+                    }
+                });
             }
         }
     }

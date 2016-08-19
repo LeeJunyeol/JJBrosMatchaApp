@@ -1,17 +1,24 @@
 package com.matcha.jjbros.matchaapp.truck;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,6 +33,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.matcha.jjbros.matchaapp.R;
 import com.matcha.jjbros.matchaapp.common.DBControl;
 import com.matcha.jjbros.matchaapp.common.LocationConverter;
+import com.matcha.jjbros.matchaapp.common.PermissionUtils;
 import com.matcha.jjbros.matchaapp.common.Values;
 import com.matcha.jjbros.matchaapp.entity.GenUser;
 import com.matcha.jjbros.matchaapp.entity.Schedule;
@@ -45,17 +53,20 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
 
-public class FoodTruckMapActivity extends FragmentActivity implements OnMapReadyCallback, OnInfoWindowClickListener, OnMarkerClickListener {
+public class FoodTruckMapActivity extends AppCompatActivity implements OnMapReadyCallback, OnInfoWindowClickListener, OnMarkerClickListener
+        , GoogleMap.OnMyLocationButtonClickListener, ActivityCompat.OnRequestPermissionsResultCallback {
 
     private GoogleMap mMap;
-    private Marker mLastSelectedMarker;
     private HashMap<Marker, TruckScheduleInfo> msHashMap;
     private GenUser owner;
     private GenUser user;
     private int loginType;
 
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private boolean mPermissionDenied = false;
+
     /** Demonstrates customizing the info window and/or its contents. */
-    class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+    protected class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
         // These a both viewgroups containing an ImageView with id "badge" and two TextViews with id
         // "title" and "snippet".
@@ -157,9 +168,25 @@ public class FoodTruckMapActivity extends FragmentActivity implements OnMapReady
                 .zoom(13)
                 .build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+        mMap.setOnMyLocationButtonClickListener(this);
+        enableMyLocation();
     }
 
-
+    /**
+     * Enables the My Location layer if the fine location permission has been granted.
+     */
+    private void enableMyLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission to access the location is missing.
+            PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
+                    Manifest.permission.ACCESS_FINE_LOCATION, true);
+        } else if (mMap != null) {
+            // Access to the location has been granted to the app.
+            mMap.setMyLocationEnabled(true);
+        }
+    }
 
     // 일정에 등록된 모든 푸드트럭의 정보를 불러온다.
     public class LoadFoodScheduleInfo extends AsyncTask<Integer, Integer, ArrayList<TruckScheduleInfo>> {
@@ -291,4 +318,48 @@ public class FoodTruckMapActivity extends FragmentActivity implements OnMapReady
 
         return false;
     }
+
+    @Override
+    public boolean onMyLocationButtonClick() {
+        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
+
+        return false;
+    }
+
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        if (mPermissionDenied) {
+            // Permission was not granted, display error dialog.
+            showMissingPermissionError();
+            mPermissionDenied = false;
+        }
+    }
+
+    /**
+     * Displays a dialog with error message explaining that the location permission is missing.
+     */
+    private void showMissingPermissionError() {
+        PermissionUtils.PermissionDeniedDialog
+                .newInstance(true).show(getSupportFragmentManager(), "dialog");
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
+            return;
+        }
+
+        if (PermissionUtils.isPermissionGranted(permissions, grantResults,
+                Manifest.permission.ACCESS_FINE_LOCATION)) {
+            // Enable the my location layer if the permission has been granted.
+            enableMyLocation();
+        } else {
+            // Display the missing permission error dialog when the fragments resume.
+            mPermissionDenied = true;
+        }
+    }
+
 }

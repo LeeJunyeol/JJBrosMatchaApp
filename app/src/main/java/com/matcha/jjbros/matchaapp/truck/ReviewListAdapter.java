@@ -22,7 +22,7 @@ import java.util.Collections;
  */
 public class ReviewListAdapter extends BaseAdapter {
     Context mContext = null;
-    ArrayList<StarReview> reviewList = new ArrayList<StarReview>();
+    ArrayList<StarReview> reviewList = new ArrayList<>();
 
     public ReviewListAdapter(Context mContext, ArrayList<StarReview> reviewList) {
         this.mContext = mContext;
