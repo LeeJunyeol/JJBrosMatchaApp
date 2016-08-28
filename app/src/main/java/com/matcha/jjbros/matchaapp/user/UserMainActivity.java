@@ -18,10 +18,12 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.matcha.jjbros.matchaapp.R;
 import com.matcha.jjbros.matchaapp.common.Values;
 import com.matcha.jjbros.matchaapp.entity.GenUser;
+import com.matcha.jjbros.matchaapp.main.LoginActivity;
 import com.matcha.jjbros.matchaapp.truck.FoodTruckMapActivity;
 import com.matcha.jjbros.matchaapp.truck.UserNearFoodtruckActivity;
 
@@ -34,13 +36,11 @@ public class UserMainActivity extends AppCompatActivity {
     Button btn_best_foodtruck;
     Button btn_category_drink_dessert;
     Toolbar toolbar;
-    DrawerLayout dlDrawer;
+    DrawerLayout drawerLayout;
     ActionBarDrawerToggle dtToggle;
     ListView listview;
-    String[] navItems = {"Brown", "Cadet Blue", "Dark Olive Green", "Dark Orange", "Golden Rod"};
+
     GenUser user;
-
-
 
     public void showSettingsAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(UserMainActivity.this);
@@ -67,7 +67,7 @@ public class UserMainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main_user, menu);
         return true;
     }
 
@@ -102,9 +102,6 @@ public class UserMainActivity extends AppCompatActivity {
         user = (GenUser) getIntent().getParcelableExtra("user");
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        dlDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        listview = (ListView) findViewById(R.id.lv_activity_main_nav_list);
-        listview.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navItems));
 
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
@@ -112,8 +109,11 @@ public class UserMainActivity extends AppCompatActivity {
             ab.setDisplayHomeAsUpEnabled(true);
         }
 
-        dtToggle = new ActionBarDrawerToggle(this, dlDrawer, R.string.app_name, R.string.app_name);
-        dlDrawer.setDrawerListener(dtToggle);
+        // drawerLayout setting         //////////////////////////////////////////////
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout_user_main);
+
+        dtToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name);
+        drawerLayout.addDrawerListener(dtToggle);
 
         btn_my_near_foodtruck = (Button) findViewById(R.id.btn_my_near_foodtruck);
         btn_best_foodtruck = (Button) findViewById(R.id.btn_best_foodtruck);
@@ -161,6 +161,8 @@ public class UserMainActivity extends AppCompatActivity {
             }
         });
 
+        userMyInfoEvents();
+
 //        btn_category_drink_dessert.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -172,5 +174,78 @@ public class UserMainActivity extends AppCompatActivity {
 //            }
 //        });
 
+    }
+
+    public void userMyInfoEvents(){
+        // Drawer Click Events
+        TextView btnUpdate = (TextView)drawerLayout.findViewById(R.id.btn_myinfo_update_user);
+        btnUpdate.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), UserMyinfoUpdateActivity.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
+            }
+        });
+
+        TextView btnLogout = (TextView)drawerLayout.findViewById(R.id.btn_myinfo_logout_user);
+        btnLogout.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        TextView btnBookmark = (TextView)drawerLayout.findViewById(R.id.btn_myinfo_bookmark_user);
+        btnBookmark.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), UserBookmarkTruckListActivity.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
+            }
+        });
+
+        TextView btnCoupon = (TextView)drawerLayout.findViewById(R.id.btn_myinfo_coupon_user);
+        btnCoupon.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), UserCouponActivity.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
+            }
+        });
+
+        TextView btnReview = (TextView)drawerLayout.findViewById(R.id.btn_myinfo_review_user);
+        btnReview.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), UserReviewActivity.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
+            }
+        });
+
+        TextView btnEventNotice = (TextView) drawerLayout.findViewById(R.id.btn_myinfo_event_notice_user);
+        btnEventNotice.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), UserEventNoticeActivity.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
+            }
+        });
+
+        TextView btnSetting = (TextView) drawerLayout.findViewById(R.id.btn_myinfo_setting_user);
+        btnSetting.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), UserSettingActivity.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
+            }
+        });
     }
 }

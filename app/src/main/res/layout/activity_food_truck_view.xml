@@ -83,12 +83,20 @@
                     android:text="많은 이용 부탁드릴게요! 후기 많이 남겨주세요!"
                     android:textSize="15sp"
                     android:layout_marginBottom="5dp"/>
-                <ListView
-                    android:id="@+id/lv_user_review_truck"
-                    android:layout_height="200dp"
+                <com.matcha.jjbros.matchaapp.common.NoInterceptScrollView
                     android:layout_width="match_parent"
-                    android:divider="#ffcc22"
-                    android:dividerHeight="1.5dp"/>
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ListView
+                            android:id="@+id/lv_user_review_truck"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:divider="#ffcc22"
+                            android:dividerHeight="1.5dp"/>
+                    </LinearLayout>
+                </com.matcha.jjbros.matchaapp.common.NoInterceptScrollView>
                 <Button android:id="@+id/btn_add_review_truck"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"

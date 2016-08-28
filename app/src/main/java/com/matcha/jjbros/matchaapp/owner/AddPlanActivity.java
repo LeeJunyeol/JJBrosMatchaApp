@@ -51,15 +51,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 
+import static com.matcha.jjbros.matchaapp.common.Values.DELETED_SCHEDULE;
+import static com.matcha.jjbros.matchaapp.common.Values.NEW_SCHEDULE;
+import static com.matcha.jjbros.matchaapp.common.Values.NONE_SCHEDULE;
+import static com.matcha.jjbros.matchaapp.common.Values.UPDATED_SCHEDULE;
 import static com.matcha.jjbros.matchaapp.common.Values.VIEW;
 import static com.matcha.jjbros.matchaapp.common.Values.HIDE;
+import static com.matcha.jjbros.matchaapp.common.Values.ADD;
+import static com.matcha.jjbros.matchaapp.common.Values.UPDATE;
+
 
 /**
  * Created by hadoop on 16. 7. 13.
@@ -67,8 +77,6 @@ import static com.matcha.jjbros.matchaapp.common.Values.HIDE;
 /*https://github.com/googlemaps/android-samples.git*/
 public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCallback, OnMapClickListener, OnMapLongClickListener,
         OnMarkerClickListener, OnInfoWindowClickListener {
-
-    private HashMap<Integer, Marker> markerMap;
 
     private GoogleMap mMap;
     private double lat = 0.0;
@@ -102,7 +110,8 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
     private CheckBox cbx_input_mode;
     private LinearLayout container_input_plan;
 
-    private HashMap<String, Schedule> this_schedules = new HashMap<String, Schedule>();
+    private HashMap<Marker, Schedule> markerScheduleHashMap = new HashMap<Marker, Schedule>();
+    private HashMap<Integer, Schedule> scheduleHashMap = new HashMap<>();
     private String schedule_key = "";
     private LatLng clicked_latlng; // 지도 클릭했을 때 위치 받는 변수
     private int last_marker_no = 0;
@@ -111,8 +120,8 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle dtToggle;
 
-    private TextView markerNoInInputLayout;
-
+    private TextView tvMarkerNO;
+    private Marker currentMarker;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -133,8 +142,6 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
             ab.setDisplayHomeAsUpEnabled(true);
         }
         ///////////////////////////////////////////////////////////////////////////////
-        markerNoInInputLayout = (TextView) findViewById(R.id.markerNo_plan);
-
         btn_add_plan = (Button) findViewById(R.id.btn_add_plan);
         btn_cancle_plan = (Button) findViewById(R.id.btn_cancle_plan);
         btn_update_plan = (Button) findViewById(R.id.btn_update_plan);
@@ -172,10 +179,6 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
                     return;
                 }
 
-                int thisNo = (Integer) Integer.valueOf(markerNoInInputLayout.getText().toString());
-                String strTitle = thisNo + "_" + 1;
-                markerMap.get(thisNo).setTitle(strTitle);
-
                 // 입력 레이아웃의 정보 불러오기
                 double lat = Double.valueOf(tv_lat_plan.getText().toString());
                 double lng = Double.valueOf(tv_lng_plan.getText().toString());
@@ -187,25 +190,25 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
                 Time end_time = Time.valueOf(et_end_time.getText().toString()+":00");
 
                 if(cbx_mon.isChecked()){
-                    str_day.concat("월,");
-                } else if(cbx_tue.isChecked()){
-                    str_day.concat("화,");
-                } else if(cbx_wed.isChecked()){
-                    str_day.concat("수,");
-                } else if(cbx_thur.isChecked()){
-                    str_day.concat("목,");
-                } else if(cbx_fri.isChecked()){
-                    str_day.concat("금,");
-                } else if(cbx_sat.isChecked()){
-                    str_day.concat("토,");
-                } else if(cbx_sun.isChecked()){
-                    str_day.concat("일,");
+                    str_day = str_day.concat("월,");
+                } if(cbx_tue.isChecked()){
+                    str_day = str_day.concat("화,");
+                } if(cbx_wed.isChecked()){
+                    str_day = str_day.concat("수,");
+                } if(cbx_thur.isChecked()){
+                    str_day = str_day.concat("목,");
+                } if(cbx_fri.isChecked()){
+                    str_day = str_day.concat("금,");
+                } if(cbx_sat.isChecked()){
+                    str_day = str_day.concat("토,");
+                } if(cbx_sun.isChecked()){
+                    str_day = str_day.concat("일,");
                 }
                 // 마지막 콤마 제거
                 Log.d("str_day : ", str_day);
                 if(str_day.endsWith(",")){
                     StringBuffer sb = new StringBuffer(str_day);
-                    sb.delete(sb.lastIndexOf(",")-1, sb.lastIndexOf(","));
+                    sb.delete(sb.lastIndexOf(","), sb.lastIndexOf(",")+1);
                     str_day = sb.toString();
                 }
                 Log.d("After str_day : ", str_day);
@@ -221,15 +224,23 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
                         owner_id);
 
                 //Schedule(int id, int stat, ScheduleVO scheduleVO)
-                // 처음 만들어진 것은 1, 수정된 것은 2, 삭제된 것은 3, 변하지 않은 것은 0, 미입력 상태 4
-                Schedule newSchedule = new Schedule(thisNo, 1, newScheduleVO);
-                schedule_key = newSchedule.getId() + "_" + newSchedule.getStat();
-                this_schedules.put(schedule_key,newSchedule);
+                // 처음 만들어진 것은 1, 수정된 것은 2, 삭제된 것은 3, 변하지 않은 것은 0
+                Schedule newSchedule = markerScheduleHashMap.get(currentMarker);
+                if(markerScheduleHashMap.get(currentMarker) != null){
+                    Log.d("marker", "not null");
+                }
+                last_marker_no += 1;
+                newSchedule.setId(last_marker_no);
+                newSchedule.setStat(NEW_SCHEDULE);
+                newSchedule.setScheduleVO(newScheduleVO);
+                currentMarker.setTitle(String.valueOf(last_marker_no));
+                markerScheduleHashMap.put(currentMarker, newSchedule);
 
                 //입력이 끝나면, 입력단추는 사라지고 수정/삭제 버튼 등장
-                changeButton(1);
+                changeButton(UPDATE);
 
-                Toast.makeText(getApplicationContext(), "일정이 등록 되었습니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(AddPlanActivity.this, "일정이 등록 되었습니다.\n" + "모든 작업 완료 후 꼭 저장해 주세요.",
+                        Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -237,32 +248,19 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
         btn_cancle_plan.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                // 마커 지움
-                int thisNo = (Integer) Integer.valueOf(markerNoInInputLayout.getText().toString());
-
-                if(markerMap.get(thisNo).getSnippet().equals("입력중") || markerMap.get(thisNo).getSnippet().equals("입력완료")){
-                    initInputLayout(markerMap.get(thisNo).getPosition()); // 인풋 레이아웃 초기화
-                    markerMap.get(thisNo).remove(); // 지도에서 마커 제거
-                    markerMap.remove(thisNo); // 리스트에서 마커 제거
-                } else {
-                    Toast.makeText(getApplicationContext(), "입력을 취소 할 수 없습니다.", Toast.LENGTH_LONG).show();
-                }
-                viewInputLayout(0); // 인풋 레이아웃 숨김
+                markerScheduleHashMap.remove(currentMarker);  // 리스트에서 마커 제거
+                initInputLayout(currentMarker.getPosition());  // 인풋 레이아웃 초기화
+                currentMarker.remove();  // 지도에서 마커 제거
+                viewInputLayout(HIDE); // 인풋 레이아웃 숨김
             }
         });
 
         // 수정 버튼
         btn_update_plan.setOnClickListener(new View.OnClickListener(){
             @Override
-            // 현재 this_schedules의 키 형식은 markerno_stat
             public void onClick(View v) {
-                int markerNo = Integer.valueOf(markerNoInInputLayout.getText().toString());
-                String oldkey = markerNo + "_" + 0;
-                this_schedules.remove(oldkey);
-                String newkey = markerNo + "_" + 2;
-                Schedule s = new Schedule();
-                s.setId(markerNo);
-                s.setStat(2); // 수정된 상태 : 2
+                Schedule schedule = markerScheduleHashMap.get(currentMarker);
+                schedule.setStat(UPDATED_SCHEDULE);
 
                 // 입력 레이아웃의 정보 불러오기
                 double lat = Double.valueOf(tv_lat_plan.getText().toString());
@@ -275,25 +273,25 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
                 Time end_time = Time.valueOf(et_end_time.getText().toString()+":00");
 
                 if(cbx_mon.isChecked()){
-                    str_day.concat("월,");
-                } else if(cbx_tue.isChecked()){
-                    str_day.concat("화,");
-                } else if(cbx_wed.isChecked()){
-                    str_day.concat("수,");
-                } else if(cbx_thur.isChecked()){
-                    str_day.concat("목,");
-                } else if(cbx_fri.isChecked()){
-                    str_day.concat("금,");
-                } else if(cbx_sat.isChecked()){
-                    str_day.concat("토,");
-                } else if(cbx_sun.isChecked()){
-                    str_day.concat("일,");
+                    str_day = str_day.concat("월,");
+                } if(cbx_tue.isChecked()){
+                    str_day = str_day.concat("화,");
+                } if(cbx_wed.isChecked()){
+                    str_day = str_day.concat("수,");
+                } if(cbx_thur.isChecked()){
+                    str_day = str_day.concat("목,");
+                } if(cbx_fri.isChecked()){
+                    str_day = str_day.concat("금,");
+                } if(cbx_sat.isChecked()){
+                    str_day = str_day.concat("토,");
+                } if(cbx_sun.isChecked()){
+                    str_day = str_day.concat("일,");
                 }
                 // 마지막 콤마 제거
                 Log.d("str_day : ", str_day);
                 if(str_day.endsWith(",")){
                     StringBuffer sb = new StringBuffer(str_day);
-                    sb.delete(sb.lastIndexOf(",")-1, sb.lastIndexOf(","));
+                    sb.delete(sb.lastIndexOf(","), sb.lastIndexOf(",")+1);
                     str_day = sb.toString();
                 }
                 Log.d("After str_day : ", str_day);
@@ -306,67 +304,24 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
                         str_day,
                         repeat_stat,
                         owner_id);
-                s.setScheduleVO(svo);
-                this_schedules.put(newkey, s);
+                schedule.setScheduleVO(svo);
+                markerScheduleHashMap.put(currentMarker, schedule);
+                Toast.makeText(AddPlanActivity.this, "일정이 수정 되었습니다.\n" + "모든 작업 완료 후 꼭 저장해 주세요.",
+                        Toast.LENGTH_SHORT).show();
             }
         });
 
         btn_delete_plan.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                int markerNo = Integer.valueOf(markerNoInInputLayout.getText().toString());
-                String oldkey = markerNo + "_" + 0;
-                this_schedules.remove(oldkey);
-                String newkey = markerNo + "_" + 3;
-                Schedule s = new Schedule();
-                s.setId(markerNo);
-                s.setStat(3); // 수정된 상태 : 2
+                Schedule schedule = markerScheduleHashMap.get(currentMarker);
+                schedule.setStat(DELETED_SCHEDULE);
 
-                // 입력 레이아웃의 정보 불러오기
-                double lat = Double.valueOf(tv_lat_plan.getText().toString());
-                double lng = Double.valueOf(tv_lng_plan.getText().toString());
-
-                String str_day = "";
-                Date start_date = Date.valueOf(et_start_date.getText().toString());
-                Date end_date = Date.valueOf(et_end_date.getText().toString());
-                Time start_time = Time.valueOf(et_start_time.getText().toString()+":00");
-                Time end_time = Time.valueOf(et_end_time.getText().toString()+":00");
-
-                if(cbx_mon.isChecked()){
-                    str_day.concat("월,");
-                } else if(cbx_tue.isChecked()){
-                    str_day.concat("화,");
-                } else if(cbx_wed.isChecked()){
-                    str_day.concat("수,");
-                } else if(cbx_thur.isChecked()){
-                    str_day.concat("목,");
-                } else if(cbx_fri.isChecked()){
-                    str_day.concat("금,");
-                } else if(cbx_sat.isChecked()){
-                    str_day.concat("토,");
-                } else if(cbx_sun.isChecked()){
-                    str_day.concat("일,");
-                }
-                // 마지막 콤마 제거
-                Log.d("str_day : ", str_day);
-                if(str_day.endsWith(",")){
-                    StringBuffer sb = new StringBuffer(str_day);
-                    sb.delete(sb.lastIndexOf(",")-1, sb.lastIndexOf(","));
-                    str_day = sb.toString();
-                }
-                Log.d("After str_day : ", str_day);
-
-                Boolean repeat_stat = cbx_repeat_stat.isChecked();
-
-                ScheduleVO svo = new ScheduleVO(lat, lng,
-                        start_date, end_date,
-                        start_time, end_time,
-                        str_day,
-                        repeat_stat,
-                        owner_id);
-                s.setScheduleVO(svo);
-                this_schedules.put(newkey, s);
-                markerMap.get(markerNo).remove();
+                markerScheduleHashMap.put(currentMarker, schedule);
+                initInputLayout(currentMarker.getPosition());
+                currentMarker.remove();
+                Toast.makeText(AddPlanActivity.this, "일정이 삭제 되었습니다.\n" + "모든 작업 완료 후 꼭 저장해 주세요.",
+                        Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -382,6 +337,7 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
         et_end_time.addTextChangedListener(endTimeTextWatcher);
     }   // OnCreate 끝
 
+    // 입력 레이아웃 초기화
     public void initInputLayout(LatLng position){
         tv_lat_plan.setText(String.valueOf(position.latitude));
         tv_lng_plan.setText(String.valueOf(position.longitude));
@@ -405,13 +361,13 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
     // 마커에 데이터 있을 때(1) 수정/삭제 버튼 보인다
     public void changeButton(int stat){
         switch (stat){
-            case 0:
+            case 1:
                 btn_add_plan.setVisibility(View.VISIBLE);
                 btn_cancle_plan.setVisibility(View.VISIBLE);
                 btn_update_plan.setVisibility(View.GONE);
                 btn_delete_plan.setVisibility(View.GONE);
                 break;
-            case 1:
+            case 0:
                 btn_add_plan.setVisibility(View.GONE);
                 btn_cancle_plan.setVisibility(View.GONE);
                 btn_update_plan.setVisibility(View.VISIBLE);
@@ -525,9 +481,9 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     // 일정에 등록된 정보를 불러온다.
-    private class loadSchedules extends AsyncTask<Integer, Integer, HashMap<String, Schedule>>{
+    private class loadSchedules extends AsyncTask<Integer, Integer, ArrayList<Schedule>>{
         @Override
-        protected HashMap<String, Schedule> doInBackground(Integer... owner_id) {
+        protected ArrayList<Schedule> doInBackground(Integer... owner_id) {
             Connection conn = null;
             try {
                 Class.forName("org.postgresql.Driver").newInstance();
@@ -550,10 +506,9 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
 
             Schedule schedule = null;
             ScheduleVO scheduleVO = null;
-            HashMap<String, Schedule> scheduleList = new HashMap<>();
+            ArrayList<Schedule> scheduleList = new ArrayList<Schedule>();
             PreparedStatement pstm = null;
             ResultSet rs = null;
-            String tmp_schedule_key = "";
             String sql = "select * from \"SCHEDULE\" where \"OWNER_ID\"=?";
             try {
                 pstm = conn.prepareStatement(sql);
@@ -572,9 +527,8 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
                     scheduleVO.setRepeat(rs.getBoolean(8));
                     scheduleVO.setOwner_id(rs.getInt(9));
 
-                    schedule = new Schedule(rs.getInt(1), 0, scheduleVO);
-                    tmp_schedule_key = rs.getInt(1) +"_"+ 0;
-                    scheduleList.put(tmp_schedule_key, schedule);
+                    schedule = new Schedule(rs.getInt(1), NONE_SCHEDULE, scheduleVO);
+                    scheduleList.add(schedule);
                 }
 
             } catch (SQLException e) {
@@ -590,30 +544,22 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
 
         // 일정 다 불러온 후, 마커를 지도에 추가한다.
         @Override
-        protected void onPostExecute(HashMap<String, Schedule> schedules) {
+        protected void onPostExecute(ArrayList<Schedule> schedules) {
             super.onPostExecute(schedules);
 
-            Iterator<String> iterator = schedules.keySet().iterator();
-            markerMap = new HashMap<>();
+            markerScheduleHashMap = new HashMap<>();
+            Iterator<Schedule> itr = schedules.iterator();
 
-            while(iterator.hasNext()){
-                String key = (String) iterator.next();
-                Schedule tmpSchedule = schedules.get(key);
-                ScheduleVO tmpScheduleVO = tmpSchedule.getScheduleVO();
-
-                int markerNo = tmpSchedule.getId();
+            while(itr.hasNext()){
+                Schedule schedule = itr.next();
+                ScheduleVO svo = schedule.getScheduleVO();
 
                 Marker marker = mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(tmpScheduleVO.getLat(), tmpScheduleVO.getLng()))
-                        .title(String.valueOf(key)));
+                        .position(new LatLng(svo.getLat(), svo.getLng()))
+                        .title(String.valueOf(schedule.getId())));
 
-                markerMap.put(markerNo, marker);
-                this_schedules.put(key, tmpSchedule);
-
-                int tmp = last_marker_no;
-                if(tmp < markerNo){
-                    last_marker_no = markerNo;
-                }
+                markerScheduleHashMap.put(marker, schedule);
+                last_marker_no = schedule.getId();
             }
         }
     }
@@ -664,7 +610,6 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
 
                     res = pstm.executeUpdate();
                     if(res > 0){
-                        Commit(conn);
                         result += 1;
                     }
                 }
@@ -721,6 +666,7 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
                 Iterator itr = schedules[0].iterator();
                 while(itr.hasNext()){
                     Schedule sc = (Schedule) itr.next();
+                    Log.d("day", sc.getScheduleVO().getDay());
                     pstm.setDouble(1, sc.getScheduleVO().getLat());
                     pstm.setDouble(2, sc.getScheduleVO().getLng());
                     pstm.setDate(3, sc.getScheduleVO().getStart_date());
@@ -733,7 +679,6 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
 
                     res = pstm.executeUpdate();
                     if(res > 0){
-                        Commit(conn);
                         result += 1;
                     }
                 }
@@ -792,7 +737,6 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
 
                     res = pstm.executeUpdate();
                     if(res > 0){
-                        Commit(conn);
                         result += 1;
                     }
                 }
@@ -860,18 +804,19 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public void onMapClick(LatLng latLng) {
-
         if(cbx_input_mode.isChecked()){
-            viewInputLayout(1); // inputLayout 표시
-            Toast.makeText(getApplicationContext(), "위치를 선택하셨습니다.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "위치를 선택하셨습니다.", Toast.LENGTH_SHORT).show();
+
             initInputLayout(latLng);
+            changeInputLayoutClickable(true);
+            changeButton(ADD);
+            viewInputLayout(VIEW); // inputLayout 표시
+
             // 주어진 위치에 마크를 그림
             addMarkersToMap(new LatLng(latLng.latitude, latLng.longitude));
-
         } else {
-            viewInputLayout(0); // inputLayout 숨김
+            viewInputLayout(HIDE); // inputLayout 숨김
         }
-
     }
 
     @Override
@@ -880,55 +825,98 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
     }
 
     @Override
-    public boolean onMarkerClick(final Marker mMarker) {
-        // 마커 클릭할 때, 현재 마커 번호를 레이아웃 속성값으로 저장
-        final String strMarkerNo = mMarker.getTitle().substring(0, mMarker.getTitle().indexOf("_"));
-        markerNoInInputLayout.setText(strMarkerNo);
-        Log.d("strMarkerNo", strMarkerNo);
-        final int chMarkerStat = Integer.valueOf(mMarker.getTitle().substring(mMarker.getTitle().length()-1, mMarker.getTitle().length()));
-        Log.d("chMarkerStat", String.valueOf(chMarkerStat));
-
-        if(cbx_input_mode.isChecked()){
-            viewInputLayout(VIEW);
-            if(chMarkerStat == 4){
-                initInputLayout(mMarker.getPosition());
-                changeButton(0); // 0: 입력/취소 1: 수정/삭제
-            } else if (chMarkerStat == 0){
-                setInputLayoutData(mMarker.getTitle());
-                changeButton(1);
-            }
+    public boolean onMarkerClick(Marker mMarker) {
+        viewInputLayout(VIEW);
+        currentMarker = mMarker;
+        Schedule schedule = markerScheduleHashMap.get(mMarker);
+        ScheduleVO svo = schedule.getScheduleVO();
+        if(svo != null){
+            Toast.makeText(getApplicationContext(), "maker has schedule", Toast.LENGTH_SHORT).show();
+            changeDataInputLayout(schedule);
+            changeButton(UPDATE);
         } else {
-            viewInputLayout(HIDE);
-            changeButton(1);
+            Toast.makeText(getApplicationContext(), "maker has not schedule", Toast.LENGTH_SHORT).show();
+            initInputLayout(currentMarker.getPosition());
+            changeButton(ADD);
+        }
+        if(cbx_input_mode.isChecked()){
+            changeInputLayoutClickable(true);
+        } else {
+            changeInputLayoutClickable(false);
         }
         return false;
     }
 
-    public void setInputLayoutData(String key){
-        Log.d("KeyInSetInputLayoutData",key);
-        Schedule s = this_schedules.get(key);
-        ScheduleVO svo = s.getScheduleVO();
-        tv_lat_plan.setText(String.valueOf(svo.getLat()));
-        tv_lng_plan.setText(String.valueOf(svo.getLng()));
-        et_start_date.setText(svo.getStart_date().toString());
-        et_end_date.setText(svo.getEnd_date().toString());
-        String starttime = svo.getStart_time().getHours() + ":" + svo.getStart_time().getMinutes();
-        String endtime = svo.getEnd_time().getHours() + ":" + svo.getEnd_time().getMinutes();
-        et_start_time.setText(starttime);
-        et_end_time.setText(endtime);
+    public void changeInputLayoutClickable(Boolean b){
+        container_input_plan.setEnabled(b);
+        et_start_date.setEnabled(b);
+        et_end_date.setEnabled(b);
+        et_start_time.setEnabled(b);
+        et_end_time.setEnabled(b);
+        cbx_mon.setClickable(b);
+        cbx_tue.setClickable(b);
+        cbx_wed.setClickable(b);
+        cbx_thur.setClickable(b);
+        cbx_fri.setClickable(b);
+        cbx_sat.setClickable(b);
+        cbx_sun.setClickable(b);
+        cbx_repeat_stat.setClickable(b);
+        btn_delete_plan.setClickable(b);
+        btn_add_plan.setClickable(b);
+        btn_cancle_plan.setClickable(b);
+        btn_update_plan.setClickable(b);
+    }
 
+    public void changeDataInputLayout(Schedule schedule){
+        if(schedule != null){
+            ScheduleVO svo = schedule.getScheduleVO();
+            if(svo != null){
+
+                initInputLayout(new LatLng(svo.getLat(), svo.getLng()));
+                et_start_date.setText(svo.getStart_date().toString());
+                et_end_date.setText(svo.getEnd_date().toString());
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:MM", Locale.KOREA);
+                et_start_time.setText(formatter.format(svo.getStart_time()));
+                et_end_time.setText(formatter.format(svo.getEnd_time()));
+                String[] strDays = svo.getDay().split(",");
+                for(int i = 0; i<strDays.length; i++){
+                    switch (strDays[i]){
+                        case "월":
+                            cbx_mon.setChecked(true);
+                            break;
+                        case "화":
+                            cbx_tue.setChecked(true);
+                            break;
+                        case "수":
+                            cbx_wed.setChecked(true);
+                            break;
+                        case "목":
+                            cbx_thur.setChecked(true);
+                            break;
+                        case "금":
+                            cbx_fri.setChecked(true);
+                            break;
+                        case "토":
+                            cbx_sat.setChecked(true);
+                            break;
+                        case "일":
+                            cbx_sun.setChecked(true);
+                            break;
+                    }
+                }
+                cbx_repeat_stat.setChecked(svo.isRepeat());
+            }
+        }
     }
 
     public void addMarkersToMap(LatLng latlng) {
-        last_marker_no += 1;
-        String markerKey = last_marker_no + "_" + 4;
         Marker marker = mMap.addMarker(new MarkerOptions()
                 .position(latlng)
-                .title(String.valueOf(markerKey))
-        );
-        markerMap.put(last_marker_no, marker);
-        String strMarkerNO = String.valueOf(last_marker_no);
-        markerNoInInputLayout.setText(strMarkerNO);
+                .title("빈 일정"));
+        Schedule emptySchedule = new Schedule();
+        emptySchedule.setStat(4);
+        markerScheduleHashMap.put(marker, emptySchedule);
+        currentMarker = marker;
     }
 
     private boolean checkReady() {
@@ -951,7 +939,7 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-// Sync the toggle state after onRestoreInstanceState has occurred.
+        // Sync the toggle state after onRestoreInstanceState has occurred.
         dtToggle.syncState();
     }
 
@@ -980,15 +968,19 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
                 ArrayList<Schedule> delete_schedules = new ArrayList<Schedule>();
 
                 int a = 0;
-                Iterator itr = this_schedules.keySet().iterator();
+                Collection values = markerScheduleHashMap.values();
+                Iterator itr = values.iterator();
                 while(itr.hasNext()){
-                    String s = (String) itr.next();
-                    if (s.endsWith("1")){
-                        insert_schedules.add(this_schedules.get(s)); // new
-                    } else if (s.endsWith("2")) {
-                        update_schedules.add(this_schedules.get(s)); // new
-                    } else if (s.endsWith("3")) {
-                        delete_schedules.add(this_schedules.get(s)); // new
+                    Schedule s = (Schedule) itr.next();
+                    if (s.getStat() == NEW_SCHEDULE){
+                        Log.d("insert_schedule", "added");
+                        insert_schedules.add(s); // new
+                    } else if (s.getStat() == (UPDATED_SCHEDULE)) {
+                        Log.d("update_schedule", "added");
+                        update_schedules.add(s); // new
+                    } else if (s.getStat() == (DELETED_SCHEDULE)) {
+                        Log.d("deleted_schedule", "added");
+                        delete_schedules.add(s); // new
                     }
                 }
                 if(insert_schedules.size() > 0){
@@ -1008,38 +1000,11 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
                 } else {
                     Toast.makeText(AddPlanActivity.this, "성공적으로 저장!", Toast.LENGTH_SHORT).show();
                 }
-
             } catch (Exception e){
                 Log.d("save", e.getMessage());
             }
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void onCheckboxClicked(View view) {
-        // Is the view now checked?
-        boolean checked = ((CheckBox) view).isChecked();
-
-/*
-        // Check which checkbox was clicked
-        switch(view.getId()) {
-            case R.id.cbx_mon:
-                if (checked) {
-                    // Put some meat on the sandwich
-                }
-                else
-                // Remove the meat
-                break;
-            case R.id.cbx_tue:
-                if (checked) {
-                    // Cheese me
-                }
-                else
-                // I'm lactose intolerant
-                break;
-            // TODO: Veggie sandwich
-        }
-*/
     }
 
     public void Close(Connection con){
@@ -1080,37 +1045,12 @@ public class AddPlanActivity extends AppCompatActivity implements OnMapReadyCall
         }
         return validConnection;
     }
-    public void Commit(Connection con){
-        try {
-            if(isConnected(con)){
-                con.commit();
-                Log.d("JdbcTemplate.Commit", "DB Successfully Committed!");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    public void Rollback(Connection con){
-        try {
-            if(isConnected(con)){
-                con.rollback();
-                Log.d("JdbcTemplate.rollback", "DB Successfully Rollbacked!");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void viewInputLayout(int a){
-        if(cbx_input_mode.isChecked() && a == 1){
-            container_input_plan.setVisibility(View.VISIBLE);
-        } else if (cbx_input_mode.isChecked() && a == 2) {
+        if(a == VIEW){
             container_input_plan.setVisibility(View.VISIBLE);
         } else {
             container_input_plan.setVisibility(View.GONE);
         }
     }
-
-
-
 }

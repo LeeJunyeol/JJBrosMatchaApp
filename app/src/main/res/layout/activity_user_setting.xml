@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/material_Grey200">
+    <android.support.design.widget.AppBarLayout android:id="@+id/layout_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/tb_user_setting"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+    </android.support.design.widget.AppBarLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/material_Blue600"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:text="내가 찜한 푸드 트럭 알림"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textColor="@color/material_White"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp" />
+            <TextView
+                android:id="@+id/bookmark_alert_onoff"
+                android:layout_marginLeft="10dp"
+                android:text="OFF"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:background="@drawable/circle_white"
+                android:layout_width="80dp"
+                android:layout_height="30dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/material_Blue600"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:text="내 주변 푸드 트럭 알림"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textColor="@color/material_White"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp" />
+            <TextView
+                android:id="@+id/neartruck_alert_onoff"
+                android:layout_marginLeft="10dp"
+                android:text="OFF"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:background="@drawable/circle_white"
+                android:layout_width="80dp"
+                android:layout_height="30dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/material_Blue600"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:text="이벤트/쿠폰 푸쉬 알림"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textColor="@color/material_White"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp" />
+            <TextView
+                android:id="@+id/event_coupon_alert_onoff"
+                android:layout_marginLeft="10dp"
+                android:text="OFF"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:background="@drawable/circle_white"
+                android:layout_width="80dp"
+                android:layout_height="30dp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

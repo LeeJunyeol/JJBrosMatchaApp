@@ -50,8 +50,8 @@ public class OwnerJoinActivity extends AppCompatActivity {
         User user = (User)getIntent().getParcelableExtra("user");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.tb_owner_join);
+        toolbar.setTitle("사업자 추가정보");
         setSupportActionBar(toolbar);
-
 
         iv_foodtruck_photo = (ImageView)findViewById(R.id.iv_foodtruck_photo);
         et_foodtruck_name = (EditText)findViewById(R.id.et_foodtruck_name);

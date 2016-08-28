@@ -47,7 +47,7 @@ public class JoinActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
 
-        Button btn_join_next = (Button) findViewById(R.id.btn_join_next);
+        final Button btn_join_next = (Button) findViewById(R.id.btn_join_next);
         rb_join_owner = (RadioButton) findViewById(R.id.rb_owner_user);
         rb_join_nomal = (RadioButton) findViewById(R.id.rb_nomal_user);
         et_join_email = (EditText) findViewById(R.id.et_join_email);
@@ -59,6 +59,20 @@ public class JoinActivity extends AppCompatActivity {
 
         Toolbar tb_join = (Toolbar) findViewById(R.id.tb_join);
         setSupportActionBar(tb_join);
+
+        rb_join_owner.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                btn_join_next.setText("다음");
+            }
+        });
+
+        rb_join_nomal.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                btn_join_next.setText("회원가입");
+            }
+        });
 
         btn_join_next.setOnClickListener(new View.OnClickListener() {
             @Override

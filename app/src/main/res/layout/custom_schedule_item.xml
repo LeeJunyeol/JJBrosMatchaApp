@@ -8,56 +8,55 @@
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
     android:background="@drawable/border_rectangle">
-    <LinearLayout
+    <TableLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView android:id="@+id/lb_location"
-            android:layout_width="0dp"
-            android:layout_height="28dp"
-            android:layout_weight="0.3"
-            android:layout_marginTop="1dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:text="장   소"
-            android:gravity="center"
-            android:background="@drawable/border_radius_rectangle" />
-        <TextView android:id="@+id/tv_location"
-            android:layout_width="0dp"
-            android:layout_height="28dp"
-            android:layout_weight="0.7"
-            android:layout_marginBottom="3dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:gravity="center"
-            android:background="@drawable/border_radius_rectangle"/>
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white" >
-        <TextView android:id="@+id/lb_schedule"
-            android:layout_width="0dp"
-            android:layout_height="28dp"
-            android:layout_weight="0.3"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="1dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:text="일  정"
-            android:gravity="center"
-            android:background="@drawable/border_radius_rectangle" />
-        <TextView android:id="@+id/tv_schedule"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="28dp"
-            android:layout_weight="0.7"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="1dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:gravity="center"
-            android:background="@drawable/border_radius_rectangle"/>
-    </LinearLayout>
+        <TableRow>
+            <TextView android:id="@+id/lb_location"
+                android:layout_width="0dp"
+                android:layout_height="28dp"
+                android:layout_weight="0.2"
+                android:layout_marginTop="1dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="장   소"
+                android:gravity="center"
+                android:background="@drawable/radius_rectangle_web_gray" />
+            <TextView android:id="@+id/tv_location"
+                android:layout_width="0dp"
+                android:layout_height="28dp"
+                android:layout_weight="0.8"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:gravity="center"
+                android:background="@drawable/radius_rectangle_web_gray"/>
+        </TableRow>
+        <TableRow>
+            <TextView android:id="@+id/lb_schedule"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="일  정"
+                android:gravity="center"
+                android:background="@drawable/radius_rectangle_web_gray" />
+            <TextView android:id="@+id/tv_schedule"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:minHeight="28dp"
+                android:layout_weight="0.8"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:gravity="center"
+                android:background="@drawable/radius_rectangle_web_gray"/>
+        </TableRow>
+    </TableLayout>
+
 </LinearLayout>

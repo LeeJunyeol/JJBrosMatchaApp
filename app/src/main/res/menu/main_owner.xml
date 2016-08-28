@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+        <item
+            android:id="@+id/mi_switch_my_location"
+            android:icon="@drawable/ic_switch_my_location"
+            app:showAsAction="ifRoom|withText"
+            android:checkable="true"
+            android:title="실시간위치">
+        </item>
+</menu>

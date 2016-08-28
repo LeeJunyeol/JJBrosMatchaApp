@@ -12,8 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ButtonBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.Layout;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -24,6 +26,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -265,7 +268,7 @@ public class FoodTruckViewActivity extends AppCompatActivity implements OnScroll
 
                 truckImgView.setImageResource(truckImgRes);
 
-                mScheduleAdapter = new ScheduleListAdapter(getApplicationContext(), thisTruckInfoAll.getTruckSchedule());
+                mScheduleAdapter = new ScheduleListAdapter(getLayoutInflater(), thisTruckInfoAll.getTruckSchedule());
                 lvSchedule.setAdapter(mScheduleAdapter);
 
                 btnSchedule.setOnClickListener(new View.OnClickListener(){
@@ -283,8 +286,6 @@ public class FoodTruckViewActivity extends AppCompatActivity implements OnScroll
                         lvSchedule.setVisibility(View.GONE);
                     }
                 });
-
-
             }
         }
     }
@@ -405,4 +406,6 @@ public class FoodTruckViewActivity extends AppCompatActivity implements OnScroll
             mReviewAdapter.dataChange();
         }
     }
+
+
 }

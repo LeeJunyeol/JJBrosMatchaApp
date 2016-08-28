@@ -8,7 +8,6 @@ import java.util.Date;
 public class Coupon {
     private int id;
     private String name;
-    private Date start_date;
     private Date end_date;
     private String detail;
     private int owner_id;
@@ -16,18 +15,16 @@ public class Coupon {
     public Coupon() {
     }
 
-    public Coupon(String name, Date start_date, Date end_date, String detail, int owner_id) {
+    public Coupon(String name, Date end_date, String detail, int owner_id) {
         this.name = name;
-        this.start_date = start_date;
         this.end_date = end_date;
         this.detail = detail;
         this.owner_id = owner_id;
     }
 
-    public Coupon(int id, String name, Date start_date, Date end_date, String detail, int owner_id) {
+    public Coupon(int id, String name, Date end_date, String detail, int owner_id) {
         this.id = id;
         this.name = name;
-        this.start_date = start_date;
         this.end_date = end_date;
         this.detail = detail;
         this.owner_id = owner_id;
@@ -47,14 +44,6 @@ public class Coupon {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Date getStart_date() {
-        return start_date;
-    }
-
-    public void setStart_date(Date start_date) {
-        this.start_date = start_date;
     }
 
     public Date getEnd_date() {

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:id="@+id/drawer_list_user_main"
+    android:layout_width="240dp"
+    android:layout_height="290dp"
+    android:background="@color/web_gray"
+    android:layout_gravity="start"
+    android:paddingTop="6dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="114dp"
+        android:paddingLeft="10dp"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:paddingBottom="5dp"
+            android:src="@drawable/ic_baisc_profile" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp">
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:textColor="@color/material_Grey700"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/btn_myinfo_update_user"
+                android:background="@drawable/border_radius_rectangle"
+                android:text="@string/btn_user_myinfo_update"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:textColor="@color/material_Grey700"
+                android:background="@drawable/border_radius_rectangle"
+                android:id="@+id/btn_myinfo_logout_user"
+                android:text="@string/btn_user_myinfo_logout"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="3dp">
+
+        <TableRow>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/border_rectangle"
+                android:id="@+id/btn_myinfo_bookmark_user"
+                android:textColor="@color/material_Grey700"
+                android:text="찜한 트럭"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/border_rectangle"
+                android:textColor="@color/material_Grey700"
+                android:id="@+id/btn_myinfo_coupon_user"
+                android:text="쿠폰"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/border_rectangle"
+                android:id="@+id/btn_myinfo_review_user"
+                android:textColor="@color/material_Grey700"
+                android:text="내 리뷰"/>
+
+        </TableRow>
+    </TableLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center"
+        android:background="@drawable/border_rectangle"
+        android:id="@+id/btn_myinfo_event_notice_user"
+        android:textColor="@color/material_Grey700"
+        android:text="@string/btn_user_myinfo_event_notice"/>
+
+    <TextView
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/border_rectangle"
+        android:id="@+id/btn_myinfo_setting_user"
+        android:textColor="@color/material_Grey700"
+        android:text="@string/btn_user_myinfo_setting"/>
+</LinearLayout>

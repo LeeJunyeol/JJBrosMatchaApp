@@ -70,6 +70,42 @@
             android:name=".owner.OwnerCouponActivity"
             android:label="쿠폰"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".owner.AddCouponActivity"
+            android:label="쿠폰 등록"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".user.UserSettingActivity"
+            android:label="환경 설정"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".user.UserReviewActivity"
+            android:label="리뷰"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".user.UserEventNoticeActivity"
+            android:label="이벤트/공지사항"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".user.UserCouponActivity"
+            android:label="쿠폰"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".truck.NotifiedFoodTruckMapActivity"
+            android:label="실시간 위치"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+
+        <service
+            android:name=".owner.LocationService" />
+        <service
+            android:name=".user.UserLocationService" />
+        <service
+            android:name=".geofencing.GeofenceTransitionsIntentService" />
+        <service
+            android:name=".geofencing.NearTruckGeofencingService" />
+
+
 
     </application>
 

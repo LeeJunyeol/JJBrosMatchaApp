@@ -30,12 +30,17 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
+            android:background="@color/web_gray"
             tools:context=".owner.OwnerMainActivity">
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/main_button_height"
                 android:text="@string/timeMngButton_name"
+                android:background="@drawable/border_rectangle"
+                android:textStyle="bold"
+                android:textColor="@color/material_Grey700"
+                android:textSize="20sp"
                 android:id="@+id/timeMngButton"
                 android:layout_marginTop="@dimen/main_button_margin"
                 android:layout_centerHorizontal="true" />
@@ -44,6 +49,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/main_button_height"
                 android:text="@string/menuMngButton_name"
+                android:background="@drawable/border_rectangle"
+                android:textStyle="bold"
+                android:textColor="@color/material_Grey700"
+                android:textSize="20sp"
                 android:id="@+id/foodMenuMngBtn"
                 android:layout_marginTop="@dimen/main_button_margin"
                 android:layout_below="@+id/timeMngButton"
@@ -54,6 +63,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/main_button_height"
                 android:text="@string/foodMapButton_name"
+                android:background="@drawable/border_rectangle"
+                android:textStyle="bold"
+                android:textColor="@color/material_Grey700"
+                android:textSize="20sp"
                 android:id="@+id/foodMapButton"
                 android:layout_marginTop="@dimen/main_button_margin"
                 android:layout_below="@+id/foodMenuMngBtn"
@@ -64,6 +77,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/main_button_height"
                 android:text="@string/festInfoButton_name"
+                android:background="@drawable/border_rectangle"
+                android:textStyle="bold"
+                android:textColor="@color/material_Grey700"
+                android:textSize="20sp"
                 android:id="@+id/festInfoButton"
                 android:layout_marginTop="@dimen/main_button_margin"
                 android:layout_below="@+id/foodMapButton"
@@ -71,89 +88,6 @@
                 android:layout_alignParentLeft="true"/>
         </RelativeLayout>
 
-        <LinearLayout android:id="@+id/drawer_list_owner_main"
-            android:layout_width="240dp"
-            android:layout_height="300dp"
-            android:orientation="vertical"
-            android:layout_gravity="start"
-            android:background="@drawable/border_rectangle"
-            android:paddingTop="6dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="114dp"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="86dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="14dp"
-                    android:src="@drawable/ic_baisc_profile" />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:orientation="vertical"
-                    android:padding="14dp">
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="43dp"
-                        android:id="@+id/btn_myinfo_update"
-                        android:text="@string/btn_user_myinfo_update"/>
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="43dp"
-                        android:id="@+id/btn_myinfo_logout"
-                        android:text="@string/btn_user_myinfo_logout"/>
-                </LinearLayout>
-            </LinearLayout>
-
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:stretchColumns="*"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp">
-
-                <TableRow>
-
-                    <Button
-                        android:layout_width="0dp"
-                        android:layout_height="54dp"
-                        android:layout_weight="1"
-                        android:id="@+id/btn_myinfo_mynotice"
-                        android:text="@string/mynotice"/>
-
-                    <Button
-                        android:layout_width="0dp"
-                        android:layout_height="54dp"
-                        android:layout_weight="1"
-                        android:id="@+id/btn_myinfo_coupon"
-                        android:text="@string/mng_coupon"/>
-
-                    <Button
-                        android:layout_width="0dp"
-                        android:layout_height="54dp"
-                        android:layout_weight="1"
-                        android:id="@+id/btn_myinfo_review_mng"
-                        android:text="@string/btn_user_myinfo_review"/>
-
-                </TableRow>
-
-            </TableLayout>
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp"
-                android:id="@+id/btn_myinfo_event_notice"
-                android:text="@string/btn_user_myinfo_event_notice"/>
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="54dp"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp"
-                android:id="@+id/btn_myinfo_setting"
-                android:text="@string/btn_user_myinfo_setting"/>
-        </LinearLayout>
+        <include layout="@layout/custom_info_drawer"/>
     </android.support.v4.widget.DrawerLayout>
 </LinearLayout>

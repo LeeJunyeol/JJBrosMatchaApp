@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <android.support.design.widget.AppBarLayout android:id="@+id/layout_appbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
-        app:popupTheme="@style/AppTheme.PopupOverlay" />
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.DrawerLayout
-        android:id="@+id/drawer_layout"
+        android:id="@+id/drawer_layout_user_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="user.UserMainActivity">
@@ -28,139 +31,160 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:background="@color/web_gray"
                 android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="원하는 푸드트럭을 검색하세요"/>
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="검색"/>
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <EditText android:id="@+id/et_search_foodtruck"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="원하는 푸드트럭을 검색하세요"/>
+                    <Button android:id="@+id/btn_search"
+                        android:layout_width="60dp"
+                        android:layout_height="35dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/border_rectangle"
+                        android:textColor="@color/material_LightBlue600"
+                        android:text="검 색"/>
+               </LinearLayout>
 
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-       </LinearLayout>
-
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:stretchColumns="*">
-
-                <TableRow>
-                    <Button
-                        android:id="@+id/btn_truck_map"
+                    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
                         android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:background="@color/white_gray"
-                        android:layout_margin="15dp"
-                        android:text="푸드 트럭 지도"/>
+                        android:layout_height="match_parent"
+                        android:stretchColumns="*">
 
-                    <Button
-                        android:id="@+id/btn_my_near_foodtruck"
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:background="@color/white_gray"
-                        android:layout_margin="15dp"
-                        android:text="내 주변 푸드트럭"/>
+                        <TableRow>
+                            <Button
+                                android:id="@+id/btn_truck_map"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="130dp"
+                                android:layout_margin="15dp"
+                                android:background="@drawable/border_rectangle"
+                                android:textStyle="bold"
+                                android:textColor="@color/material_Grey700"
+                                android:textSize="20sp"
+                                android:text="푸드 트럭\n지도"/>
 
-                </TableRow>
+                            <Button
+                                android:id="@+id/btn_my_near_foodtruck"
+                                android:layout_width="0dp"
+                                android:layout_height="130dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/border_rectangle"
+                                android:textStyle="bold"
+                                android:textColor="@color/material_Grey700"
+                                android:textSize="20sp"
+                                android:layout_margin="15dp"
+                                android:text="내 주변\n푸드트럭"/>
 
-
-
-                <TableRow>
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:background="@color/white_gray"
-                        android:layout_margin="15dp"
-                        android:id="@+id/btn_best_foodtruck"
-                        android:text="인기 푸드트럭"/>
-
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:background="@color/white_gray"
-                        android:layout_margin="15dp"
-                        android:id="@+id/btn_category_drink_dessert"
-                        android:text="카페/음료/디저트"/>
-
-                </TableRow>
-                <TableRow>
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:background="@color/white_gray"
-                        android:layout_margin="15dp"
-                        android:text="한식/분식"/>
-
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:background="@color/white_gray"
-                        android:layout_margin="15dp"
-                        android:text="양식"/>
-
-                </TableRow>
-                <TableRow>
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:background="@color/white_gray"
-                        android:layout_margin="15dp"
-                        android:text="중식"/>
+                        </TableRow>
 
 
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:background="@color/white_gray"
-                        android:layout_margin="15dp"
-                        android:text="일식"/>
 
-                </TableRow>
-                <TableRow>
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:background="@color/white_gray"
-                        android:layout_margin="15dp"
-                        android:text="세계 요리"/>
-                </TableRow>
-            </TableLayout>
+                        <TableRow>
+                            <Button
+                                android:layout_width="0dp"
+                                android:layout_height="130dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/border_rectangle"
+                                android:textStyle="bold"
+                                android:textColor="@color/material_Grey700"
+                                android:textSize="20sp"
+                                android:layout_margin="15dp"
+                                android:id="@+id/btn_best_foodtruck"
+                                android:text="인기\n푸드트럭"/>
 
-        </ScrollView>
+                            <Button
+                                android:layout_width="0dp"
+                                android:layout_height="130dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/border_rectangle"
+                                android:textColor="@color/material_Grey700"
+                                android:textStyle="bold"
+                                android:textSize="20sp"
+                                android:layout_margin="15dp"
+                                android:id="@+id/btn_category_drink_dessert"
+                                android:text="카페/음료\n/디저트"/>
+
+                        </TableRow>
+                        <TableRow>
+                            <Button
+                                android:layout_width="0dp"
+                                android:layout_height="130dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/border_rectangle"
+                                android:textColor="@color/material_Grey700"
+                                android:textStyle="bold"
+                                android:textSize="20sp"
+                                android:layout_margin="15dp"
+                                android:text="한식/분식"/>
+
+                            <Button
+                                android:layout_width="0dp"
+                                android:layout_height="130dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/border_rectangle"
+                                android:textColor="@color/material_Grey700"
+                                android:textStyle="bold"
+                                android:textSize="20sp"
+                                android:layout_margin="15dp"
+                                android:text="양식"/>
+
+                        </TableRow>
+                        <TableRow>
+                            <Button
+                                android:layout_width="0dp"
+                                android:layout_height="130dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/border_rectangle"
+                                android:textColor="@color/material_Grey700"
+                                android:textStyle="bold"
+                                android:textSize="20sp"
+                                android:layout_margin="15dp"
+                                android:text="중식"/>
+
+
+                            <Button
+                                android:layout_width="0dp"
+                                android:layout_height="130dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/border_rectangle"
+                                android:textColor="@color/material_Grey700"
+                                android:textStyle="bold"
+                                android:textSize="20sp"
+                                android:layout_margin="15dp"
+                                android:text="일식"/>
+
+                        </TableRow>
+                        <TableRow>
+                            <Button
+                                android:layout_width="0dp"
+                                android:layout_height="130dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/border_rectangle"
+                                android:textColor="@color/material_LightBlue600"
+                                android:textStyle="bold"
+                                android:textSize="20sp"
+                                android:layout_margin="15dp"
+                                android:text="세계 요리"/>
+                        </TableRow>
+                    </TableLayout>
+                </ScrollView>
             </LinearLayout>
-
-
         </FrameLayout>
-
-
-        <ListView android:layout_width="240dp"
-            android:layout_height="match_parent"
-            android:id="@+id/lv_activity_main_nav_list"
-            android:layout_gravity="start"
-            android:choiceMode="singleChoice"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="0dp"
-            android:background="#EDEDED"/>
-
-
+        <include layout="@layout/custom_user_info_drawer"/>
     </android.support.v4.widget.DrawerLayout>
-
-    
-
-
-
 
 </LinearLayout>

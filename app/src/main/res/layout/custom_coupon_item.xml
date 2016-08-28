@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:background="@drawable/border_rectangle">
+    <TableLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TableRow>
+            <TextView android:id="@+id/tv_coupon_name"
+                android:layout_width="0dp"
+                android:layout_height="28dp"
+                android:layout_weight="0.5"
+                android:layout_marginTop="1dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="쿠폰명"
+                android:gravity="center"
+                android:background="@drawable/radius_rectangle_web_gray" />
+            <TextView android:id="@+id/tv_expiration_date"
+                android:layout_width="0dp"
+                android:layout_height="28dp"
+                android:layout_weight="0.5"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="유효기간"
+                android:gravity="center"
+                android:background="@drawable/radius_rectangle_web_gray"/>
+        </TableRow>
+        <TableRow>
+            <TextView android:id="@+id/tv_contents"
+                android:layout_width="0dp"
+                android:layout_height="28dp"
+                android:layout_weight="0.2"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="내 용"
+                android:gravity="center"
+                android:background="@drawable/radius_rectangle_web_gray" />
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>

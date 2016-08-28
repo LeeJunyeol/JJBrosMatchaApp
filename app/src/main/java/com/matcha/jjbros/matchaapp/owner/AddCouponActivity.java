@@ -33,9 +33,7 @@ import java.util.Properties;
  */
 public class AddCouponActivity extends AppCompatActivity {
     private EditText etCouponName;
-    private TextView tvExpireDate;
-    private DatePicker dpStartDate;
-    private DatePicker dpEndDate;
+    private EditText etExpirationDate;
     private EditText etContents;
     private Button btnAdd;
 
@@ -46,15 +44,13 @@ public class AddCouponActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_coupon);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tb_add_coupon);
         setSupportActionBar(toolbar);
 
         owner = (GenUser) getIntent().getParcelableExtra("owner");
 
         etCouponName = (EditText) findViewById(R.id.et_coupon_name);
-        tvExpireDate = (TextView) findViewById(R.id.tv_expiration_date);
-        dpStartDate = (DatePicker) findViewById(R.id.dp_start);
-        dpEndDate = (DatePicker) findViewById(R.id.dp_end);
+        etExpirationDate = (EditText) findViewById(R.id.et_expiration_date);
         etContents = (EditText) findViewById(R.id.et_contents);
         btnAdd = (Button) findViewById(R.id.btn_add);
 
@@ -64,8 +60,7 @@ public class AddCouponActivity extends AppCompatActivity {
                 etCouponName.getText();
                 Coupon coupon = new Coupon();
                 coupon.setName(etCouponName.getText().toString());
-                coupon.setStart_date(new Date(dpStartDate.getCalendarView().getDate()));
-                coupon.setEnd_date(new Date(dpEndDate.getCalendarView().getDate()));
+                coupon.setEnd_date(java.sql.Date.valueOf(etExpirationDate.getText().toString()));
                 coupon.setDetail(etContents.getText().toString());
                 coupon.setOwner_id(owner.getId());
                 new InputCoupon().execute(coupon);
@@ -101,20 +96,19 @@ public class AddCouponActivity extends AppCompatActivity {
 
             PreparedStatement pstm = null;
             int res = 0;
-            String sql = "insert into \"COUPON\"(\"ID\", \"NAME\", \"START_DATE\", \"END_DATE\"," +
-                    "\"DETAIL\", \"OWNER_ID\") values (DEFAULT,?,?,?,?,?)";
+            String sql = "insert into \"COUPON\"(\"ID\", \"NAME\", \"END_DATE\"," +
+                    "\"DETAIL\", \"OWNER_ID\") values (DEFAULT,?,?,?,?)";
             try {
                 pstm = conn.prepareStatement(sql);
                 pstm.setString(1, c.getName());
-                pstm.setDate(2, java.sql.Date.valueOf(c.getStart_date().toString()));
-                pstm.setDate(3, java.sql.Date.valueOf(c.getEnd_date().toString()));
-                pstm.setString(4, c.getDetail());
-                pstm.setInt(5, c.getOwner_id());
+                pstm.setDate(2, java.sql.Date.valueOf(c.getEnd_date().toString()));
+                pstm.setString(3, c.getDetail());
+                pstm.setInt(4, c.getOwner_id());
 
                 res = pstm.executeUpdate();
                 if(res > 0){
-                    conn.commit();
                     result += 1;
+                    conn.commit();
                 }
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
@@ -136,10 +130,11 @@ public class AddCouponActivity extends AppCompatActivity {
             super.onPostExecute(result);
             if(result > 0){
                 Log.d("db insert","success");
-                Toast.makeText(getApplicationContext(), "쿠폰이 성공적으로 추가 되었습니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "쿠폰이 성공적으로 추가 되었습니다.", Toast.LENGTH_SHORT).show();
                 finish();
             } else {
-                Toast.makeText(getApplicationContext(), "쿠폰을 추가하는 데 실패했습니다..", Toast.LENGTH_LONG).show();
+                Log.d("db insert","fail");
+                Toast.makeText(getApplicationContext(), "쿠폰을 추가하는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
                 finish();
             }
         }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+    </android.support.design.widget.AppBarLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:padding="20dp">
+        <EditText android:id="@+id/et_add_review_form"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:minHeight="30dp"
+            android:hint="글 내용 입력"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:background="@color/web_gray"
+            android:layout_marginBottom="2dp"/>
+        <Button android:id="@+id/btn_add_review_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="등  록"
+            android:layout_below="@+id/et_add_review_form"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:background="@color/web_blue"/>
+    </RelativeLayout>
+</LinearLayout>

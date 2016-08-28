@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <android.support.design.widget.AppBarLayout android:id="@+id/toolbar"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
         <android.support.v7.widget.Toolbar
-            android:id="@+id/tb_add_plan"
+            android:id="@+id/tb_add_coupon"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
@@ -23,47 +23,41 @@
 
         <EditText android:id="@+id/et_coupon_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="5dp"
+            android:layout_marginBottom="5dp"
             android:hint="쿠폰명"
+            android:textSize="18sp"
+            android:background="@drawable/radius_rectangle_web_gray"
             android:maxLines="1" />
 
-        <TextView android:id="@+id/tv_expiration_date"
+        <EditText android:id="@+id/et_expiration_date"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_marginTop="5dp"
-            android:text="유효기간"
+            android:layout_marginBottom="5dp"
+            android:hint="유효기간"
+            android:paddingLeft="5dp"
+            android:padding="2dp"
+            android:background="@drawable/radius_rectangle_web_gray"
             android:textSize="18sp"/>
 
-        <LinearLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <DatePicker
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:id="@+id/dp_start"
-                android:layout_gravity="center_horizontal"
-                android:datePickerMode="spinner"
-                android:calendarViewShown="false"/>
-            <DatePicker
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:id="@+id/dp_end"
-                android:layout_gravity="center_horizontal"
-                android:datePickerMode="spinner"
-                android:calendarViewShown="false"/>
-        </LinearLayout>
-
         <EditText android:id="@+id/et_contents"
-            android:hint="내용"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:hint="내  용"
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
+            android:layout_height="200dp"
+            android:background="@drawable/radius_rectangle_web_gray" />
         <Button android:id="@+id/btn_add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="등록"/>
+            android:text="등  록"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:background="@color/web_blue"/>
     </LinearLayout>
 
 </LinearLayout>

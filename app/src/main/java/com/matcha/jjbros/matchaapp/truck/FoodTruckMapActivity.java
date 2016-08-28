@@ -161,6 +161,8 @@ public class FoodTruckMapActivity extends AppCompatActivity implements OnMapRead
         mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
         mMap.setOnInfoWindowClickListener(this);
         mMap.setOnMarkerClickListener(this);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+
         new LoadFoodScheduleInfo().execute(1); // 일정을 불러와 지도에 그린다.
 
         CameraPosition cameraPosition = new CameraPosition.Builder()

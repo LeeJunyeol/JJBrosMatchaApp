@@ -21,11 +21,11 @@ import java.util.ArrayList;
  */
 public class ScheduleListAdapter extends BaseAdapter {
     private ArrayList<Schedule> schedules = new ArrayList<>();
-    private Context mContext;
+    private LayoutInflater inflater;
 
-    public ScheduleListAdapter(Context mContext, ArrayList<Schedule> schedules) {
+    public ScheduleListAdapter(LayoutInflater inflater, ArrayList<Schedule> schedules) {
         this.schedules = schedules;
-        this.mContext = mContext;
+        this.inflater = inflater;
     }
 
     @Override
@@ -45,31 +45,24 @@ public class ScheduleListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ScheduleItem scheduleItem;
         final int pos = position;
 
         if(convertView == null) {
-            scheduleItem = new ScheduleItem();
-
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.custom_schedule_item, parent, false);
-
-            scheduleItem.lbLocation = (TextView) convertView.findViewById(R.id.lb_location);
-            scheduleItem.tvLocation = (TextView) convertView.findViewById(R.id.tv_location);
-            scheduleItem.lbLocation = (TextView) convertView.findViewById(R.id.lb_schedule);
-            scheduleItem.tvSchedule = (TextView) convertView.findViewById(R.id.tv_schedule);
-
-            convertView.setTag(scheduleItem);
-        } else {
-            scheduleItem = (ScheduleItem) convertView.getTag();
+            convertView = inflater.inflate(R.layout.custom_schedule_item, null);
         }
+
+
+        TextView lbLocation = (TextView) convertView.findViewById(R.id.lb_location);
+        TextView tvLocation = (TextView) convertView.findViewById(R.id.tv_location);
+        TextView lbSchedule = (TextView) convertView.findViewById(R.id.lb_schedule);
+        TextView tvSchedule = (TextView) convertView.findViewById(R.id.tv_schedule);
 
         final Schedule schedule = schedules.get(pos);
         final ScheduleVO svo = schedule.getScheduleVO();
 
         double lat = svo.getLat();
         double lng = svo.getLng();
-        scheduleItem.tvLocation.setText(LocationConverter.getAddress(mContext.getApplicationContext(), lat, lng));
+        tvLocation.setText(LocationConverter.getAddress(inflater.getContext(), lat, lng));
 
         String startTime = svo.getStart_time().getHours() + ":" + svo.getStart_time().getMinutes();
         String endTime = svo.getEnd_time().getHours() + ":" + svo.getEnd_time().getMinutes();
@@ -82,7 +75,7 @@ public class ScheduleListAdapter extends BaseAdapter {
         }
         context.concat(svo.getDay());
 
-        scheduleItem.tvSchedule.setText(context);
+        tvSchedule.setText(context);
 
         return convertView;
     }
