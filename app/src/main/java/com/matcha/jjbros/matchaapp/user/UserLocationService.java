@@ -52,7 +52,7 @@ import java.util.Properties;
 /**
  * Created by jylee on 2016-08-24.
  */
-public class UserLocationService extends Service implements LocationListener, GoogleApiClient.ConnectionCallbacks,
+public class UserLocationService extends Service implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
     private GenUser user;
 
@@ -68,6 +68,10 @@ public class UserLocationService extends Service implements LocationListener, Go
     // 지오펜스가 추가되었을 때 어플리케이션 상태를 유지하기 위해 사용
     private SharedPreferences mSharedPreferences;
 
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+
+    AsyncTask loadOwnerRealtimeLocation;
 
     public UserLocationService() {
         super();
@@ -78,17 +82,40 @@ public class UserLocationService extends Service implements LocationListener, Go
         super.onCreate();
 
         // Acquire a reference to the system Location Manager
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         // GPS 프로바이더 사용가능여부
         Boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         // 네트워크 프로바이더 사용가능여부
         Boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                Values.MY_LOCATION = new LatLng(location.getLatitude(), location.getLatitude());
+                loadOwnerRealtimeLocation = new LoadOwnerRealtimeLocation().execute(1);
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
         // Register the listener with the Location Manager to receive location updates
-        // 30초마다 갱신
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 30000, 0, this);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 0, this);
+        // 300초마다 갱신
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 300000, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 300000, 0, locationListener);
 
         // 수동으로 위치 구하기
         String locationProvider = LocationManager.GPS_PROVIDER;
@@ -116,26 +143,6 @@ public class UserLocationService extends Service implements LocationListener, Go
 
         // GoogleApiClient 빌드 시작
         buildGoogleApiClient();
-
-        if (!mGoogleApiClient.isConnected()) {
-            Toast.makeText(this, getString(R.string.not_connected), Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        try {
-            LocationServices.GeofencingApi.addGeofences(
-                    mGoogleApiClient,
-                    // The GeofenceRequest object.
-                    getGeofencingRequest(),
-                    // A pending intent that that is reused when calling removeGeofences(). This
-                    // pending intent is used to generate an intent when a matched geofence
-                    // transition is observed.
-                    getGeofencePendingIntent()
-            ).setResultCallback(this); // Result processed in onResult().
-        } catch (SecurityException securityException) {
-            // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
-            logSecurityException(securityException);
-        }
     }
 
 
@@ -147,30 +154,15 @@ public class UserLocationService extends Service implements LocationListener, Go
 
     @Override
     public void onDestroy() {
+        removeGeofences();
         mGoogleApiClient.disconnect();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        locationManager.removeUpdates(locationListener);
         Toast.makeText(UserLocationService.this, "실시간 위치 알림이 중지되었습니다.", Toast.LENGTH_SHORT).show();
         super.onDestroy();
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        Values.MY_LOCATION = new LatLng(location.getLatitude(), location.getLatitude());
-        new LoadOwnerRealtimeLocation().execute(1);
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
     }
 
     /**
@@ -277,7 +269,6 @@ public class UserLocationService extends Service implements LocationListener, Go
                 Values.FOOD_TRUCK_CURRENT_LOCATION = locationOwnerHashMap;
                 populateGeofenceList();
                 Log.d("푸드트럭: ","지오펜싱 리스트가 생성 되었습니다.");
-                Log.d("지오펜스1 이름: ", mGeofenceList.get(0).getRequestId());
                 addGeofences();
             } else {
                 Log.d("푸드트럭: ","실시간 위치 알림 상태의 푸드트럭이 없습니다.");
@@ -355,12 +346,8 @@ public class UserLocationService extends Service implements LocationListener, Go
             editor.putBoolean(Values.GEOFENCES_ADDED_KEY, mGeofencesAdded);
             editor.apply();
 
-            Toast.makeText(
-                    this,
-                    (mGeofencesAdded ? "지오펜스가 추가 되었습니다." :
-                            "지오펜스가 제거 되었습니다."),
-                    Toast.LENGTH_SHORT
-            ).show();
+            Log.d("지오펜스가 ",mGeofencesAdded ? "지오펜스가 추가 되었습니다." :
+                            "지오펜스가 제거 되었습니다.");
         } else {
             // Get the status code for the error and log it using a user-friendly message.
             String errorMessage = GeofenceErrorMessages.getErrorString(this,
@@ -379,6 +366,7 @@ public class UserLocationService extends Service implements LocationListener, Go
             return mGeofencePendingIntent;
         }
         Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
+        intent.putExtra("user",user);
         // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when calling
         // addGeofences() and removeGeofences().
         return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -387,6 +375,7 @@ public class UserLocationService extends Service implements LocationListener, Go
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+        user = (GenUser) intent.getParcelableExtra("user");
         return null;
     }
 
@@ -438,6 +427,4 @@ public class UserLocationService extends Service implements LocationListener, Go
             logSecurityException(securityException);
         }
     }
-
-
 }

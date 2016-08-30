@@ -1,13 +1,17 @@
 package com.matcha.jjbros.matchaapp.truck;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +30,8 @@ import com.matcha.jjbros.matchaapp.common.DBControl;
 import com.matcha.jjbros.matchaapp.common.PermissionUtils;
 import com.matcha.jjbros.matchaapp.entity.GenUser;
 import com.matcha.jjbros.matchaapp.entity.RealtimeLocationOwner;
+import com.matcha.jjbros.matchaapp.owner.OwnerInfoActivity;
+import com.matcha.jjbros.matchaapp.user.UserMainActivity;
 
 import org.postgresql.geometric.PGpoint;
 
@@ -44,7 +50,7 @@ import java.util.Properties;
  * Created by jylee on 2016-08-28.
  */
 public class NotifiedFoodTruckMapActivity extends AppCompatActivity implements LocationListener, OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener,
-        GoogleMap.OnMyLocationButtonClickListener{
+        GoogleMap.OnMyLocationButtonClickListener {
 
     private SupportMapFragment mapFragment;
     private GoogleMap mMap;
@@ -66,6 +72,7 @@ public class NotifiedFoodTruckMapActivity extends AppCompatActivity implements L
         setContentView(R.layout.activity_notified_food_truck_map);
 
         truckName = getIntent().getStringExtra("truckName");
+        user = getIntent().getParcelableExtra("user");
 
         // Acquire a reference to the system Location Manager
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -120,7 +127,12 @@ public class NotifiedFoodTruckMapActivity extends AppCompatActivity implements L
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-
+        if(truckRealtimeLocationMap.containsKey(marker)){
+            Intent intent = new Intent(getBaseContext(), FoodTruckViewActivity.class);
+            intent.putExtra("ownerID", truckRealtimeLocationMap.get(marker).getOwner_id());
+            intent.putExtra("GenUser", user);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -131,12 +143,10 @@ public class NotifiedFoodTruckMapActivity extends AppCompatActivity implements L
         mMap.setOnMarkerClickListener(this);
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
-        if(currentPosition == null){
+        if (currentPosition == null) {
             currentPosition = new LatLng(37.541957, 126.988168);
         }
-        uMarker = googleMap.addMarker(new MarkerOptions().position(currentPosition)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 15));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 13));
 
         mMap.setOnMyLocationButtonClickListener(this);
         enableMyLocation();
@@ -188,7 +198,7 @@ public class NotifiedFoodTruckMapActivity extends AppCompatActivity implements L
                     Log.d("connection : ", "null");
                     return null;
                 }
-            } catch (Exception e){
+            } catch (Exception e) {
                 Log.d("PPJY", e.getLocalizedMessage());
                 return null;
             }
@@ -207,9 +217,9 @@ public class NotifiedFoodTruckMapActivity extends AppCompatActivity implements L
                 pstm.setString(1, truckname[0]);
                 rs = pstm.executeQuery();
 
-                if(rs.next()){
+                if (rs.next()) {
                     realtimeLocationOwner = new RealtimeLocationOwner();
-                    PGpoint pGpoint = (PGpoint)rs.getObject(1);
+                    PGpoint pGpoint = (PGpoint) rs.getObject(1);
                     realtimeLocationOwner.setLat(pGpoint.x);
                     realtimeLocationOwner.setLng(pGpoint.y);
                     realtimeLocationOwner.setOwner_id(rs.getInt(2));
@@ -234,29 +244,67 @@ public class NotifiedFoodTruckMapActivity extends AppCompatActivity implements L
         @Override
         protected void onPostExecute(RealtimeLocationOwner realtimeLocationOwner) {
             super.onPostExecute(realtimeLocationOwner);
-            if(realtimeLocationOwner!=null){
-                if(!truckRealtimeLocationMap.isEmpty()){
+            if (realtimeLocationOwner != null) {
+                LatLng latLng;
+                Log.d("realtimelocationowner1", String.valueOf(realtimeLocationOwner.getLat()));
+                if (!truckRealtimeLocationMap.isEmpty()) {
                     Iterator itr = truckRealtimeLocationMap.keySet().iterator();
-                    while(itr.hasNext()){
+                    while (itr.hasNext()) {
                         Marker marker = (Marker) itr.next();
                         marker.remove();
                     }
                     truckRealtimeLocationMap.clear();
+                    latLng = new LatLng(realtimeLocationOwner.getLat(), realtimeLocationOwner.getLng());
                     Marker marker = mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(realtimeLocationOwner.getLat(), realtimeLocationOwner.getLng()))
+                            .position(latLng)
                             .title(realtimeLocationOwner.getTruck_name())
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_truck))
                     );
                     truckRealtimeLocationMap.put(marker, realtimeLocationOwner);
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
+                } else {
+                    latLng = new LatLng(realtimeLocationOwner.getLat(), realtimeLocationOwner.getLng());
+                    Log.d("realtimelocationowner2", String.valueOf(realtimeLocationOwner.getLat()));
+                    Marker marker = mMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .title(realtimeLocationOwner.getTruck_name())
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_truck))
+                    );
+                    truckRealtimeLocationMap.put(marker, realtimeLocationOwner);
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
+
                 }
-            } else {
-                Marker marker = mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(realtimeLocationOwner.getLat(), realtimeLocationOwner.getLng()))
-                        .title(realtimeLocationOwner.getTruck_name())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_truck))
-                );
-                truckRealtimeLocationMap.put(marker, realtimeLocationOwner);
             }
         }
+
     }
+
+    @Override
+    public void onBackPressed() {
+        showSettingsAlert();
+    }
+
+    public void showSettingsAlert() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(NotifiedFoodTruckMapActivity.this);
+
+        alertDialog.setTitle("알림");
+        alertDialog.setMessage("메인 화면으로 이동합니까?");
+        // OK 를 누르게 되면 설정창으로 이동합니다.
+        alertDialog.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(getBaseContext(), UserMainActivity.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
+                finish();
+            }
+        });
+        // Cancle 하면 종료 합니다.
+        alertDialog.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.show();
+    }
+
 }

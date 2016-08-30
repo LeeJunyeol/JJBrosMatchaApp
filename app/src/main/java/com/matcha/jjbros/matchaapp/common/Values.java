@@ -2,6 +2,7 @@ package com.matcha.jjbros.matchaapp.common;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.maps.model.LatLng;
+import com.matcha.jjbros.matchaapp.entity.GenUser;
 import com.matcha.jjbros.matchaapp.entity.RealtimeLocationOwner;
 
 import java.util.ArrayList;
@@ -53,5 +54,7 @@ public class Values {
     public static final long GEOFENCE_EXPIRATION_IN_MILLISECONDS =
             GEOFENCE_EXPIRATION_IN_HOURS * 60 * 60 * 1000;
     public static final float GEOFENCE_RADIUS_IN_METERS = 5000; // 5 km
+
+    public static GenUser GENUSER;
 
 }

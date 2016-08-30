@@ -14,7 +14,7 @@
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/tb_coupon_owner"
+                android:id="@+id/tb_coupon_user"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/colorPrimary"
@@ -22,17 +22,9 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <ListView android:id="@+id/lv_coupon_owner"
+        <ListView android:id="@+id/lv_coupon_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/btn_add_coupon_owner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_add_menu" />
 
 </android.support.design.widget.CoordinatorLayout>

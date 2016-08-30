@@ -3,12 +3,18 @@ package com.matcha.jjbros.matchaapp.user;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +23,7 @@ import com.matcha.jjbros.matchaapp.R;
 import com.matcha.jjbros.matchaapp.common.Values;
 import com.matcha.jjbros.matchaapp.entity.GenUser;
 import com.matcha.jjbros.matchaapp.entity.User;
+import com.matcha.jjbros.matchaapp.main.LoginActivity;
 import com.matcha.jjbros.matchaapp.owner.LocationService;
 
 /**
@@ -42,6 +49,11 @@ public class UserSettingActivity extends AppCompatActivity{
         Toolbar toolbar = (Toolbar) findViewById(R.id.tb_user_setting);
         setSupportActionBar(toolbar);
 
+        ActionBar ab = getSupportActionBar();
+        if (null != ab) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+
         bookmarkAlertOnOff = (TextView) findViewById(R.id.bookmark_alert_onoff);
         neartruckAlertOnOff = (TextView) findViewById(R.id.neartruck_alert_onoff);
         eventCouponAlertOnOff = (TextView) findViewById(R.id.event_coupon_alert_onoff);
@@ -56,39 +68,37 @@ public class UserSettingActivity extends AppCompatActivity{
             neartruckAlertOnOff.setText("ON");
         }
 
-            bookmarkAlertOnOff.setOnClickListener(new View.OnClickListener() {
+        bookmarkAlertOnOff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Toast.makeText(getApplicationContext(), "북마크 기능 준비 중입니다.", Toast.LENGTH_SHORT).show();
             }
         });
 
         neartruckAlertOnOff.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), UserLocationService.class);
+                intent.putExtra("user", user);
+
                 if(Values.USER_NEAR_TRUCK_ALERT==false){
-                    Values.USER_NEAR_TRUCK_ALERT = true;
-                    neartruckAlertOnOff.setBackgroundResource(R.drawable.circle_green_a400);
-                    neartruckAlertOnOff.setTextColor(getResources().getColor(R.color.material_White));
-                    neartruckAlertOnOff.setText("ON");
                     locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
                     isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-
                     if (!isGPSEnabled) {
-                        Toast.makeText(getApplicationContext(), "안되요", Toast.LENGTH_SHORT).show();
                         showSettingsAlert();
                     } else {
-                        Toast.makeText(getApplicationContext(), "되요", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getBaseContext(), UserLocationService.class);
-                        intent.putExtra("user", user);
+                        Values.USER_NEAR_TRUCK_ALERT = true;
+                        neartruckAlertOnOff.setBackgroundResource(R.drawable.circle_green_a400);
+                        neartruckAlertOnOff.setTextColor(getResources().getColor(R.color.material_White));
+                        neartruckAlertOnOff.setText("ON");
                         startService(intent);
                     }
+
                 } else {
                     Values.USER_NEAR_TRUCK_ALERT = false;
                     neartruckAlertOnOff.setBackgroundResource(R.drawable.circle_white);
                     neartruckAlertOnOff.setTextColor(getResources().getColor(R.color.black));
                     neartruckAlertOnOff.setText("OFF");
-                    Intent intent = new Intent(getBaseContext(), UserLocationService.class);
                     stopService(intent);
                 }
             }
@@ -97,7 +107,27 @@ public class UserSettingActivity extends AppCompatActivity{
         eventCouponAlertOnOff.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getBaseContext(), UserCouponService.class);
+                intent.putExtra("user", user);
+                if(Values.USER_EVENT_PUSH_ALERT==false){
+                    locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+                    isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                    if (!isGPSEnabled) {
+                        showSettingsAlert();
+                    } else {
+                        Values.USER_EVENT_PUSH_ALERT = true;
+                        eventCouponAlertOnOff.setBackgroundResource(R.drawable.circle_green_a400);
+                        eventCouponAlertOnOff.setTextColor(getResources().getColor(R.color.material_White));
+                        eventCouponAlertOnOff.setText("ON");
+                        startService(intent);
+                    }
+                } else {
+                    Values.USER_EVENT_PUSH_ALERT = false;
+                    eventCouponAlertOnOff.setBackgroundResource(R.drawable.circle_white);
+                    eventCouponAlertOnOff.setTextColor(getResources().getColor(R.color.black));
+                    eventCouponAlertOnOff.setText("OFF");
+                    stopService(intent);
+                }
             }
         });
     }
@@ -122,4 +152,5 @@ public class UserSettingActivity extends AppCompatActivity{
         });
         alertDialog.show();
     }
+
 }

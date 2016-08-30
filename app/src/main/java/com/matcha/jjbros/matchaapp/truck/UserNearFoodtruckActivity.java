@@ -35,6 +35,8 @@ import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -81,6 +83,8 @@ public class UserNearFoodtruckActivity extends AppCompatActivity implements Loca
 
     // Check Permissions Now
     private static final int REQUEST_LOCATION = 2;
+
+    private Circle circle;
 
     // 마커 커스텀 이미지
     protected class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
@@ -252,14 +256,14 @@ public class UserNearFoodtruckActivity extends AppCompatActivity implements Loca
             TruckScheduleInfo truckScheduleInfo = null;
             ScheduleVO scheduleVO = null;
             ArrayList<TruckScheduleInfo> scheduleInfoList = new ArrayList<>();
-            Statement stmt = null;
+            PreparedStatement pstm = null;
             ResultSet rs = null;
             String sql = "select \"SCHEDULE\".*, \"OWNER\".\"NAME\", \"OWNER\".\"EMAIL\", \"OWNER\".\"PHONE\"" +
                     ", \"OWNER\".\"MENU_CATEGORY\" from \"SCHEDULE\" INNER JOIN \"OWNER\" ON" +
                     " \"SCHEDULE\".\"OWNER_ID\"=\"OWNER\".\"ID\" ORDER BY \"SCHEDULE\".\"OWNER_ID\";";
             try {
-                stmt = conn.createStatement();
-                rs = stmt.executeQuery(sql);
+                pstm = conn.prepareStatement(sql);
+                rs = pstm.executeQuery();
 
                 while(rs.next()){
                     truckScheduleInfo = new TruckScheduleInfo();
@@ -289,7 +293,7 @@ public class UserNearFoodtruckActivity extends AppCompatActivity implements Loca
             } finally {
                 try{
                     rs.close();
-                    stmt.close();
+                    pstm.close();
                     conn.close();
                 } catch (SQLException e){
                     Log.d("exception", e.getMessage());
@@ -326,6 +330,11 @@ public class UserNearFoodtruckActivity extends AppCompatActivity implements Loca
         if(msHashMap.containsKey(marker)) {
             Intent intent = new Intent(getBaseContext(), FoodTruckViewActivity.class);
             intent.putExtra("ownerID", msHashMap.get(marker).getScheduleVO().getOwner_id());
+            intent.putExtra("GenUser", user);
+            startActivity(intent);
+        } else if(truckRealtimeLocationMap.containsKey(marker)){
+            Intent intent = new Intent(getBaseContext(), FoodTruckViewActivity.class);
+            intent.putExtra("ownerID", truckRealtimeLocationMap.get(marker).getOwner_id());
             intent.putExtra("GenUser", user);
             startActivity(intent);
         }
@@ -368,7 +377,7 @@ public class UserNearFoodtruckActivity extends AppCompatActivity implements Loca
         Log.d("latitude: ", String.valueOf(lat));
         Log.d("longitude: ", String.valueOf(lng));
 
-        new LoadOwnerRealtimeLocation().execute(1);
+        new LoadNearOwnerRealtimeLocation().execute(location);
 
     }
 
@@ -384,9 +393,9 @@ public class UserNearFoodtruckActivity extends AppCompatActivity implements Loca
         Log.d("onProviderDisabled", provider);
     }
 
-    public class LoadOwnerRealtimeLocation extends AsyncTask<Integer, Integer, ArrayList<RealtimeLocationOwner>> {
+    public class LoadNearOwnerRealtimeLocation extends AsyncTask<Location, Integer, ArrayList<RealtimeLocationOwner>> {
         @Override
-        protected ArrayList<RealtimeLocationOwner> doInBackground(Integer... command) {
+        protected ArrayList<RealtimeLocationOwner> doInBackground(Location... myLocation) {
             Connection conn = null;
             int result = 0;
             try {
@@ -408,7 +417,7 @@ public class UserNearFoodtruckActivity extends AppCompatActivity implements Loca
                 return null;
             }
 
-            Statement stmt = null;
+            PreparedStatement pstm = null;
             ResultSet rs = null;
             int res = 0;
 
@@ -416,10 +425,14 @@ public class UserNearFoodtruckActivity extends AppCompatActivity implements Loca
 
             String sql = "SELECT \"REALTIME_LOCATION\".\"location\", \"REALTIME_LOCATION\".\"OWNER_ID\", \"OWNER\".\"NAME\" "
             + "FROM \"REALTIME_LOCATION\" INNER JOIN \"OWNER\" ON \"REALTIME_LOCATION\".\"OWNER_ID\"=\"OWNER\".\"ID\" "
-            + "WHERE \"REALTIME_LOCATION\".\"STATUS\"=TRUE;";
+            + "WHERE \"REALTIME_LOCATION\".\"STATUS\"=TRUE AND ST_Distance_Sphere(ST_SetSRID(ST_MakePoint(?, ?), 4326), " +
+                    " ST_SetSRID(ST_MakePoint(\"REALTIME_LOCATION\".\"location\"[1],\"REALTIME_LOCATION\".\"location\"[0]), " +
+                    " 4326)) < 3000;";
             try {
-                stmt = conn.createStatement();
-                rs = stmt.executeQuery(sql);
+                pstm = conn.prepareStatement(sql);
+                pstm.setDouble(1, myLocation[0].getLongitude());
+                pstm.setDouble(2, myLocation[0].getLatitude());
+                rs = pstm.executeQuery();
 
                 while(rs.next()){
                     RealtimeLocationOwner rlo = new RealtimeLocationOwner();
@@ -436,7 +449,7 @@ public class UserNearFoodtruckActivity extends AppCompatActivity implements Loca
                 e.printStackTrace();
             } finally {
                 try {
-                    stmt.close();
+                    pstm.close();
                     conn.close();
                 } catch (SQLException e) {
                     // TODO Auto-generated catch block
@@ -486,6 +499,21 @@ public class UserNearFoodtruckActivity extends AppCompatActivity implements Loca
 
     @Override
     public boolean onMyLocationButtonClick() {
+        if(circle != null){
+            circle.remove();
+        }
+        LatLng center = new LatLng(lat, lng);
+        double radius = 3000;
+        circle = mMap.addCircle(new CircleOptions()
+                .center(center)
+                .radius(radius)
+                .strokeWidth(20)
+
+                .strokeColor(Color.BLACK)
+                .fillColor(Color.HSVToColor(
+                        127, new float[]{180, 1, 1}))
+        );
+
         return false;
     }
 

@@ -100,6 +100,7 @@ public class UserMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_main);
 
         user = (GenUser) getIntent().getParcelableExtra("user");
+        Values.GENUSER = user;
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -248,4 +249,30 @@ public class UserMainActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        showCloseAlert();
+    }
+
+    public void showCloseAlert() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(UserMainActivity.this);
+
+        alertDialog.setTitle("알림");
+        alertDialog.setMessage("종료하시겠습니까?");
+        // OK 를 누르게 되면 설정창으로 이동합니다.
+        alertDialog.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        // Cancle 하면 종료 합니다.
+        alertDialog.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.show();
+    }
+
 }

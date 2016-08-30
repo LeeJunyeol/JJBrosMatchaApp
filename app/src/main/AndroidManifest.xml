@@ -83,18 +83,21 @@
             android:label="리뷰"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".owner.OwnerReviewActivity"
+            android:label="리뷰 관리"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".user.UserEventNoticeActivity"
             android:label="이벤트/공지사항"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".user.UserCouponActivity"
-            android:label="쿠폰"
+            android:label="내 쿠폰"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".truck.NotifiedFoodTruckMapActivity"
             android:label="실시간 위치"
             android:theme="@style/AppTheme.NoActionBar" />
-
 
         <service
             android:name=".owner.LocationService" />
@@ -104,6 +107,9 @@
             android:name=".geofencing.GeofenceTransitionsIntentService" />
         <service
             android:name=".geofencing.NearTruckGeofencingService" />
+        <service
+            android:name=".user.UserCouponService" />
+
 
 
 

@@ -15,6 +15,7 @@ import android.util.Log;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 import com.matcha.jjbros.matchaapp.R;
+import com.matcha.jjbros.matchaapp.entity.GenUser;
 import com.matcha.jjbros.matchaapp.truck.NotifiedFoodTruckMapActivity;
 import com.matcha.jjbros.matchaapp.truck.UserNearFoodtruckActivity;
 
@@ -27,6 +28,8 @@ import java.util.List;
 public class GeofenceTransitionsIntentService extends IntentService {
 
     protected static final String TAG = "GeofenceTransitionsIS";
+
+    private GenUser user = null;
 
     /**
      * This constructor is required, and calls the super IntentService(String)
@@ -55,6 +58,9 @@ public class GeofenceTransitionsIntentService extends IntentService {
             return;
         }
 
+        // UserLocationService에서 전달한 user 정보를 받는다.
+        user = intent.getParcelableExtra("user");
+
         // the transition type을 받음
         int geofenceTransition = geofencingEvent.getGeofenceTransition();
 
@@ -66,15 +72,17 @@ public class GeofenceTransitionsIntentService extends IntentService {
             List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
 
             // Get the transition details as a String.
-            String geofenceTransitionDetails = getGeofenceTransitionDetails(
+            ArrayList<String> geofenceTransitionDetails = getGeofenceTransitionDetails(
                     this,
                     geofenceTransition,
                     triggeringGeofences
             );
 
-            // Send notification and log the transition details.
-            sendNotification(geofenceTransitionDetails);
-            Log.i(TAG, geofenceTransitionDetails);
+            for(int i=0; i<geofenceTransitionDetails.size(); i++){
+                // Send notification and log the transition details.
+                sendNotification(i, geofenceTransitionDetails.get(i));
+                Log.i(TAG, geofenceTransitionDetails.get(i));
+            }
         } else {
             // Log the error.
             Log.e(TAG, getString(R.string.geofence_transition_invalid_type, geofenceTransition));
@@ -89,7 +97,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
      * @param triggeringGeofences   The geofence(s) triggered.
      * @return                      The transition details formatted as String.
      */
-    private String getGeofenceTransitionDetails(
+    private ArrayList<String> getGeofenceTransitionDetails(
             Context context,
             int geofenceTransition,
             List<Geofence> triggeringGeofences) {
@@ -97,21 +105,21 @@ public class GeofenceTransitionsIntentService extends IntentService {
         String geofenceTransitionString = getTransitionString(geofenceTransition);
 
         // Get the Ids of each geofence that was triggered.
-        ArrayList triggeringGeofencesIdsList = new ArrayList();
+        ArrayList<String> triggeringGeofencesIdsList = new ArrayList();
         for (Geofence geofence : triggeringGeofences) {
             triggeringGeofencesIdsList.add(geofence.getRequestId());
         }
-        String triggeringGeofencesIdsString = TextUtils.join(", ",  triggeringGeofencesIdsList);
 
-        return triggeringGeofencesIdsString;
+        return triggeringGeofencesIdsList;
     }
 
     // 트랜지션이 감지될 때, 알림을 띄운다.
     // 만약 유저가 알림을 클릭하면, 컨트롤이 푸드트럭 지도로 이동하여, 푸드트럭 위치를 보여준다.
-    private void sendNotification(String notificationDetails) {
+    private void sendNotification(int id, String notificationDetails) {
         // NotifiedFoodTruckMapActivity를 시작할 명시적 content Intent를 생성한다.
         Intent notificationIntent = new Intent(getApplicationContext(), NotifiedFoodTruckMapActivity.class);
         notificationIntent.putExtra("truckName", notificationDetails);
+        notificationIntent.putExtra("user",user);
 
         // task stack을 만든다.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -124,7 +132,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
 
         // 전체 back stack을 가진 PendingIntent
         PendingIntent notificationPendingIntent =
-                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                stackBuilder.getPendingIntent(id, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // 버전이 4 이상의 버전과 호환되는 a notification builder
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
@@ -148,7 +156,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         // 알림을 발행한다.
-        mNotificationManager.notify(0, builder.build());
+        mNotificationManager.notify(id, builder.build());
     }
 
     /**

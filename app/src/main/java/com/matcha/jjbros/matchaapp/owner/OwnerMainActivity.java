@@ -181,6 +181,8 @@ public class OwnerMainActivity extends AppCompatActivity{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = new Intent(getBaseContext(), LocationService.class);
+        intent.putExtra("owner", owner);
         if (dtToggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -188,7 +190,6 @@ public class OwnerMainActivity extends AppCompatActivity{
             case R.id.mi_switch_my_location:
                 if(item.isChecked()){
                     item.setChecked(false);
-                    Intent intent = new Intent(getBaseContext(), LocationService.class);
                     stopService(intent);
                 } else {
                     item.setChecked(true);
@@ -203,8 +204,6 @@ public class OwnerMainActivity extends AppCompatActivity{
 
                     } else {
                         Toast.makeText(getApplicationContext(), "되요", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(getBaseContext(), LocationService.class);
-                        intent.putExtra("owner", owner);
                         startService(intent);
                     }
 
@@ -228,6 +227,31 @@ public class OwnerMainActivity extends AppCompatActivity{
         });
         // Cancle 하면 종료 합니다.
         alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        showCloseAlert();
+    }
+
+    public void showCloseAlert() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(OwnerMainActivity.this);
+
+        alertDialog.setTitle("알림");
+        alertDialog.setMessage("종료하시겠습니까?");
+        // OK 를 누르게 되면 설정창으로 이동합니다.
+        alertDialog.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        // Cancle 하면 종료 합니다.
+        alertDialog.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }

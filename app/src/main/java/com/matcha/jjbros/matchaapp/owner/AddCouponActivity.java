@@ -1,5 +1,6 @@
 package com.matcha.jjbros.matchaapp.owner;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -131,6 +132,9 @@ public class AddCouponActivity extends AppCompatActivity {
             if(result > 0){
                 Log.d("db insert","success");
                 Toast.makeText(getApplicationContext(), "쿠폰이 성공적으로 추가 되었습니다.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getBaseContext(), OwnerCouponActivity.class);
+                intent.putExtra("owner",owner);
+                startActivity(intent);
                 finish();
             } else {
                 Log.d("db insert","fail");

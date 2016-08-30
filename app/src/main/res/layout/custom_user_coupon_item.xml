@@ -58,20 +58,14 @@
             android:orientation="vertical"
             android:layout_marginRight="5dp"
             android:gravity="center">
-            <TextView android:id="@+id/btn_update_coupon"
-                android:layout_marginBottom="3dp"
+            <TextView android:id="@+id/btn_use_coupon_user"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
                 android:layout_width="50dp"
-                android:layout_height="30dp"
+                android:layout_height="match_parent"
                 android:background="@drawable/border_radius_rectangle"
                 android:gravity="center"
-                android:text="수정"/>
-            <TextView android:id="@+id/btn_delete_coupon"
-                android:layout_marginTop="10dp"
-                android:layout_width="50dp"
-                android:layout_height="30dp"
-                android:background="@drawable/border_radius_rectangle"
-                android:gravity="center"
-                android:text="삭제"/>
+                android:text="사용\n하기"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -364,4 +364,106 @@ public class FoodTruckMapActivity extends AppCompatActivity implements OnMapRead
         }
     }
 
+/*
+    public class LoadOwnerRealtimeLocation extends AsyncTask<Integer, Integer, ArrayList<RealtimeLocationOwner>> {
+        @Override
+        protected ArrayList<RealtimeLocationOwner> doInBackground(Integer... command) {
+            Connection conn = null;
+            int result = 0;
+            try {
+                Class.forName("org.postgresql.Driver").newInstance();
+                String url = new DBControl().url;
+                Properties props = new Properties();
+                props.setProperty("user", "postgres");
+                props.setProperty("password", "admin123");
+
+                Log.d("url", url);
+                conn = DriverManager.getConnection(url, props);
+                if (conn == null) // couldn't connect to server
+                {
+                    Log.d("connection : ", "null");
+                    return null;
+                }
+            } catch (Exception e){
+                Log.d("PPJY", e.getLocalizedMessage());
+                return null;
+            }
+
+            Statement stmt = null;
+            ResultSet rs = null;
+            int res = 0;
+
+            ArrayList<RealtimeLocationOwner> locationOwnerArrayList = new ArrayList<>();
+
+            String sql = "SELECT \"REALTIME_LOCATION\".\"location\", \"REALTIME_LOCATION\".\"OWNER_ID\", \"OWNER\".\"NAME\" "
+                    + "FROM \"REALTIME_LOCATION\" INNER JOIN \"OWNER\" ON \"REALTIME_LOCATION\".\"OWNER_ID\"=\"OWNER\".\"ID\" "
+                    + "WHERE \"REALTIME_LOCATION\".\"STATUS\"=TRUE;";
+            try {
+                stmt = conn.createStatement();
+                rs = stmt.executeQuery(sql);
+
+                while(rs.next()){
+                    RealtimeLocationOwner rlo = new RealtimeLocationOwner();
+                    PGpoint pGpoint = (PGpoint)rs.getObject(1);
+                    rlo.setLat(pGpoint.x);
+                    rlo.setLng(pGpoint.y);
+                    rlo.setOwner_id(rs.getInt(2));
+                    rlo.setTruck_name(rs.getString(3));
+
+                    locationOwnerArrayList.add(rlo);
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } finally {
+                try {
+                    stmt.close();
+                    conn.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            return locationOwnerArrayList;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<RealtimeLocationOwner> locationOwnerArrayList) {
+            super.onPostExecute(locationOwnerArrayList);
+            if(locationOwnerArrayList!=null){
+                if(!truckRealtimeLocationMap.isEmpty()){
+                    Iterator itr = truckRealtimeLocationMap.keySet().iterator();
+                    while(itr.hasNext()){
+                        Marker marker = (Marker) itr.next();
+                        marker.remove();
+                    }
+                    truckRealtimeLocationMap.clear();
+                    itr = locationOwnerArrayList.iterator();
+                    while(itr.hasNext()){
+                        RealtimeLocationOwner rlo = (RealtimeLocationOwner) itr.next();
+                        Marker marker = mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(rlo.getLat(), rlo.getLng()))
+                                .title(rlo.getTruck_name())
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_truck))
+                        );
+                        truckRealtimeLocationMap.put(marker, rlo);
+                    }
+                } else {
+                    Iterator itr = locationOwnerArrayList.iterator();
+                    while(itr.hasNext()){
+                        RealtimeLocationOwner rlo = (RealtimeLocationOwner) itr.next();
+                        Marker marker = mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(rlo.getLat(), rlo.getLng()))
+                                .title(rlo.getTruck_name())
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_truck))
+                        );
+                        truckRealtimeLocationMap.put(marker, rlo);
+                    }
+                }
+            }
+        }
+
+    }
+*/
+
 }
