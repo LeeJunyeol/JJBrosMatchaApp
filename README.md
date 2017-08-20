@@ -16,14 +16,14 @@ Food Truck App
             <tr>
                 초기화면
             </tr>
-            <figure style="display:inline-block;">
-            </figure>
         </td>
         <td align="middle">
-        <figure style="display:inline-block;">
-            <img src="./etc/2.png" width="100%" heigth="290">
-            <figcaption>회원가입</figcaption>
-        </figure>
+            <tr>
+                <img src="./etc/1.png" width="100%" heigth="290">
+            </tr>
+            <tr>
+                초기화면
+            </tr>
         </td>
         <td align="middle">
             <figure style="display:inline-block;">
