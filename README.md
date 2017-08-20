@@ -10,20 +10,16 @@ Food Truck App
 <table>
     <tr>
         <td align="middle">
-            <tr>
+            <figure style="display:inline-block;">
                 <img src="./etc/1.png" width="100%" heigth="290">
-            </tr>
-            <tr>
-                초기화면
-            </tr>
+                <figcaption>초기화면</figcaption>
+            </figure>
         </td>
         <td align="middle">
-            <tr>
-                <img src="./etc/1.png" width="100%" heigth="290">
-            </tr>
-            <tr>
-                초기화면
-            </tr>
+            <figure style="display:inline-block;">
+                <img src="./etc/2.png" width="100%" heigth="290">
+                <figcaption>회원가입</figcaption>
+            </figure>
         </td>
         <td align="middle">
             <figure style="display:inline-block;">
