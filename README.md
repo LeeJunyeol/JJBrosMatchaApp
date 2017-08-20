@@ -2,7 +2,7 @@
 Food Truck App
 
 ![This is the figure caption][fig_id]
-[fig_id]: ./etc/1.png "This is where the title goes" height=45px width=120px
+[fig_id]: "./etc/1.png" "This is where the title goes" height=45px width=120px
 
 <a href="#">
   <figure>
