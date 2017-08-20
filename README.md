@@ -9,29 +9,29 @@ Food Truck App
 
 <table>
     <tr>
-        <td style="text-align:center">
-<figure style="display:inline-block;">
-<img src="./etc/1.png" width="100%" heigth="290">
-<figcaption>초기화면</figcaption>
-</figure>
+        <td align="middle">
+            <figure style="display:inline-block;">
+                <img src="./etc/1.png" width="100%" heigth="290">
+                <figcaption>초기화면</figcaption>
+            </figure>
         </td>
-        <td>
-<figure style="display:inline-block;">
-<img src="./etc/2.png" width="100%" heigth="290">
-<figcaption>회원가입</figcaption>
-</figure>
+        <td align="middle">
+        <figure style="display:inline-block;">
+            <img src="./etc/2.png" width="100%" heigth="290">
+            <figcaption>회원가입</figcaption>
+        </figure>
         </td>
-        <td>
-<figure style="display:inline-block;">
-<img src="./etc/3.png" width="100%" heigth="290">
-<figcaption>사업자 등록</figcaption>
-</figure>
+        <td align="middle">
+            <figure style="display:inline-block;">
+                <img src="./etc/3.png" width="100%" heigth="290">
+                <figcaption>사업자 등록</figcaption>
+            </figure>
         </td>
-        <td>
-<figure style="display:inline-block;">
-<img src="./etc/4.png" width="100%" heigth="290">
-<figcaption>사업자 메인</figcaption>
-</figure>
+        <td align="middle">
+            <figure style="display:inline-block;">
+                <img src="./etc/4.png" width="100%" heigth="290">
+                <figcaption>사업자 메인</figcaption>
+            </figure>
         </td>
     </tr>
 </table>
