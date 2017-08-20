@@ -1,6 +1,11 @@
 # JJBrosMatchaApp
 Food Truck App
 
+<table class="image">
+<caption align="bottom">초기화면</caption>
+<tr><td><img src="./etc/1.png" width="180" heigth="290"></td></tr>
+</table>
+
   <figure>
     <img src="./etc/1.png" width="180" heigth="290">
     <figcaption>초기화면</figcaption>
