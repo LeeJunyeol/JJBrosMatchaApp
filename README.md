@@ -11,7 +11,7 @@ Food Truck App
     <tr>
         <td>
 <figure style="display:inline-block;">
-<img src="./etc/1.png" width="180" heigth="290">
+<img src="./etc/1.png" width="100%" heigth="290">
 <figcaption>초기화면</figcaption>
 </figure>
         </td>
