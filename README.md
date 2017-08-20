@@ -1,6 +1,8 @@
+```css
 figure { 
     display: inline-block;
 }
+```
 
 # JJBrosMatchaApp
 Food Truck App
