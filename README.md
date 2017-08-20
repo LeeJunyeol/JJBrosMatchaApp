@@ -9,7 +9,7 @@ Food Truck App
 
 <table>
     <tr>
-        <td>
+        <td style="text-align:center">
 <figure style="display:inline-block;">
 <img src="./etc/1.png" width="100%" heigth="290">
 <figcaption>초기화면</figcaption>
