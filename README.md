@@ -1,3 +1,9 @@
+---
+output:
+  fig_caption: yes
+
+---
+
 # JJBrosMatchaApp
 Food Truck App
 
