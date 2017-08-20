@@ -1,6 +1,9 @@
 # JJBrosMatchaApp
 Food Truck App
 
+![This is the figure caption][fig_id]
+[fig_id]: ./etc/1.png "This is where the title goes" height=45px width=120px
+
 <a href="#">
   <figure>
     <img src="./etc/1.png" width="180" heigth="290">
