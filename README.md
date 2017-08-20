@@ -7,11 +7,11 @@ figure {
 # JJBrosMatchaApp
 Food Truck App
 
-  <figure style="display:inline">
+  <figure style="display:inline-block;">
     <img src="./etc/1.png" width="180" heigth="290">
     <figcaption>초기화면</figcaption>
   </figure>
-  <figure style="display:inline">
+  <figure style="display:inline-block;">
     <img src="./etc/2.png" width="180" heigth="290">
     <figcaption>회원가입</figcaption>
   </figure>
