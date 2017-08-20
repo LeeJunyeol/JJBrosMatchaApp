@@ -3,7 +3,7 @@ Food Truck App
 
 <table class="image">
 <tr><td><img src="./etc/1.png" width="180" heigth="290"></td></tr>
-  <tr><caption align="bottom">초기화면</caption></tr>
+  <tr><td><caption align="bottom">초기화면</caption></td></tr>
 </table>
 
   <figure>
