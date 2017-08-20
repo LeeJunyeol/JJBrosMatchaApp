@@ -5,7 +5,7 @@ Food Truck App
 <tr><td><img src="./etc/1.png" width="180" heigth="290"></td></tr>
   <tr><td><caption align="bottom">초기화면</caption></td></tr>
 </table>
-<span>
+<a href="#">
   <figure>
     <img src="./etc/1.png" width="180" heigth="290">
     <figcaption>초기화면</figcaption>
@@ -22,7 +22,7 @@ Food Truck App
     <img src="./etc/4.png" width="180" heigth="290">
     <figcaption>사업자 메인</figcaption>
   </figure>
-</span>
+</a>
 <a href="#">
   <figure>
     <img src="./etc/5.png" width="180" heigth="290">
